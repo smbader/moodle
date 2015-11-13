@@ -134,7 +134,7 @@ class assignfeedback_offline_import_grades_form extends moodleform implements re
                 if (!empty($scaleoptions)) {
                     $formattedgrade = $scaleoptions[$grade];
                 } else {
-                    $formattedgrade = format_float($grade, 2);
+                    $formattedgrade = format_float($grade, $assignment->get_grade_item()->get_decimals());
                 }
                 $updates[] = get_string('gradeupdate', 'assignfeedback_offline',
                                             array('grade'=>$formattedgrade, 'student'=>$userdesc));
