@@ -390,20 +390,32 @@ class tablelog extends \table_sql implements \renderable {
             // We can only directly use count when not using the filter revised only.
             $select = "COUNT(1)";
         } else {
-            // Fetching the previous grade. We use MAX() to ensure that we only get one result if
-            // more than one histories happened at the same second.
-            $prevgrade = "SELECT MAX(finalgrade)
-                            FROM {grade_grades_history} h
-                           WHERE h.itemid = ggh.itemid
-                             AND h.userid = ggh.userid
-                             AND h.timemodified < ggh.timemodified
-                             AND NOT EXISTS (
-                              SELECT 1
-                                FROM {grade_grades_history} h2
-                               WHERE h2.itemid = ggh.itemid
-                                 AND h2.userid = ggh.userid
-                                 AND h2.timemodified < ggh.timemodified
-                                 AND h.timemodified < h2.timemodified)";
+            global $DB;
+
+            if ($DB->get_dbfamily() == 'mysql') {
+                $prevgrade = "SELECT h.finalgrade
+                                FROM {grade_grades_history} h
+                               WHERE h.itemid = ggh.itemid
+                                 AND h.userid = ggh.userid
+                                 AND h.timemodified < ggh.timemodified
+                            ORDER BY h.timemodified DESC
+                               LIMIT 0,1";
+            } else {
+                // Fetching the previous grade. We use MAX() to ensure that we only get one result if
+                // more than one histories happened at the same second.
+                $prevgrade = "SELECT MAX(finalgrade)
+                                FROM {grade_grades_history} h
+                               WHERE h.itemid = ggh.itemid
+                                 AND h.userid = ggh.userid
+                                 AND h.timemodified < ggh.timemodified
+                                 AND NOT EXISTS (
+                                  SELECT 1
+                                    FROM {grade_grades_history} h2
+                                   WHERE h2.itemid = ggh.itemid
+                                     AND h2.userid = ggh.userid
+                                     AND h2.timemodified < ggh.timemodified
+                                     AND h.timemodified < h2.timemodified)";
+            }
 
             $select = "$fields, ($prevgrade) AS prevgrade,
                       CASE WHEN gi.itemname IS NULL THEN gi.itemtype ELSE gi.itemname END AS itemname";
