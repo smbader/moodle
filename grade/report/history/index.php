@@ -105,15 +105,18 @@ if ($table->is_downloading()) {
 print_grade_page_head($COURSE->id, 'report', 'history', get_string('pluginname', 'gradereport_history'), false, '');
 $mform->display();
 
-// Render table.
-echo $output->render($table);
+// MDL-52309: Display report after form has been submitted.
+if (!empty($data) || optional_param('tsort', '', PARAM_RAW)) {
+    // Render table.
+    echo $output->render($table);
 
-$event = \gradereport_history\event\grade_report_viewed::create(
-    array(
-        'context' => $context,
-        'courseid' => $courseid
-    )
-);
-$event->trigger();
+    $event = \gradereport_history\event\grade_report_viewed::create(
+        array(
+            'context' => $context,
+            'courseid' => $courseid
+        )
+    );
+    $event->trigger();
+}
 
 echo $OUTPUT->footer();
