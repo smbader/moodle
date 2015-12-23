@@ -16,7 +16,7 @@ class course_edit_form extends moodleform {
      * Form definition.
      */
     function definition() {
-        global $CFG, $PAGE;
+        global $CFG, $PAGE, $OUTPUT;
 
         $mform    = $this->_form;
         $PAGE->requires->js_call_amd('core_course/formatchooser', 'init');
@@ -29,6 +29,8 @@ class course_edit_form extends moodleform {
 
         $systemcontext   = context_system::instance();
         $categorycontext = context_coursecat::instance($category->id);
+
+        $wolfwaremanaged = isset($CFG->usewolfwaretoolbox) && $CFG->usewolfwaretoolbox && !empty($course->idnumber);
 
         if (!empty($course->id)) {
             $coursecontext = context_course::instance($course->id);
@@ -54,11 +56,25 @@ class course_edit_form extends moodleform {
         $mform->setType('returnurl', PARAM_LOCALURL);
         $mform->setConstant('returnurl', $returnurl);
 
+        if ($wolfwaremanaged) {
+            $html_display = '
+                <div class="form-group row fitem">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9 form-inline felement">
+                        To change Course Full Name, Short Name or Availability, go to the&nbsp;
+                        <a target="_blank" href="https://wolfware.ncsu.edu/courses/manage/?manage_section_id='.$course->idnumber.'&tool=moodle">
+                            WolfWare Toolbox
+                        </a>
+                    </div>
+                </div>';
+            $mform->addElement('html', $html_display);
+        }
+
         $mform->addElement('text','fullname', get_string('fullnamecourse'),'maxlength="254" size="50"');
         $mform->addHelpButton('fullname', 'fullnamecourse');
         $mform->addRule('fullname', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_TEXT);
-        if (!empty($course->id) and !has_capability('moodle/course:changefullname', $coursecontext)) {
+        if ((!empty($course->id) and !has_capability('moodle/course:changefullname', $coursecontext)) || $wolfwaremanaged) {
             $mform->hardFreeze('fullname');
             $mform->setConstant('fullname', $course->fullname);
         }
@@ -67,7 +83,7 @@ class course_edit_form extends moodleform {
         $mform->addHelpButton('shortname', 'shortnamecourse');
         $mform->addRule('shortname', get_string('missingshortname'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_TEXT);
-        if (!empty($course->id) and !has_capability('moodle/course:changeshortname', $coursecontext)) {
+        if ((!empty($course->id) and !has_capability('moodle/course:changeshortname', $coursecontext)) || $wolfwaremanaged) {
             $mform->hardFreeze('shortname');
             $mform->setConstant('shortname', $course->shortname);
         }
@@ -107,11 +123,12 @@ class course_edit_form extends moodleform {
         $choices = array();
         $choices['0'] = get_string('hide');
         $choices['1'] = get_string('show');
+
         $mform->addElement('select', 'visible', get_string('coursevisibility'), $choices);
         $mform->addHelpButton('visible', 'coursevisibility');
         $mform->setDefault('visible', $courseconfig->visible);
-        if (!empty($course->id)) {
-            if (!has_capability('moodle/course:visibility', $coursecontext)) {
+        if (!empty($course->id) || $wolfwaremanaged) {
+            if (!has_capability('moodle/course:visibility', $coursecontext) || $wolfwaremanaged) {
                 $mform->hardFreeze('visible');
                 $mform->setConstant('visible', $course->visible);
             }
@@ -239,6 +256,14 @@ class course_edit_form extends moodleform {
         // Appearance.
         $mform->addElement('header', 'appearancehdr', get_string('appearance'));
 
+        if (!empty($course->theme) && 'ncsu' == $course->theme && function_exists('theme_ncsu_get_course_theme_settings')) {
+            // I needed this information earlier...
+
+            require_once($CFG->dirroot . '/theme/ncsu/wolfware.php');
+            $ncsu_theme_settings = theme_ncsu_get_course_theme_settings($course->id);
+            $ncsu_themes = ncsu_get_custom_themes();
+        }
+
         if (!empty($CFG->allowcoursethemes)) {
             $themeobjects = get_list_of_themes();
             $themes=array();
@@ -248,8 +273,99 @@ class course_edit_form extends moodleform {
                     $themes[$key] = get_string('pluginname', 'theme_'.$theme->name);
                 }
             }
-            $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
+
+            // SMBADER - DELTA - 2014-11-03 - If set to use wolfware, disable the themes
+            if ($CFG->usewolfwaretoolbox && !empty($course->idnumber)) {
+
+                $html_display = '
+                    <div class="form-group row fitem">
+                        <div class="col-md-3">
+                            <span class="pull-xs-right text-nowrap">' .
+                                $OUTPUT->help_icon('forcetheme', 'moodle', '') . '
+                            </span>
+                            <label class="col-form-label d-inline " for="id_groupmode">' .
+                                get_string('forcetheme') . '
+                            </label>
+                        </div>
+                        <div class="col-md-9 form-inline felement" data-fieldtype="select">' .
+                            $ncsu_themes[$ncsu_theme_settings->theme]['label'] . '<br />
+                            To change this, go to the
+                            <a target="_blank" href="https://wolfware.ncsu.edu/courses/manage/?manage_section_id='.$course->idnumber.'&tool=moodle">
+                                WolfWare Toolbox
+                            </a>
+                        </div>
+                    </div>
+                ';
+
+                $mform->addElement('html', $html_display);
+            } else {
+                $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
+            }
+            // END - DELTA - usewolfware changes.
         }
+
+        // BEGIN - DELTA - NCSU Custom Themes
+        if (!empty($course->theme) && 'ncsu' == $course->theme && function_exists('theme_ncsu_get_course_theme_settings')) {
+            // If the Moodle theme is set to use 'NCSU' then show the options available
+
+            if ($CFG->usewolfwaretoolbox && empty($course->idnumber)) {
+
+                $themelist = array();
+                foreach ($ncsu_themes as $themekey => $themedata) {
+                    if (isset($themedata['label']) && !empty($themedata['label'])) {
+                        $themelist[$themekey] = $themedata['label'];
+                    }
+                }
+                $mform->addElement('select', 'themekey', 'NC State Theme', $themelist);
+
+                if (isset($ncsu_theme_settings->theme)) {
+                    $mform->setDefault('themekey', $ncsu_theme_settings->theme);
+                } else {
+                    $mform->setDefault('themekey', 'red_standard');
+                }
+
+            }
+
+            if (isset($ncsu_theme_settings->theme) && strpos($ncsu_theme_settings->theme, 'personalized') === 0) {
+                // If this is a personalized theme, display the color option.
+
+                // Banner Image
+                $fs = get_file_storage();
+                $mform->addElement('filemanager', 'themeheaders', get_string('headerimage', 'moodle'), null,
+                            array('subdirs' => 0, 'maxfiles' => 1,
+                                  'accepted_types' => array('*.jpg', '*.png', '*.gif') ));
+
+                $themeheaderdraftid = file_get_submitted_draft_itemid('themeheaders');
+
+                file_prepare_draft_area($themeheaderdraftid, $context->id, 'course', 'ncsuheader', 1,
+                                        array('subdirs' => 0, 'maxfiles' => 1));
+
+                $course->themeheaders = $themeheaderdraftid;
+
+                $files = $fs->get_area_files($context->id, 'course', 'ncsuheader', 1);
+                foreach ($files as $f) {
+                    // $f is an instance of stored_file
+                    if ('.' != $f->get_filename()) {
+                        $headerurl = $CFG->wwwroot.'/pluginfile.php/'.$context->id.'/course/ncsuheader/'.$f->get_filename();
+                    }
+                }
+
+                if (!empty($headerurl)) {
+                    $html = '<div id="fitem_id_htemeheader_preview" class="fitem">';
+                    $html .= '<div class="fitemtitle">Header Preview</div>';
+                    $html .= '<div class="felement"><img src="' . $headerurl . '" alt="" /></div>';
+                    $html .= '</div>';
+
+                    $mform->addElement('html', $html);
+                }
+
+            }
+        }
+        // END - DELTA - NCSU Custom Themes
+
+        $languages=array();
+        $languages[''] = get_string('forceno');
+        $languages += get_string_manager()->get_list_of_translations();
 
         if ((empty($course->id) && guess_if_creator_will_have_course_capability('moodle/course:setforcedlanguage', $categorycontext))
                 || (!empty($course->id) && has_capability('moodle/course:setforcedlanguage', $coursecontext))) {

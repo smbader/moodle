@@ -2454,6 +2454,11 @@ function update_course($data, $editoroptions = NULL) {
     // update enrol settings
     enrol_course_updated(false, $course, $data);
 
+    // Update course / theme settings
+    if (function_exists('update_course_theme_settings')  && $course->theme == 'ncsu') {
+        update_course_theme_settings($context, '', $data);
+    }
+
     // Update course tags.
     if (isset($data->tags)) {
         core_tag_tag::set_item_tags('core', 'course', $course->id, context_course::instance($course->id), $data->tags);

@@ -4917,6 +4917,17 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null, $offlin
             \core\session\manager::write_close(); // Unlock session during file serving.
             send_stored_file($file, 60*60, 0, $forcedownload, $sendfileoptions);
 
+         } elseif ('ncsuheader' == $filearea) {
+
+             $filename = array_pop($args);
+             $filepath = $args ? '/'.implode('/', $args).'/' : '/';
+             if (!$file = $fs->get_file($context->id, 'course', 'ncsuheader', 1, $filepath, $filename) or $file->is_directory()) {
+                 send_file_not_found();
+             }
+
+            \core\session\manager::write_close(); // Unlock session during file serving.
+             send_stored_file($file, 60*60, 0, $forcedownload);
+
         } else {
             send_file_not_found();
         }
@@ -5017,6 +5028,18 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null, $offlin
 
             \core\session\manager::write_close(); // Unlock session during file serving.
             send_stored_file($file, 60*60, 0, $forcedownload, $sendfileoptions);
+
+         } else if (substr($filearea, -6) === 'header') {
+
+             $filename = array_pop($args);
+             $filepath = $args ? '/'.implode('/', $args).'/' : '/';
+
+             if (!$file = $fs->get_file($context->id, 'course', $filearea, 1, $filepath, $filename) or $file->is_directory()) {
+                 send_file_not_found();
+             }
+
+             session_get_instance()->write_close(); // unlock session during fileserving
+             send_stored_file($file, 60*60, 0, $forcedownload);
 
         } else {
             send_file_not_found();
