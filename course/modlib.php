@@ -257,6 +257,12 @@ function edit_module_post_actions($moduleinfo, $course) {
                 // Use updated grade_item.
                 $grade_item = $items[$itemid];
             }
+            $gradecategory = $grade_item->get_parent_category();
+            if (!empty($moduleinfo->add)) {
+                if ($grade_item->set_aggregation_fields_for_aggregation(0, $gradecategory->aggregation)) {
+                    $grade_item->update();
+                }
+            }
         }
     }
 
@@ -314,6 +320,12 @@ function edit_module_post_actions($moduleinfo, $course) {
 
                 } else if (isset($moduleinfo->gradecat)) {
                     $outcome_item->set_parent($moduleinfo->gradecat);
+                }
+                $gradecategory = $outcome_item->get_parent_category();
+                if ($outcomeexists == false) {
+                    if ($outcome_item->set_aggregation_fields_for_aggregation(0, $gradecategory->aggregation)) {
+                        $outcome_item->update();
+                    }
                 }
             }
         }
