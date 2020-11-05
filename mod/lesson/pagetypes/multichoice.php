@@ -255,6 +255,7 @@ class lesson_page_type_multichoice extends lesson_page {
             $result->response  = format_text($answer->response, $answer->responseformat, $formattextdefoptions);
             $result->userresponse = format_text($answer->answer, $answer->answerformat, $formattextdefoptions);
             $result->studentanswer = $result->userresponse;
+            $result->studentanswerformat = FORMAT_HTML;
         }
         return $result;
     }
