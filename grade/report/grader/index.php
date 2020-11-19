@@ -165,6 +165,9 @@ if ($numusers == 0) {
 
 $reporthtml = $report->get_grade_table($displayaverages);
 
+$save_alert = '<div class="alert alert-success auto-save-message" style="display:none">Your gradebook changes have been automatically saved.</div>';
+$reporthtml = $save_alert . $reporthtml . $save_alert;
+
 // print submit button
 if (!empty($USER->editing) && ($report->get_pref('showquickfeedback') || $report->get_pref('quickgrading'))) {
     echo '<form action="index.php" enctype="application/x-www-form-urlencoded" method="post" id="gradereport_grader">'; // Enforce compatibility with our max_input_vars hack.

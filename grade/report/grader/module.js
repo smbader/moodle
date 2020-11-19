@@ -565,6 +565,11 @@ M.gradereport_grader.classes.ajax.prototype.submission_outcome = function(tid, o
         }
         // Flag the changed cell as overridden by ajax
         args.properties.cell.addClass('ajaxoverridden');
+
+        if (this.report.Y.one('.auto-save-message')) {
+            this.report.Y.all('.auto-save-message').show();
+        }
+
     } else {
         var p = args.properties;
         if (args.type == 'grade') {
@@ -647,6 +652,13 @@ M.gradereport_grader.classes.existingfield = function(ajax, userid, itemid) {
             // Assigning an empty string makes determining whether the grade has been changed easier
             // This value is never sent to the server
             this.oldgrade = '';
+        }
+
+        // add value change event to each box
+        if (this.grade._node.nodeName == "SELECT") {
+            this.grade.on("change", this.valueChange, this);
+        } else {
+            this.grade.on("valuechange", this.valueChange, this);
         }
 
         // On blur save any changes in the grade field
@@ -800,6 +812,17 @@ M.gradereport_grader.classes.existingfield.prototype.move_focus = function(node)
         }
     }
 };
+/**
+ * Detect change in value on element
+ * @function
+ * @this {m.graderreport_grader.classes.existingfield}
+ * @param {Y.node} node
+ */
+M.gradereport_grader.classes.existingfield.prototype.valueChange = function(node) {
+    if (parseFloat(node.prevVal, 6) != parseFloat(node.newVal, 6)) {
+        this.report.Y.all(".auto-save-message").hide();
+    }
+}
 /**
  * Checks if the values for the field have changed
  *
