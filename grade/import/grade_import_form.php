@@ -105,12 +105,19 @@ class grade_import_mapping_form extends moodleform {
         $mform->addElement('select', 'mapfrom', get_string('mapfrom', 'grades'), $mapfromoptions);
         $mform->addHelpButton('mapfrom', 'mapfrom', 'grades');
 
+        /*
         $maptooptions = array(
             'userid'       => get_string('userid', 'grades'),
             'username'     => get_string('username'),
             'useridnumber' => get_string('idnumber'),
             'useremail'    => get_string('email'),
             '0'            => get_string('ignore', 'grades')
+        );
+        */
+        // Gary D. Harris - 10/3/2013 Commented out the line above and replaced it with the one below so as to remove userid, useridnumber, and ignore.
+        $maptooptions = array(
+            'username'=>get_string('username'),
+            'useremail'=>get_string('email')
         );
         $mform->addElement('select', 'mapto', get_string('mapto', 'grades'), $maptooptions);
 
