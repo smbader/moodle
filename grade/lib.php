@@ -3208,7 +3208,15 @@ abstract class grade_helper {
             }
         }
         if (count($exportplugins) > 0) {
-            asort($exportplugins);
+            uksort($exportplugins, function ($a, $b) {
+                if ($a == 'xls') {
+                    return -1;
+                }
+                if ($b == 'xls') {
+                    return 1;
+                }
+                return strcmp($a, $b);
+            });
             self::$exportplugins = $exportplugins;
         } else {
             self::$exportplugins = false;
