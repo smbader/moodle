@@ -126,8 +126,7 @@ class edit_category_form extends moodleform {
             }
         }
 
-        $options = array(GRADE_TYPE_NONE=>get_string('typenone', 'grades'),
-                         GRADE_TYPE_VALUE=>get_string('typevalue', 'grades'),
+        $options = array(GRADE_TYPE_VALUE=>get_string('typevalue', 'grades'),
                          GRADE_TYPE_SCALE=>get_string('typescale', 'grades'),
                          GRADE_TYPE_TEXT=>get_string('typetext', 'grades'));
 
