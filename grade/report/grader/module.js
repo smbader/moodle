@@ -554,6 +554,9 @@ M.gradereport_grader.classes.ajax.prototype.submission_outcome = function(tid, o
                         // If the user has not actually changed the old value yet we will automatically correct it
                         // otherwise we will prompt the user to choose to use their value or the new value!
                         if (!this.current.has_changed() || confirm(M.util.get_string('ajaxfieldchanged', 'gradereport_grader'))) {
+                            if (finalgrade == '-') {
+                                finalgrade = '';
+                            }
                             this.current.set_grade(finalgrade);
                             if (this.current.grade) {
                                 this.current.grade.set('value', finalgrade);
@@ -1084,6 +1087,10 @@ M.gradereport_grader.classes.textfield.prototype.has_changed = function() {
         if (this.get_feedback() != properties.feedback) {
             return true;
         }
+    }
+
+    if (this.get_grade() == '' && this.gradespan.get('innerHTML') == '-') {
+        return false;
     }
 
     if (this.grade) {
