@@ -9247,8 +9247,11 @@ function any_new_admin_settings($node) {
 function db_should_replace($table, $column = '', $additionalskiptables = ''): bool {
 
     // TODO: this is horrible hack, we should have a hook and each plugin should be responsible for proper replacing...
-    $skiptables = ['config', 'config_plugins', 'filter_config', 'sessions',
-        'events_queue', 'repository_instance_config', 'block_instances', 'files'];
+    $skiptables = ['assign_submission', 'assign_user_mapping', 'block_instances', 'block_instances', 'config',
+                   'config_plugins', 'events_queue', 'files', 'filter_config', 'grade_categories_history',
+                   'grade_grades_history', 'grade_items_history', 'grade_outcomes_history', 'question_attempt_step_data',
+                   'question_attempt_steps', 'question_usages', 'quiz_attempts', 'repository_instance_config',
+                   'scale_history', 'sessions', '' ];
 
     // Additional skip tables.
     if (!empty($additionalskiptables)) {
