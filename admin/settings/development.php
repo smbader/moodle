@@ -47,6 +47,8 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
         new lang_string('usewolfwaretoolbox', 'admin'),
         new lang_string('usewolfwaretoolbox_desc', 'admin'), 0));
 
+    $temp->add(new admin_setting_configcheckbox('enablefriendlypasswords', new lang_string('friendlypasswords', 'admin'), new lang_string('friendlypasswords_help', 'admin'), 0));
+
     $ADMIN->add('experimental', $temp);
 
     // "debugging" settingpage
