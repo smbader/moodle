@@ -98,6 +98,9 @@ class block_calendar_upcoming extends block_base {
                 continue;
             }
             $events[$i] = calendar_add_event_metadata($events[$i]);
+            if (!isset($events[$i]->time)) {   // Just for robustness
+                continue;
+            }
             $content .= '<div class="event"><span class="icon c0">' . $events[$i]->icon . '</span>';
             if (!empty($events[$i]->referer)) {
                 // That's an activity event, so let's provide the hyperlink.
