@@ -436,7 +436,7 @@ class enrol_database_plugin extends enrol_plugin {
             $rs->close();
 
             // Print list of missing courses.
-            if ($externalcourses) {
+            if ($externalcourses && false) {
                 $list = implode(', ', array_keys($externalcourses));
                 $trace->output("error: following courses do not exist - $list", 1);
                 unset($list);
