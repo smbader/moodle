@@ -144,6 +144,12 @@ class moodle_simplepie_file extends SimplePie_File {
 
         $this->headers = curl::strip_double_headers($curl->get($url));
 
+        // If there was a partial file error, try again without compression.
+        if ($curl->errno === CURLE_PARTIAL_FILE) {
+           $curl->setopt( array( 'CURLOPT_ENCODING' => 'identity' ));
+           $this->headers = curl::strip_double_headers($curl->get($url));
+        }
+
         if ($curl->error) {
             $this->error = 'cURL Error: '.$curl->error;
             $this->success = false;
