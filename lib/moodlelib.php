@@ -392,9 +392,9 @@ define ('BLOG_GLOBAL_LEVEL', 5);
 define('TAG_MAX_LENGTH', 50);
 
 // Password policy constants.
-define ('PASSWORD_LOWER', 'abcdefghijklmnopqrstuvwxyz');
-define ('PASSWORD_UPPER', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-define ('PASSWORD_DIGITS', '0123456789');
+define ('PASSWORD_LOWER', 'abcdefghijkmnopqrstuvwxyz');
+define ('PASSWORD_UPPER', 'ABCDEFGHJKLMNPQRSTUVWXYZ');
+define ('PASSWORD_DIGITS', '123456789');
 define ('PASSWORD_NONALPHANUM', '.,;:!?_-+/*@#&$');
 
 // Feature constants.
@@ -8796,8 +8796,26 @@ function generate_password($maxlen=10) {
                                                      $passworddigits .
                                                      $passwordnonalphanum), 0 , $additional));
     }
+    if (empty($CFG->enablefriendlypasswords)) {
+        return substr ($password, 0, $maxlen);
+    } else {
+        return fix_password(substr ($password, 0, $maxlen));
+    }
 
-    return substr ($password, 0, $maxlen);
+}
+
+/**
+ * Reshuffles password until first and last characters are alphanumeric to minimize copy/paste errors from enrollment confirmation email.
+ * @param  string $rawpassword Moodle-generated password
+ * @return string $final_password Fixed password
+ */
+function fix_password($rawpassword) {
+    //Reshuffle password until first and last characters are alphanumeric
+    do {
+        $final_password = str_shuffle($rawpassword);
+    } while (strpos(PASSWORD_NONALPHANUM, substr($final_password, 0, 1)) !== FALSE || strpos(PASSWORD_NONALPHANUM, substr($final_password, -1, 1)) !== FALSE);
+
+    return $final_password;
 }
 
 /**
