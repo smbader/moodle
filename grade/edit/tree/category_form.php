@@ -41,6 +41,9 @@ class edit_category_form extends moodleform {
 
         // visible elements
         $mform->addElement('header', 'headercategory', get_string('gradecategory', 'grades'));
+        if (isset($category->id)) {
+            $mform->addElement('static', 'fieldsmissingmsg', '', '<div><span style="color: red; font-weight: bold;">Note: </span>Some grade category settings do not appear when a custom grade calculation has been applied. To see all grade category settings, remove the custom grade calculation.</div>');
+        }
         $mform->addElement('text', 'fullname', get_string('categoryname', 'grades'));
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname', null, 'required', null, 'client');
@@ -379,6 +382,10 @@ class edit_category_form extends moodleform {
                 }
                 if ($mform->elementExists('aggregateoutcomes')) {
                     $mform->removeElement('aggregateoutcomes');
+                }
+            } else {
+                if ($mform->elementExists('fieldsmissingmsg')) {
+                    $mform->removeElement('fieldsmissingmsg');
                 }
             }
 
