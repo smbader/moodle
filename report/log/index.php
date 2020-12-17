@@ -184,7 +184,9 @@ if (empty($readers)) {
             echo $output->render($reportlog);
         } else {
             \core\session\manager::write_close();
+            $oldml = ini_set('memory_limit', '2G');
             $reportlog->download();
+            ini_set('memory_limit', $oldml);
             exit();
         }
     } else {
