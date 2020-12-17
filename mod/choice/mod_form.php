@@ -49,6 +49,7 @@ class mod_choice_mod_form extends moodleform_mod {
         $mform->hideIf('showavailable', 'limitanswers', 'eq', 0);
 
         $repeatarray = array();
+        $repeatarray[] = $mform->createElement('html', '<hr />');
         $repeatarray[] = $mform->createElement('text', 'option', get_string('optionno', 'choice'));
         $repeatarray[] = $mform->createElement('text', 'limit', get_string('limitno', 'choice'));
         $repeatarray[] = $mform->createElement('hidden', 'optionid', 0);
