@@ -880,9 +880,10 @@ class grade_category extends grade_object {
                 }
 
                 // Dropped grades.
-                if (!empty($dropped) && isset($dropped[$currentgrade->id])) {
-                    if ($currentgrade->aggregationstatus !== 'dropped' ||
-                            grade_floats_different($currentgrade->aggregationweight, 0)) {
+                if ((!empty($dropped) && isset($dropped[$currentgrade->id])) || (!isset($usedweights[$currentgrade->id]) &&
+                                ($currentgrade->aggregationstatus == 'used' || $currentgrade->aggregationstatus == 'dropped' ||
+                                        $currentgrade->aggregationstatus == 'unknown'))) {
+                    if ($currentgrade->aggregationstatus !== 'dropped') {
                         $toupdate['dropped'][] = $currentgrade->id;
                     }
                     continue;
