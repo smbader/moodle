@@ -1764,7 +1764,7 @@ class core_tag_tag {
 
         $sql = "SELECT tt.*
                 FROM ($subsql) tv
-                JOIN {tag} tt ON tt.id = tv.id";
+                JOIN {tag} tt ON tt.id = tv.id ORDER BY tt.name";
 
         return array_map(function($record) {
             return new core_tag_tag($record);
