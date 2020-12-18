@@ -252,6 +252,12 @@ abstract class core_filetypes {
             'sh' => array('type' => 'application/x-sh', 'icon' => 'sourcecode'),
             'sit' => array('type' => 'application/x-stuffit', 'icon' => 'archive',
                     'groups' => array('archive'), 'string' => 'archive'),
+
+            // Gary Harris - 6/13/2013 - Added the following for SolidWorks files
+            'sldprt' => array('type'=>'application/octet-stream', 'icon'=>'sldprt'),
+            'slddrw' => array('type'=>'application/octet-stream', 'icon'=>'slddrw'),
+            'sldasm' => array('type'=>'application/octet-stream', 'icon'=>'sldasm'),
+
             'smi' => array('type' => 'application/smil', 'icon' => 'text'),
             'smil' => array('type' => 'application/smil', 'icon' => 'text'),
             'sqt' => array('type' => 'text/xml', 'icon' => 'markup'),
