@@ -1101,8 +1101,8 @@ function data_tags_check($dataid, $template) {
     // then we generate strings to replace
     $tagsok = true; // let's be optimistic
     foreach ($fields as $field){
-        $pattern="/\[\[" . preg_quote($field->name, '/') . "\]\]/i";
-        if (preg_match_all($pattern, $template, $dummy)>1){
+        $pattern = "[[{$field->name}]]";
+        if (substr_count($template, $pattern) > 1){
             $tagsok = false;
             echo $OUTPUT->notification('[['.$field->name.']] - '.get_string('multipletags','data'));
         }
@@ -1794,8 +1794,7 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
     // Then we generate strings to replace for normal tags
     foreach ($fields as $field) {
         $fieldname = $field->field->name;
-        $fieldname = preg_quote($fieldname, '/');
-        $patterns[] = "/\[\[$fieldname\]\]/i";
+        $patterns[] = "[[$fieldname]]";
         $searchfield = data_get_field_from_id($field->field->id, $data);
 
         if ($searchfield->type === 'unknown') {
@@ -1809,10 +1808,10 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
     }
     $fn = !empty($search_array[DATA_FIRSTNAME]->data) ? $search_array[DATA_FIRSTNAME]->data : '';
     $ln = !empty($search_array[DATA_LASTNAME]->data) ? $search_array[DATA_LASTNAME]->data : '';
-    $patterns[]    = '/##firstname##/';
+    $patterns[]    = '##firstname##';
     $replacement[] = '<label class="accesshide" for="u_fn">' . get_string('authorfirstname', 'data') . '</label>' .
                      '<input type="text" class="form-control" size="16" id="u_fn" name="u_fn" value="' . s($fn) . '" />';
-    $patterns[]    = '/##lastname##/';
+    $patterns[]    = '##lastname##';
     $replacement[] = '<label class="accesshide" for="u_ln">' . get_string('authorlastname', 'data') . '</label>' .
                      '<input type="text" class="form-control" size="16" id="u_ln" name="u_ln" value="' . s($ln) . '" />';
 
@@ -1828,7 +1827,7 @@ function data_print_preference_form($data, $perpage, $search, $sort='', $order='
     $options->para=false;
     $options->noclean=true;
     echo '<tr><td>';
-    echo preg_replace($patterns, $replacement, format_text($asearchtemplate, FORMAT_HTML, $options));
+    echo str_ireplace($patterns, $replacement, format_text($asearchtemplate, FORMAT_HTML, $options));
     echo '</td></tr>';
 
     echo '<tr><td colspan="4"><br/>' .
