@@ -473,7 +473,7 @@ function resource_get_final_display_type($resource) {
         $mimetype = mimeinfo('type', $resource->mainfile);
     }
 
-    if (file_mimetype_in_typegroup($mimetype, 'archive')) {
+    if (file_mimetype_in_typegroup($mimetype, array('archive', '.pdf'))) {
         return RESOURCELIB_DISPLAY_DOWNLOAD;
     }
     if (file_mimetype_in_typegroup($mimetype, array('web_image', '.htm', 'web_video', 'web_audio'))) {
