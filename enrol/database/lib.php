@@ -874,6 +874,11 @@ class enrol_database_plugin extends enrol_plugin {
         if ($this->get_config('dbsetupsql')) {
             $extdb->Execute($this->get_config('dbsetupsql'));
         }
+
+        // Raise the connection timeout for the external database (on MySQL)
+        if ($this->get_config('dbtype') === 'mysqli') {
+            $extdb->execute("SET SESSION wait_timeout = 7200");
+        }
         return $extdb;
     }
 
