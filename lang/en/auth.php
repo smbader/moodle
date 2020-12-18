@@ -170,3 +170,4 @@ $string['user_activatenotsupportusertype'] = 'auth: ldap user_activate() does no
 $string['user_disablenotsupportusertype'] = 'auth: ldap user_disable() does not support selected usertype (..yet)';
 $string['username'] = 'Username';
 $string['username_help'] = 'Please be aware that some authentication plugins will not allow you to change the username.';
+$string['usernamepolicy'] = 'Usernames may only contain alphanumeric lowercase characters, underscore (_), hyphen (-), period (.) or at symbol (@).';
