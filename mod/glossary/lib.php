@@ -2433,7 +2433,7 @@ function glossary_read_imported_file($file_content) {
     global $CFG;
     require_once "../../lib/xmlize.php";
 
-    return xmlize($file_content, 0);
+    return xmlize($file_content, 0, 'UTF-8', true);
 }
 
 /**
