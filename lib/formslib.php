@@ -3277,6 +3277,15 @@ class MoodleQuickForm_Renderer extends HTML_QuickForm_Renderer_Tableless{
                 $this->_groupElementTemplate = $html;
             }
         }
+        if (!is_null($element->getAttribute('id'))) {
+            $id = $element->getAttribute('id');
+        } else {
+            $id = $element->getName();
+        }
+        // Adding for attribute to label for increased accessiblity MDL-30907
+        if (!empty($id) && ($element->getType() === 'date_time_selector' || $element->getType() === 'date_selector')) {
+            $html = str_replace('<label', '<label for="fitem_' . $id . '"', $html);
+        }
         if (($this->_inGroup) and !empty($this->_groupElementTemplate)) {
             $this->_groupElementTemplate = $html;
         } else if (!isset($this->_templates[$element->getName()])) {

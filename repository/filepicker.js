@@ -1456,11 +1456,19 @@ M.core_filepicker.init = function(Y, options) {
                 focusAfterHide: this.options.previousActiveElement
             });
 
+            this.mainui.get('boundingBox').setAttribute('role', 'alertdialog');
+            this.mainui.on('visibleChange', function(e) { 
+                if (e.newVal) {
+                    Y.one('#page').setAttribute('aria-hidden', true);
+                } else {
+                    Y.one('#page').removeAttribute('aria-hidden');
+                }
+            });
             // create panel for selecting a file (initially hidden)
             this.selectnode = Y.Node.create(M.core_filepicker.templates.selectlayout).
                 set('id', 'filepicker-select-'+client_id).
                 set('aria-live', 'assertive').
-                set('role', 'dialog');
+                set('role', 'alertdialog');
 
             var fplabel = 'fp-file_label_'+ client_id;
             this.selectui = new M.core.dialogue({
