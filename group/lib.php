@@ -1089,18 +1089,21 @@ function groups_calculate_role_people($rs, $context) {
 
     // Now we rearrange the data to store users by role
     foreach ($users as $userid=>$userdata) {
-        $visibleuserroles = array_intersect_key($userdata->roles, $visibleroles);
-        $rolecount = count($visibleuserroles);
-        if ($rolecount == 0) {
-            // does not have any roles
-            $roleid = 0;
-        } else if($rolecount > 1) {
-            $roleid = '*';
-        } else {
-            $userrole = reset($visibleuserroles);
-            $roleid = $userrole->id;
+        // Only display users with roles (MDLCORE-150)
+        if (!empty($userdata->roles)) {
+           $visibleuserroles = array_intersect_key($userdata->roles, $visibleroles);
+           $rolecount = count($visibleuserroles);
+           if ($rolecount == 0) {
+               // does not have any roles
+                $roleid = 0;
+            } else if($rolecount > 1) {
+                $roleid = '*';
+            } else {
+                $userrole = reset($visibleuserroles);
+                $roleid = $userrole->id;
+            }
+            $roles[$roleid]->users[$userid] = $userdata;
         }
-        $roles[$roleid]->users[$userid] = $userdata;
     }
 
     // Delete roles not used

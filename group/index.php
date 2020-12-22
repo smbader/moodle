@@ -182,7 +182,16 @@ $groupoptions = array();
 if ($groups) {
     foreach ($groups as $group) {
         $selected = false;
-        $usercount = $DB->count_records('groups_members', array('groupid' => $group->id));
+
+        // MDLCORE-150: exclude group members with no role from group member count
+        $usercount = 0;
+        $groupmemberroles = groups_get_members_by_role($group->id, $courseid, 'u.id');
+        foreach ($groupmemberroles as $roleid=>$roledata) {
+            if ($roleid !== 0) {
+                $usercount += count($roledata->users);
+            }
+        }
+
         $groupname = format_string($group->name) . ' (' . $usercount . ')';
         if (in_array($group->id, $groupids)) {
             $selected = true;
