@@ -3968,8 +3968,20 @@ function course_get_user_navigation_options($context, $course = null) {
     }
 
     if (\core_competency\api::is_enabled()) {
-        $capabilities = array('moodle/competency:coursecompetencyview', 'moodle/competency:coursecompetencymanage');
-        $options->competencies = has_any_capability($capabilities, $context);
+        if ($course) {
+            $options->competencies = false;
+            if (has_capability('moodle/competency:coursecompetencymanage', $context)) {
+                $options->competencies = true;
+            } else if (has_capability('moodle/competency:coursecompetencyview', $context)) {
+                $course_competencies = \core_competency\course_competency::list_course_competencies($course->id);
+                if (!empty($course_competencies)) {
+                    $options->competencies = true;
+                }
+            }
+        } else {
+            $capabilities = array('moodle/competency:coursecompetencyview', 'moodle/competency:coursecompetencymanage');
+            $options->competencies = has_any_capability($capabilities, $context);
+        }
     }
     return $options;
 }
