@@ -303,7 +303,8 @@ if (empty($SESSION->wantsurl)) {
             $referer != $CFG->wwwroot . '/' &&
             $referer != $CFG->wwwroot . '/login/' &&
             strpos($referer, $CFG->wwwroot . '/login/?') !== 0 &&
-            strpos($referer, $CFG->wwwroot . '/login/index.php') !== 0) { // There might be some extra params such as ?lang=.
+            strpos($referer, $CFG->httpswwwroot . '/login/index.php') !== 0 &&
+            strpos($referer, $CFG->httpswwwroot . '/login/admin_login.php')) { // There might be some extra params such as ?lang=.
         $SESSION->wantsurl = $referer;
     }
 }
@@ -330,6 +331,11 @@ if (!empty($CFG->alternateloginurl)) {
 /// Generate the login page with forms
 
 if (!isset($frm) or !is_object($frm)) {
+    // Gary Harris - 7/12/2013 Added the following redirect and die so that Moodle login goes straight to Shib
+    if (!empty($CFG->ncsu_force_shibboleth)) {
+        header("Location: $CFG->httpswwwroot/auth/shibboleth/index.php");
+        die;
+    }
     $frm = new stdClass();
 }
 
