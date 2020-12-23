@@ -359,21 +359,24 @@ function useredit_shared_definition(&$mform, $editoroptions, $filemanageroptions
         $mform->addElement('header', 'moodle_picture', get_string('pictureofuser'));
         $mform->setExpanded('moodle_picture', true);
 
-        if (!empty($CFG->enablegravatar)) {
-            $mform->addElement('html', html_writer::tag('p', get_string('gravatarenabled')));
+        // ARMCCOY - 02-06-2018 - Show WW link for user photo edit
+        if ($CFG->usewolfwaretoolbox && $user->auth == 'shibboleth' && !empty($user->idnumber)) {
+            $ncsu_profile_item = '<p>To edit your profile photo, please go to your <a target="_blank" href="https://wolfware.ncsu.edu/profile/">WolfWare Profile</a> page.</p>';
+            $mform->addElement('html', $ncsu_profile_item);
+        } else {
+            if (!empty($CFG->enablegravatar)) {
+                $mform->addElement('html', html_writer::tag('p', get_string('gravatarenabled')));
+            }
+            $mform->addElement('static', 'currentpicture', get_string('currentpicture'));
+            $mform->addElement('checkbox', 'deletepicture', get_string('deletepicture'));
+            $mform->setDefault('deletepicture', 0);
+
+            $mform->addElement('filemanager', 'imagefile', get_string('newpicture'), '', $filemanageroptions);
+            $mform->addHelpButton('imagefile', 'newpicture');
+
+            $mform->addElement('text', 'imagealt', get_string('imagealt'), 'maxlength="100" size="30"');
+            $mform->setType('imagealt', PARAM_TEXT);
         }
-
-        $mform->addElement('static', 'currentpicture', get_string('currentpicture'));
-
-        $mform->addElement('checkbox', 'deletepicture', get_string('deletepicture'));
-        $mform->setDefault('deletepicture', 0);
-
-        $mform->addElement('filemanager', 'imagefile', get_string('newpicture'), '', $filemanageroptions);
-        $mform->addHelpButton('imagefile', 'newpicture');
-
-        $mform->addElement('text', 'imagealt', get_string('imagealt'), 'maxlength="100" size="30"');
-        $mform->setType('imagealt', PARAM_TEXT);
-
     }
 
     // Display user name fields that are not currenlty enabled here if there are any.
