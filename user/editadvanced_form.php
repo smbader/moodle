@@ -230,9 +230,12 @@ class user_editadvanced_form extends moodleform {
             } else {
                 $imagevalue = get_string('none');
             }
-            $imageelement = $mform->getElement('currentpicture');
-            $imageelement->setValue($imagevalue);
 
+            // ARMCCOY - 02-06-2018 - Show WW link for user photo edit
+            if ($mform->elementExists('currentpicture')) {
+                $imageelement = $mform->getElement('currentpicture');
+                $imageelement->setValue($imagevalue);
+            }
             if ($user && $mform->elementExists('deletepicture') && !$hasuploadedpicture) {
                 $mform->removeElement('deletepicture');
             }
@@ -323,5 +326,4 @@ class user_editadvanced_form extends moodleform {
         }
     }
 }
-
 
