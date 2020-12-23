@@ -69,6 +69,11 @@ if ($expandsection !== -1) {
     $urlparams['expandsection'] = $expandsection;
 }
 
+// ARMCCOY 12-06-2017 - Get REPORTER URL parameter to redirect Shib users to Shib login (with login/index.php)
+if (isset($_GET['bp']) && !empty($_GET['bp'])) {
+    $urlparams['bp'] = $_GET['bp'];
+}
+
 $PAGE->set_url('/course/view.php', $urlparams); // Defined here to avoid notices on errors etc.
 
 // Prevent caching of this page to stop confusion when changing page after making AJAX changes.
