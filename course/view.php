@@ -36,6 +36,11 @@
 
     $urlparams = array('id' => $course->id);
 
+    // ARMCCOY 12-06-2017 - Get REPORTER URL parameter to redirect Shib users to Shib login (with login/index.php)
+    if (isset($_GET['bp']) && !empty($_GET['bp'])) {
+        $urlparams['bp'] = $_GET['bp'];
+    }
+
     // Sectionid should get priority over section number
     if ($sectionid) {
         $section = $DB->get_field('course_sections', 'section', array('id' => $sectionid, 'course' => $course->id), MUST_EXIST);
