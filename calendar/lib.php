@@ -2248,6 +2248,12 @@ function calendar_view_event_allowed(calendar_event $event) {
         if (!$cm->uservisible) {
             return false;
         }
+
+        // Allow users who can manage calendar entries (even if they are not enrolled).
+        if (has_capability('moodle/calendar:manageentries', $event->context)) {
+            return true;
+        }
+
         $mycourses = enrol_get_my_courses('id');
         return isset($mycourses[$courseid]);
     } else if ($event->categoryid) {
