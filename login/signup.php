@@ -106,6 +106,15 @@ $PAGE->set_heading($SITE->fullname);
 
 echo $OUTPUT->header();
 
+// BEGIN - NCSU hack to add some additional instructions
+echo $OUTPUT->heading("NC State Users", 2, "main");
+$ncsu_instructions = 'If you are an NC State student, instructor, or staff member, <b>do not</b> create a new account. '
+                   . 'Instead, click <a href="../auth/shibboleth/index.php">Student/Faculty/Staff Login</a>, then log in with your Unity ID and password issued by the University. '
+                   . 'If you need help with your Unity ID, please contact <a href="mailto:help@ncsu.edu">help@ncsu.edu</a> (919-515-HELP).';
+echo $OUTPUT->box($ncsu_instructions, array("boxaligncenter", "boxwidthwide"));
+echo $OUTPUT->heading("Guest Users: Create New Account", 2, "main");
+// END - NCSU hack to add some additional instructions
+
 if ($mform_signup instanceof renderable) {
     // Try and use the renderer from the auth plugin if it exists.
     try {
