@@ -64,7 +64,7 @@ class block_tags_edit_form extends block_edit_form {
         }
         $mform->addElement('select', 'config_ctx', get_string('taggeditemscontext', 'block_tags'), $defaults);
         $mform->addHelpButton('config_ctx', 'taggeditemscontext', 'block_tags');
-        $mform->setDefault('config_ctx', 0);
+        $mform->setDefault('config_ctx', $parentcontext->id);
 
         $mform->addElement('advcheckbox', 'config_rec', get_string('recursivecontext', 'block_tags'));
         $mform->addHelpButton('config_rec', 'recursivecontext', 'block_tags');
