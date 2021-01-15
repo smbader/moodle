@@ -308,7 +308,7 @@ M.mod_quiz.secure_window = {
     },
 
     prevent_mouse: function(e) {
-        if (e.button == 1 && /^(INPUT|TEXTAREA|BUTTON|SELECT|LABEL|A)$/i.test(e.target.get('tagName'))) {
+        if (e.button == 1 && /^(INPUT|TEXTAREA|BUTTON|SELECT|LABEL|A|HTML)$/i.test(e.target.get('tagName'))) {
             // Left click on a button or similar. No worries.
             return;
         }
