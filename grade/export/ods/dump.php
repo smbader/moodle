@@ -26,6 +26,8 @@ $exportfeedback     = optional_param('export_feedback', 0, PARAM_BOOL);
 $displaytype        = optional_param('displaytype', $CFG->grade_export_displaytype, PARAM_RAW);
 $decimalpoints      = optional_param('decimalpoints', $CFG->grade_export_decimalpoints, PARAM_INT);
 $onlyactive         = optional_param('export_onlyactive', 0, PARAM_BOOL);
+$allusers           = optional_param('export_allusers', 0, PARAM_BOOL);
+
 
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
     throw new \moodle_exception('invalidcourseid');
@@ -48,7 +50,7 @@ if (!groups_group_visible($groupid, $COURSE)) {
 
 // Get all url parameters and create an object to simulate a form submission.
 $formdata = grade_export::export_bulk_export_data($id, $itemids, $exportfeedback, $onlyactive, $displaytype,
-        $decimalpoints);
+        $decimalpoints, null, null, $allusers);
 
 $export = new grade_export_ods($course, $groupid, $formdata);
 $export->print_grades();

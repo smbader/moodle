@@ -88,6 +88,11 @@ class graded_users_iterator {
     protected $sortorder2;
 
     /**
+     * Should all users with grade items be included, regardless of role or enrollment status?
+     */
+    protected $allusers = false;
+
+    /**
      * Should users whose enrolment has been suspended be ignored?
      */
     protected $onlyactive = false;
@@ -201,17 +206,21 @@ class graded_users_iterator {
             }
         }
 
+        if ($this->allusers) {
+            $ra_join_sql = "";
+        } else {
+            $ra_join_sql = " JOIN (
+                                      SELECT DISTINCT ra.userid
+                                        FROM {role_assignments} ra
+                                       WHERE ra.roleid $gradebookroles_sql
+                                         AND ra.contextid $relatedctxsql
+                                  ) rainner ON rainner.userid = u.id ";
+        }
         $users_sql = "SELECT $userfields $ofields
                         FROM {user} u
                         JOIN ($enrolledsql) je ON je.id = u.id
-                             $groupsql $customfieldssql
-                        JOIN (
-                                  SELECT DISTINCT ra.userid
-                                    FROM {role_assignments} ra
-                                   WHERE ra.roleid $gradebookroles_sql
-                                     AND ra.contextid $relatedctxsql
-                             ) rainner ON rainner.userid = u.id
-                         WHERE u.deleted = 0
+                             $groupsql $customfieldssql $ra_join_sql
+                       WHERE u.deleted = 0
                              $groupwheresql
                     ORDER BY $order";
         $this->users_rs = $DB->get_recordset_sql($users_sql, $params);
@@ -232,14 +241,8 @@ class graded_users_iterator {
                              FROM {grade_grades} g
                              JOIN {user} u ON g.userid = u.id
                              JOIN ($enrolledsql) je ON je.id = u.id
-                                  $groupsql
-                             JOIN (
-                                      SELECT DISTINCT ra.userid
-                                        FROM {role_assignments} ra
-                                       WHERE ra.roleid $gradebookroles_sql
-                                         AND ra.contextid $relatedctxsql
-                                  ) rainner ON rainner.userid = u.id
-                              WHERE u.deleted = 0
+                                  $groupsql $ra_join_sql
+                            WHERE u.deleted = 0
                               AND g.itemid $itemidsql
                               $groupwheresql
                          ORDER BY $order, g.itemid ASC";
@@ -338,6 +341,19 @@ class graded_users_iterator {
         }
         $this->gradestack = array();
     }
+
+    /**
+     * Should all users with grade items be included, regardless of role or enrollment status?
+     *
+     * @param bool $allusers True to include all user grades in the export.
+     */
+    public function include_all_users($allusers = false) {
+        if (!empty($this->users_rs)) {
+            debugging('Calling include_all_users() has no effect unless you call init() again', DEBUG_DEVELOPER);
+        }
+        $this->allusers  = $allusers;
+    }
+
 
     /**
      * Should all enrolled users be exported or just those with an active enrolment?

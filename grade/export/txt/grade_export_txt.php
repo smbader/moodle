@@ -49,6 +49,11 @@ class grade_export_txt extends grade_export {
 
         $export_tracking = $this->track_exports();
 
+        // if $allusers then undue any limiting filters
+        if ($this->allusers) {
+            $this->onlyactive = false;
+        }
+
         $strgrades = get_string('grades');
         $profilefields = grade_helper::get_user_profile_fields($this->course->id, $this->usercustomfields);
 
@@ -83,6 +88,7 @@ class grade_export_txt extends grade_export {
         // Print all the lines of data.
         $geub = new grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
+        $gui->include_all_users($this->allusers);
         $gui->require_active_enrolment($this->onlyactive);
         $gui->allow_user_custom_fields($this->usercustomfields);
         $gui->init();

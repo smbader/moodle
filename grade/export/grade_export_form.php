@@ -90,10 +90,19 @@ class grade_export_form extends moodleform {
             $mform->setType('export_onlyactive', PARAM_BOOL);
             $mform->setDefault('export_onlyactive', 1);
             $mform->addHelpButton('export_onlyactive', 'exportonlyactive', 'grades');
+
+            $mform->addElement('advcheckbox', 'export_allusers', get_string('exportallusers', 'grades'));
+            $mform->setType('export_allusers', PARAM_BOOL);
+            $mform->setDefault('export_allusers', 0);
+            $mform->addHelpButton('export_allusers', 'exportallusers', 'grades');
         } else {
             $mform->addElement('hidden', 'export_onlyactive', 1);
             $mform->setType('export_onlyactive', PARAM_BOOL);
             $mform->setConstant('export_onlyactive', 1);
+
+            $mform->addElement('hidden', 'export_allusers', 0);
+            $mform->setType('export_allusers', PARAM_BOOL);
+            $mform->setConstant('export_allusers', 0);
         }
 
         if (empty($features['simpleui'])) {

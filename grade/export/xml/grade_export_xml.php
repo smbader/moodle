@@ -59,6 +59,11 @@ class grade_export_xml extends grade_export {
 
         $export_tracking = $this->track_exports();
 
+        // if $allusers then undue any limiting filters
+        if ($this->allusers) {
+            $this->onlyactive = false;
+        }
+
         $strgrades = get_string('grades');
 
         /// Calculate file name
@@ -78,6 +83,7 @@ class grade_export_xml extends grade_export {
 
         $geub = new grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
+        $gui->include_all_users($this->allusers);
         $gui->require_active_enrolment($this->onlyactive);
         $gui->init();
         while ($userdata = $gui->next_user()) {
