@@ -75,7 +75,7 @@ class block_tags extends block_base {
         }
 
         if (empty($this->config->ctx)) {
-            $this->config->ctx = 0;
+            $this->config->ctx = $this->page->context->id;
         }
 
         if (empty($this->config->rec)) {
