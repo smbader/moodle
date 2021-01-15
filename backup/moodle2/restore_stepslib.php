@@ -1409,13 +1409,15 @@ class restore_scales_structure_step extends restore_structure_step {
             $userid = $this->get_mappingid('user', $data->userid);
             $data->userid = $userid ? $userid : $this->task->get_userid();
             // Remap the course if course scale
-            $data->courseid = $data->courseid ? $this->get_courseid() : 0;
+            // $data->courseid = $data->courseid ? $this->get_courseid() : 0;
             // If global scale (course=0), check the user has perms to create it
             // falling to course scale if not
-            $systemctx = context_system::instance();
-            if ($data->courseid == 0 && !has_capability('moodle/course:managescales', $systemctx , $this->task->get_userid())) {
-                $data->courseid = $this->get_courseid();
-            }
+            // $systemctx = context_system::instance();
+            // if ($data->courseid == 0 && !has_capability('moodle/course:managescales', $systemctx , $this->task->get_userid())) {
+
+            // For NCSU, we want all scales to be course scales, not global.
+            $data->courseid = $this->get_courseid();
+            //}
             // scale doesn't exist, create
             $newitemid = $DB->insert_record('scale', $data);
             $restorefiles = true; // We'll restore the files
@@ -1471,13 +1473,13 @@ class restore_outcomes_structure_step extends restore_structure_step {
             // Remap the scale
             $data->scaleid = $this->get_mappingid('scale', $data->scaleid);
             // Remap the course if course outcome
-            $data->courseid = $data->courseid ? $this->get_courseid() : null;
+            // $data->courseid = $data->courseid ? $this->get_courseid() : null;
             // If global outcome (course=null), check the user has perms to create it
             // falling to course outcome if not
-            $systemctx = context_system::instance();
-            if (is_null($data->courseid) && !has_capability('moodle/grade:manageoutcomes', $systemctx , $this->task->get_userid())) {
-                $data->courseid = $this->get_courseid();
-            }
+            // $systemctx = context_system::instance();
+            // if (is_null($data->courseid) && !has_capability('moodle/grade:manageoutcomes', $systemctx , $this->task->get_userid())) {
+            $data->courseid = $this->get_courseid();
+            // }
             // outcome doesn't exist, create
             $newitemid = $DB->insert_record('grade_outcomes', $data);
             $restorefiles = true; // We'll restore the files

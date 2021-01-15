@@ -385,7 +385,7 @@ class backup_controller extends base_controller {
         $includefiles = true;
 
         // In an import, we don't need to include files.
-        if ($this->get_mode() === backup::MODE_IMPORT) {
+        if ($this->get_mode() === backup::MODE_IMPORT && strpos($this->plan->get_backupid(), "course_backup_") !== 0) {
             $includefiles = false;
         }
 
