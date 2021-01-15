@@ -189,6 +189,10 @@ abstract class grade_export {
             $this->onlyactive = $formdata->export_onlyactive;
         }
 
+        if (isset($formdata->export_allusers)) {
+            $this->allusers = $formdata->export_allusers;
+        }
+
         if (isset($formdata->previewrows)) {
             $this->previewrows = $formdata->previewrows;
         }
@@ -603,11 +607,13 @@ abstract class grade_export {
      * @param int $decimalpoints grade decimal points.
      * @param null $updatedgradesonly recently updated grades only (Used by XML exporting only).
      * @param null $separator separator character: tab, comma, colon and semicolon (Used by TXT exporting only).
+     * @param false $allusers export all users with gradeitems. This overrides any limiting filters.
      *
      * @return stdClass $formdata
      */
     public static function export_bulk_export_data($id, $itemids, $exportfeedback, $onlyactive, $displaytype,
-                                                   $decimalpoints, $updatedgradesonly = null, $separator = null) {
+                                                   $decimalpoints, $updatedgradesonly = null, $separator = null,
+                                                   $allusers = false) {
 
         $formdata = new \stdClass();
         $formdata->id = $id;
@@ -616,6 +622,7 @@ abstract class grade_export {
         $formdata->export_onlyactive = $onlyactive;
         $formdata->display = self::convert_flat_displaytypes_to_array($displaytype);
         $formdata->decimals = $decimalpoints;
+        $formdata->export_allusers = $allusers;
 
         if (!empty($updatedgradesonly)) {
             $formdata->updatedgradesonly = $updatedgradesonly;

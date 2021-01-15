@@ -43,6 +43,11 @@ class grade_export_ods extends grade_export {
 
         $export_tracking = $this->track_exports();
 
+        // if $allusers then undue any limiting filters
+        if ($this->allusers) {
+            $this->onlyactive = false;
+        }
+
         $strgrades = get_string('grades');
 
         $shortname = format_string($this->course->shortname, true, array('context' => context_course::instance($this->course->id)));
@@ -83,6 +88,7 @@ class grade_export_ods extends grade_export {
         $i = 0;
         $geub = new grade_export_update_buffer();
         $gui = new graded_users_iterator($this->course, $this->columns, $this->groupid);
+        $gui->include_all_users($this->allusers);
         $gui->require_active_enrolment($this->onlyactive);
         $gui->allow_user_custom_fields($this->usercustomfields);
         $gui->init();
