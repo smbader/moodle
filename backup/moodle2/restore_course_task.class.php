@@ -84,6 +84,12 @@ class restore_course_task extends restore_task {
         if ($this->plan->get_mode() == backup::MODE_IMPORT) {
             // No need to do anything with enrolments.
 
+            // SMBADER: Course copier uses MODE_IMPORT, if this is course copier do the proper work
+            if (strpos($this->plan->get_tempdir(), "course_backup_") === 0 ) {
+                $this->add_step(new restore_enrolments_structure_step('course_enrolments', 'enrolments.xml'));
+            }
+            // END SMBADER
+
         } else if (!$this->get_setting_value('users') or $this->plan->get_mode() == backup::MODE_HUB) {
             if ($this->get_setting_value('enrolments') == backup::ENROL_ALWAYS && $this->plan->get_mode() != backup::MODE_HUB) {
                 // Restore enrolment methods.
