@@ -142,7 +142,16 @@ function label_delete_instance($id) {
 function label_get_coursemodule_info($coursemodule) {
     global $DB;
 
-    if ($label = $DB->get_record('label', array('id'=>$coursemodule->instance), 'id, name, intro, introformat')) {
+    static $labelinformation = array();
+    if (!isset($labelinformation[$coursemodule->instance])) {
+        $records = $DB->get_records('label', array('course'=>$coursemodule->course), 'id, name, intro, introformat');
+        foreach ($records as $record) {
+            $labelinformation[$record->id] = $record;
+        }
+    }
+
+    if (isset($labelinformation[$coursemodule->instance])) {
+        $label = $labelinformation[$coursemodule->instance];
         if (empty($label->name)) {
             // label name missing, fix it
             $label->name = "label{$label->id}";
