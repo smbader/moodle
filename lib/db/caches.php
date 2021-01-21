@@ -537,6 +537,17 @@ $definitions = array(
         ],
     ],
 
+    // Cache for filters active in a context.
+    // key/value pairs are either:
+    //  * contextid => array of filters and their configs (as returned by filter_get_active_in_context())
+    //  * preloaded_<name>_<id> => boolean : (e.g. preloaded_activities_23 indicates whether the activities of course 23 have already been preloaded)
+    'context_active_filters' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+        'persistent' => true,
+        'requiredataguarantee' => true,
+        'simplekeys' => true,
+    ),
+
     // Cache the courses where the user has access the content bank.
     'contentbank_allowed_courses' => [
         'mode' => cache_store::MODE_SESSION,

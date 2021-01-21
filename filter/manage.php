@@ -96,11 +96,23 @@ if ($forfilter) {
 
 /// Process any form submission.
 if ($forfilter == '' && optional_param('savechanges', false, PARAM_BOOL) && confirm_sesskey()) {
+    $haschanged = false;
+
     foreach ($availablefilters as $filter => $filterinfo) {
         $newstate = optional_param($filter, false, PARAM_INT);
         if ($newstate !== false && $newstate != $filterinfo->localstate) {
             filter_set_local_state($filter, $context->id, $newstate);
+            $haschanged = true;
         }
+    }
+    if ($haschanged) {
+        $filtercache = \cache::make('core', 'context_active_filters');
+        //$filtercache = \cache::make_from_params(\cache_store::MODE_APPLICATION, 'core_filter', 'context_active_filters');
+        $child_contexts = $context->get_child_contexts();
+        $child_context_ids = array_keys($child_contexts);
+        $child_context_ids[] = $context->id;
+
+        $filtercache->delete_many($child_context_ids);
     }
     redirect($baseurl, get_string('changessaved'), 1);
 }
