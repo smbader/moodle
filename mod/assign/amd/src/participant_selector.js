@@ -63,7 +63,7 @@ define(['core/ajax', 'jquery', 'core/templates'], function(ajax, $, templates) {
                     assignid: assignmentid,
                     groupid: groupid,
                     filter: query,
-                    limit: 30,
+                    limit: 9999,
                     includeenrolments: false,
                     tablesort: true
                 }

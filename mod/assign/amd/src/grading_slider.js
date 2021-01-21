@@ -17,7 +17,6 @@
  * Javascript controller for the "Grading" panel at the right of the page.
  *
  * @module     mod_assign/grading_slider
- * @package    mod_assign
  * @class      GradingSlider
  * @copyright  2019 Steve Bader <smbader@ncsu.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
