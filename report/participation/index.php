@@ -61,6 +61,7 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
     throw new \moodle_exception('invalidcourse');
 }
 
+// If no, role is selected - all roles are selected.
 if ($roleid != 0 and !$role = $DB->get_record('role', array('id'=>$roleid))) {
     throw new \moodle_exception('invalidrole');
 }
@@ -129,7 +130,7 @@ if (empty($select)) {
 $groupmode = groups_get_course_groupmode($course);
 $currentgroup = $SESSION->activegroup[$course->id][$groupmode][$course->defaultgroupingid];
 
-if (!empty($instanceid) && !empty($roleid)) {
+if (!empty($instanceid)) {
     $uselegacyreader = $DB->record_exists('log', ['course' => $course->id]);
 
     // Trigger a report viewed event.
@@ -187,9 +188,19 @@ if (!empty($instanceid) && !empty($roleid)) {
 
     // We want to query both the current context and parent contexts.
     list($relatedctxsql, $params) = $DB->get_in_or_equal($context->get_parent_context_ids(true), SQL_PARAMS_NAMED, 'relatedctx');
-    $params['roleid'] = $roleid;
+
     $params['instanceid'] = $instanceid;
     $params['timefrom'] = $timefrom;
+
+    if ($roleid != 0) {
+        $rolesql = 'ra.roleid = ' . $roleid;
+    } else {
+        // TODO: we need a new list of roles that are visible here.
+        $roles = get_roles_used_in_context($context);
+        $guestrole = get_guest_role();
+        $roles[$guestrole->id] = $guestrole;
+        $rolesql = 'ra.roleid IN (' . implode(',', array_keys($roles)) . ')';
+    }
 
     $groupsql = "";
     if (!empty($currentgroup)) {
@@ -201,7 +212,7 @@ if (!empty($instanceid) && !empty($roleid)) {
                    FROM {role_assignments} ra
                    JOIN {user} u ON u.id = ra.userid
                    $groupsql
-                  WHERE ra.contextid $relatedctxsql AND ra.roleid = :roleid";
+                  WHERE ra.contextid $relatedctxsql AND $rolesql";
 
     $totalcount = $DB->count_records_sql($countsql, $params);
 
@@ -237,7 +248,7 @@ if (!empty($instanceid) && !empty($roleid)) {
     // If using legacy log then get users from old table.
     if ($uselegacyreader || $onlyuselegacyreader) {
         $sql = "SELECT ra.userid, $usernamefields, u.idnumber, l.actioncount AS count
-                  FROM (SELECT DISTINCT userid FROM {role_assignments} WHERE contextid $relatedctxsql AND roleid = :roleid ) ra
+                  FROM (SELECT DISTINCT userid FROM {role_assignments} WHERE contextid $relatedctxsql AND $rolesql ) ra
                   JOIN {user} u ON u.id = ra.userid
              $groupsql
              LEFT JOIN (
@@ -262,7 +273,7 @@ if (!empty($instanceid) && !empty($roleid)) {
     if (!$onlyuselegacyreader) {
         $sql = "SELECT ra.userid, $usernamefields, u.idnumber, COUNT(DISTINCT l.timecreated) AS count
                   FROM {user} u
-                  JOIN {role_assignments} ra ON u.id = ra.userid AND ra.contextid $relatedctxsql AND ra.roleid = :roleid
+                  JOIN {role_assignments} ra ON u.id = ra.userid AND ra.contextid $relatedctxsql AND $rolesql
              $groupsql
                   LEFT JOIN {" . $logtable . "} l
                      ON l.contextinstanceid = :instanceid
@@ -307,9 +318,10 @@ if (!empty($instanceid) && !empty($roleid)) {
 
     $data = array();
 
+    $tablelabel = (isset($role) ? $role->name : 'User');
     $a = new stdClass();
     $a->count = $totalcount;
-    $a->items = format_string($role->name, true, array('context' => $context));
+    $a->items = format_string($tablelabel, true, array('context' => $context));
 
     if ($matchcount != $totalcount) {
         $a->count = $matchcount.'/'.$a->count;

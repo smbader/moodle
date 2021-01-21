@@ -197,6 +197,8 @@ function report_participation_print_filter_form($course, $timefrom, $minlog, $ac
     $roleoptions = array_intersect_key($rolesviewable, $roles) + [
         $guestrole->id => role_get_name($guestrole, $context),
     ];
+    $allroles = array(0 => 'All Roles');
+    $roleoptions = $allroles + $roleoptions;
 
     $modinfo = get_fast_modinfo($course);
 
