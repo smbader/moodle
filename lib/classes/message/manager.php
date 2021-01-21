@@ -103,7 +103,10 @@ class manager {
         }
 
         // This should now hold only the other users (recipients).
-        unset($members[$localisedeventdata->userfrom->id]);
+        // Unless it's only a self message.
+        if (!(count($members) == 1 && isset($members[$localisedeventdata->userfrom->id]))){
+            unset($members[$localisedeventdata->userfrom->id]);
+        }
         $otherusers = $members;
 
         // Get conversation type and name. We'll use this to determine which message subject to generate, depending on type.
@@ -111,7 +114,7 @@ class manager {
 
         // For now Self conversations are not processed because users are aware of the messages sent by themselves, so we
         // can return early.
-        if ($conv->type == \core_message\api::MESSAGE_CONVERSATION_TYPE_SELF) {
+        if ($conv->type == \core_message\api::MESSAGE_CONVERSATION_TYPE_SELF && false) {
             return $savemessage->id;
         }
         $localisedeventdata->conversationtype = $conv->type;
@@ -182,6 +185,10 @@ class manager {
             $s->sitename = format_string($SITE->shortname, true, array('context' => \context_course::instance(SITEID)));
             $s->url = $CFG->wwwroot.'/message/index.php?id='.$eventdata->userfrom->id;
             $emailtagline = get_string_manager()->get_string('emailtagline', 'message', $s, $recipient->lang);
+
+            if ((count($members) == 1 && isset($members[$localisedeventdata->userfrom->id]))){
+                $emailtagline = 'This is a message you sent using the Moodle messaging system.';
+            }
 
             $localisedeventdata->fullmessage = $eventdata->fullmessage;
             $localisedeventdata->fullmessagehtml = $eventdata->fullmessagehtml;
