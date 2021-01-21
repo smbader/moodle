@@ -48,6 +48,7 @@
             {{> mod_assign/review_panel }}
         </div>
     </div>
+    <div class="dragbar"><div></div></div>
 </div>
 {{/showreview}}
 <div data-region="grade-panel" {{^showreview}}class="fullwidth"{{/showreview}}>
@@ -64,3 +65,9 @@
 <div data-region="overlay" class="moodle-has-zindex">
 {{> mod_assign/grading_save_in_progress }}
 </div>
+{{#js}}
+require(['mod_assign/grading_slider'], function(GradingSlider) {
+    new GradingSlider('div [data-region="review-panel"] .dragbar', 'div [role="main"]',
+    'div [data-region="review-panel"]', 'div [data-region="grade-panel"]');
+});
+{{/js}}
