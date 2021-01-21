@@ -95,7 +95,7 @@ class report_viewed extends \core\event\base {
             throw new \coding_exception('The \'instanceid\' value must be set in other.');
         }
 
-        if (empty($this->other['roleid'])) {
+        if (!isset($this->other['roleid'])) {
             throw new \coding_exception('The \'roleid\' value must be set in other.');
         }
 
