@@ -52,7 +52,7 @@ class update extends create {
             $group[] = $mform->createElement('radio', 'repeateditall', null, get_string('repeateditthis', 'calendar'), 0);
             $mform->addGroup($group, 'repeatgroup', get_string('repeatedevents', 'calendar'), '<br />', false);
 
-            $mform->setDefault('repeateditall', 1);
+            $mform->setDefault('repeateditall', 0);
             $mform->setAdvanced('repeatgroup');
         }
     }

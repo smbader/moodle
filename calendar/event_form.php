@@ -155,7 +155,7 @@ class event_form extends moodleform {
             $mform->addElement('radio', 'repeateditall', null, get_string('repeateditall', 'calendar', $this->_customdata->event->eventrepeats), 1);
             $mform->addElement('radio', 'repeateditall', null, get_string('repeateditthis', 'calendar'), 0);
 
-            $mform->setDefault('repeateditall', 1);
+            $mform->setDefault('repeateditall', 0);
 
         }
 
