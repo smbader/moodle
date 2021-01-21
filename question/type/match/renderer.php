@@ -145,7 +145,7 @@ class qtype_match_renderer extends qtype_with_combined_feedback_renderer {
         }
 
         if (!empty($right)) {
-            return get_string('correctansweris', 'qtype_match', implode(', ', $right));
+            return get_string('correctansweris', 'qtype_match', '<ul><li>' . implode('</li><li>', $right) . '</li></ul>');
         }
     }
 }
