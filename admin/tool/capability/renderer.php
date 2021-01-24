@@ -80,6 +80,7 @@ class tool_capability_renderer extends plugin_renderer_base {
 
         $strpermissions = $this->get_permission_strings();
         $permissionclasses = $this->get_permission_classes();
+        $parentpermissions = array();
 
         if ($contextid === context_system::instance()->id) {
             $strpermissions[CAP_INHERIT] = new lang_string('notset', 'role');
@@ -91,6 +92,7 @@ class tool_capability_renderer extends plugin_renderer_base {
         foreach ($roles as $role) {
             $url = new moodle_url('/admin/roles/define.php', array('action' => 'view', 'roleid' => $role->id));
             $table->head[] = html_writer::div(html_writer::link($url, $role->localname));
+            $parentpermissions[$role->id] = get_default_capabilities($role->archetype);
         }
         $table->data = array();
 
@@ -113,10 +115,20 @@ class tool_capability_renderer extends plugin_renderer_base {
                 } else {
                     $permission = CAP_INHERIT;
                 }
+
                 if (!in_array($permission, $permissiontypes)) {
                     $permissiontypes[] = $permission;
                 }
-                $cell = new html_table_cell($strpermissions[$permission]);
+                if (isset($parentpermissions[$role->id][$capability])) {
+                    $original_permission = $parentpermissions[$role->id][$capability];
+                } else {
+                    $original_permission = CAP_INHERIT;
+                }
+                $diff = '';
+                if ($original_permission != $permission) {
+                    $diff .= $strpermissions[$original_permission];
+                }
+                $cell = new html_table_cell($strpermissions[$permission] . '<br /><i>' . $diff . '</i>');
                 $cell->attributes['class'] = $permissionclasses[$permission];
                 $row->cells[] = $cell;
             }
