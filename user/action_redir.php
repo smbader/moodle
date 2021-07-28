@@ -90,6 +90,7 @@ if ($formaction == 'bulkchange.php') {
 
                     $columnnames = array(
                         'firstname' => get_string('firstname'),
+                        'middlename' => get_string('middlename'),
                         'lastname' => get_string('lastname'),
                     );
 
@@ -141,7 +142,7 @@ if ($formaction == 'bulkchange.php') {
                         $groupconcatjoin = '';
                     }
 
-                    $sql = "SELECT u.firstname, u.lastname {$userfields->selects}
+                    $sql = "SELECT u.firstname, u.middlename, u.lastname {$userfields->selects}
                               FROM {user} u
                                    {$userfields->joins}
                               JOIN ({$enrolledsql}) je ON je.id = u.id
