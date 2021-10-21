@@ -164,6 +164,20 @@ class backup_lti_activity_structure_step extends backup_activity_structure_step 
         $ltitypedata = $this->retrieve_lti_type($ltirecord);
         $ltitype->set_source_array($ltitypedata ? [$ltitypedata] : []);
 
+        // Send extra information in backup if Panopto
+        if (strpos($ltirecord->toolurl, '.hosted.panopto.com') !== false) {
+
+            $ltipanopto = new backup_nested_element('panoptoresourcekey', array('id'), array(
+                'typeid',
+                'name',
+                'value',
+            ));
+            $lti->add_child($ltipanopto);
+
+            $params = [backup_helper::is_sqlparam($ltitypedata->id), backup_helper::is_sqlparam('resourcekey')];
+            $ltipanopto->set_source_sql("SELECT * FROM {lti_types_config} WHERE typeid = ? AND name = ?", $params);
+        }
+
         if (isset($ltitypedata->baseurl)) {
             // Add type config values only if the type was backed up. Encrypt password and resourcekey.
             $params = [backup_helper::is_sqlparam($ltitypedata->id),

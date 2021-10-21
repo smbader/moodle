@@ -73,6 +73,8 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
         $paths[] = new restore_path_element('ltitoolproxy', '/activity/lti/ltitype/ltitoolproxy');
         $paths[] = new restore_path_element('ltitoolsetting', '/activity/lti/ltitype/ltitoolproxy/ltitoolsettings/ltitoolsetting');
 
+        $paths[] = new restore_path_element('panoptoresourcekey', '/activity/lti/panoptoresourcekey');
+
         if ($userinfo) {
             $submission = new restore_path_element('ltisubmission', '/activity/lti/ltisubmissions/ltisubmission');
             $paths[] = $submission;
@@ -282,6 +284,28 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
         $newitemid = $DB->insert_record('lti_submission', $data);
 
         $this->set_mapping('ltisubmission', $oldid, $newitemid);
+    }
+
+    protected function process_panoptoresourcekey($data) {
+        global $DB;
+
+        $data = (object)$data;
+
+        $params = [];
+        $params['value'] = $data->value;
+
+        $sql = 'SELECT lt.id
+              FROM {lti_types} lt
+              JOIN {lti_types_config} ltc on lt.id = ltc.typeid
+             WHERE ltc.name = "resourcekey" AND ltc.value = :value
+             AND lt.tooldomain LIKE "%hosted.panopto.com%"
+             AND toolproxyid IS NULL';
+
+        if ($ltitype = $DB->get_record_sql($sql, $params, IGNORE_MULTIPLE)) {
+            // Add the typeid entry back to LTI module.
+            $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitype->id]);
+        }
+
     }
 
     protected function after_execute() {
