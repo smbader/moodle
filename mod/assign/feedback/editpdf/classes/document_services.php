@@ -195,15 +195,18 @@ EOD;
                         // PDF File, no conversion required.
                         if ($mimetype === 'application/pdf') {
                             $files[$filename] = $file;
-                        } else if ($plugin->allow_image_conversion() && $mimetype === "image/jpeg") {
+                        // FR811: Support PNG as well as JPG
+                        } else if ($plugin->allow_image_conversion() && ($mimetype === "image/jpeg" || $mimetype === "image/png")) {
                             // Rotates image based on the EXIF value.
+                            // FR811 Note: PNG images pass unchanged through these rotation calls, EXIF data for PNG is not stardardized
                             list ($rotateddata, $size) = $file->rotate_image();
                             if ($rotateddata) {
                                 $file = self::save_rotated_image_file($assignment, $userid, $attemptnumber,
                                     $rotateddata, $filename);
                             }
                             // Save as PDF file if there is no available converter.
-                            if (!$converter->can_convert_format_to('jpg', 'pdf')) {
+                            if (($mimetype === "image/jpeg" && !$converter->can_convert_format_to('jpg', 'pdf')) || ($mimetype === "image/png" && !$converter->can_convert_format_to('png', 'pdf'))) {
+                                // FR811 Note: save_jpg_to_pdf supports png as well because image library supports natively
                                 $pdffile = self::save_jpg_to_pdf($assignment, $userid, $attemptnumber, $file, $size);
                                 if ($pdffile) {
                                     $files[$filename] = $pdffile;
