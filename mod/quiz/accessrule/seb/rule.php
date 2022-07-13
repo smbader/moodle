@@ -538,7 +538,8 @@ class quizaccess_seb extends quiz_access_rule_base {
         $button = '';
 
         if (!empty($this->get_seb_download_url())) {
-            $button = $OUTPUT->single_button($this->get_seb_download_url(), get_string('sebdownloadbutton', 'quizaccess_seb'));
+            $button .= html_writer::link($this->get_seb_download_url(), get_string('sebdownloadbutton', 'quizaccess_seb'),
+                ['class' => 'btn btn-secondary mr-1', 'title' => get_string('sebdownloadbutton', 'quizaccess_seb'), 'target' => '_blank']);
         }
 
         return $button;
