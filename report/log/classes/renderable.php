@@ -93,6 +93,9 @@ class report_log_renderable implements renderable {
     /** @var table_log table log which will be used for rendering logs */
     public $tablelog;
 
+    /** @var int selected roleid */
+    public $roleid;
+
     /**
      * Constructor.
      *
@@ -113,10 +116,11 @@ class report_log_renderable implements renderable {
      * @param int $page (optional) page number.
      * @param int $perpage (optional) number of records to show per page.
      * @param string $order (optional) sortorder of fetched records
+     * @param int $roleid (optional) role id of user.
      */
     public function __construct($logreader = "", $course = 0, $userid = 0, $modid = 0, $action = "", $groupid = 0, $edulevel = -1,
             $showcourses = false, $showusers = false, $showreport = true, $showselectorform = true, $url = "", $date = 0,
-            $logformat='showashtml', $page = 0, $perpage = 100, $order = "timecreated ASC", $origin ='') {
+            $logformat='showashtml', $page = 0, $perpage = 100, $order = "timecreated ASC", $origin ='', $roleid = 0) {
 
         global $PAGE;
 
@@ -161,6 +165,7 @@ class report_log_renderable implements renderable {
         $this->showselectorform = $showselectorform;
         $this->logformat = $logformat;
         $this->origin = $origin;
+        $this->roleid = $roleid;
     }
 
     /**
@@ -479,6 +484,37 @@ class report_log_renderable implements renderable {
     }
 
     /**
+     * Return list of roles.
+     *
+     * @return array list of roles.
+     */
+    public function get_role_list() {
+        $sitecontext = context_system::instance();
+        if ($this->course->id == SITEID && has_capability('report/log:view', $sitecontext)) {
+            // System context
+            $context = $sitecontext;
+        } else {
+            // Course context
+            $context = context_course::instance($this->course->id);
+        }
+
+        $roles = array();
+        $roles[''] = get_string('allroles', 'report_log');
+        // Get the actual role names for displaying
+        $rolenames = role_get_names($context, ROLENAME_ALIAS, true);
+        // Get all the user roles assigned in this context, this function returns a multidimensional array
+        $rolesrawlist = get_users_roles($context, [], false);
+        foreach ($rolesrawlist as $item) {
+            // The results are grouped by userid
+            foreach ($item as $userid => $role) {
+                $roles[$role->roleid] = $rolenames[$role->roleid];
+            }
+        }
+
+        return $roles;
+    }
+    
+    /**
      * Setup table log.
      */
     public function setup_table() {
@@ -500,6 +536,8 @@ class report_log_renderable implements renderable {
         $filter->date = $this->date;
         $filter->orderby = $this->order;
         $filter->origin = $this->origin;
+        $filter->roleid = $this->roleid;
+
         // If showing site_errors.
         if ('site_errors' === $this->modid) {
             $filter->siteerrors = true;

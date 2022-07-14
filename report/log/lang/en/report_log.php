@@ -24,6 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['allroles'] = 'All roles';
 $string['allsources'] = 'All sources';
 $string['cli'] = 'CLI';
 $string['eventcomponent'] = 'Component';
@@ -46,6 +47,7 @@ $string['page-report-log-index'] = 'Course log report';
 $string['page-report-log-user'] = 'User course log report';
 $string['pluginname'] = 'Logs';
 $string['restore'] = 'Restore';
+$string['roles'] = "Roles";
 $string['selectlogreader'] = 'Select log reader';
 $string['web'] = 'Web';
 $string['ws'] = 'Web service';

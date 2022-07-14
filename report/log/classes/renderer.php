@@ -176,6 +176,11 @@ class report_log_renderer extends plugin_renderer_base {
         echo html_writer::label(get_string('origin', 'report_log'), 'menuorigin', false, array('class' => 'accesshide'));
         echo html_writer::select($origin, 'origin', $reportlog->origin, false, ['class' => 'mr-2 mb-2']);
 
+        // Add role selector.
+        $roles = $reportlog->get_role_list();
+        echo html_writer::label(get_string('roles', 'report_log'), 'menuroleid', false, array('class' => 'accesshide'));
+        echo html_writer::select($roles, 'roleid', $reportlog->roleid, get_string('allroles', 'report_log'), ['class' => 'mr-2 mb-2']);
+
         // Add edulevel.
         $edulevel = $reportlog->get_edulevel_options();
         echo html_writer::label(get_string('edulevel'), 'menuedulevel', false, array('class' => 'accesshide'));

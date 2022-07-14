@@ -55,6 +55,7 @@ class report_log_table_log extends table_sql {
      *     - int edulevel: educational level.
      *     - string action: view action
      *     - int date: Date from which logs to be viewed.
+     *     - int roleid: role id
      */
     public function __construct($uniqueid, $filterparams = null) {
         parent::__construct($uniqueid);
@@ -500,6 +501,31 @@ class report_log_table_log extends table_sql {
                     SQL_PARAMS_NAMED, 'origin', false);
                 $joins[] = "origin " . $originsql;
                 $params = array_merge($params, $originparams);
+            }
+        }
+
+        // Role
+        $roleid = 0;
+        if (!empty($this->filterparams->courseid)) {
+            if (!empty($this->filterparams->roleid)) {
+                $roleid = $this->filterparams->roleid;
+            }
+        }
+        if ($roleid and empty($this->filterparams->userid)) {
+            if ($this->filterparams->courseid == SITEID) {
+                // System context
+                $context = context_system::instance();
+            } else {
+                // Course context
+                $context = context_course::instance($this->filterparams->courseid);
+            }
+            // get the list of users with the selected role
+            if ($rusers = get_role_users($roleid, $context)) {
+                // get the list of user ids from above
+                $rusers = array_keys($rusers);
+                $joins[] = 'userid IN (' . implode(',', $rusers) . ')';
+            } else {
+                $joins[] = 'userid = 0';
             }
         }
 
