@@ -328,6 +328,10 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
         $question = $DB->get_record_sql($sql, [$questionid]);
         $module = $DB->get_record('quiz', ['id' => $data->quizid]);
 
+        if (!$question) {
+            return;
+        }
+
         if ($question->qtype === 'random') {
             // Set reference data.
             $questionsetreference = new \stdClass();
