@@ -640,23 +640,13 @@ class qtype_calculated extends question_type {
                     if (isset($form->synchronize) && $form->synchronize == 2) {
                         $this->addnamecategory($question);
                     }
-                } else if (!empty($form->makecopy)) {
+                } else {
                     $questionfromid =  $form->id;
                     $question = parent::save_question($question, $form);
                     // Prepare the datasets.
                     $this->preparedatasets($form, $questionfromid);
                     $form->id = $question->id;
                     $this->save_as_new_dataset_definitions($form, $questionfromid);
-                    if (isset($form->synchronize) && $form->synchronize == 2) {
-                        $this->addnamecategory($question);
-                    }
-                } else {
-                    // Editing a question.
-                    $question = parent::save_question($question, $form);
-                    // Prepare the datasets.
-                    $this->preparedatasets($form, $question->id);
-                    $form->id = $question->id;
-                    $this->save_dataset_definitions($form);
                     if (isset($form->synchronize) && $form->synchronize == 2) {
                         $this->addnamecategory($question);
                     }
@@ -1759,13 +1749,53 @@ class qtype_calculated extends question_type {
                     $line++;
                     $text .= "<td align=\"left\" style=\"white-space:nowrap;\">{$questionname}</td>";
                     // TODO MDL-43779 should not have quiz-specific code here.
-                    $nbofquiz = $DB->count_records('quiz_slots', array('questionid' => $qu->id));
+                    $readystatus = \core_question\local\bank\question_version_status::QUESTION_STATUS_READY;
+                    $sql = "SELECT slot.id
+                              FROM {quiz_slots} slot
+                         LEFT JOIN {question_references} qr ON qr.component = 'mod_quiz'
+                               AND qr.questionarea = 'slot' AND slot.id = qr.itemid
+                         LEFT JOIN {question_bank_entries} qbe ON qbe.id = qr.questionbankentryid
+                         LEFT JOIN (
+                               SELECT lv.questionbankentryid, MAX(lv.version) AS version
+                                 FROM {quiz_slots} lslot
+                                 JOIN {question_references} lqr ON lqr.component = 'mod_quiz'
+                                  AND lqr.questionarea = 'slot' AND lqr.itemid = lslot.id
+                                 JOIN {question_versions} lv ON lv.questionbankentryid = lqr.questionbankentryid
+                                WHERE lqr.version IS NULL AND lv.status = '$readystatus'
+                             GROUP BY lv.questionbankentryid
+                         ) latestversions ON latestversions.questionbankentryid = qr.questionbankentryid
+                         LEFT JOIN {question_versions} qv ON qv.questionbankentryid = qbe.id
+                                                   -- Either specified version, or latest ready version.
+                                                   AND qv.version = COALESCE(qr.version, latestversions.version)
+                         LEFT JOIN {question_categories} qc ON qc.id = qbe.questioncategoryid
+                         LEFT JOIN {question} q ON q.id = :questionid";
+                    $nbofquiz = $DB->count_records_sql($sql, array('questionid' => $qu->id));
+
                     $nbofattempts = $DB->count_records_sql("
                             SELECT count(1)
                               FROM {quiz_slots} slot
-                              JOIN {quiz_attempts} quiza ON quiza.quiz = slot.quizid
-                             WHERE slot.questionid = ?
-                               AND quiza.preview = 0", array($qu->id));
+                        LEFT JOIN {quiz_attempts} quiza ON quiza.quiz = slot.quizid
+                        LEFT JOIN {question_references} qr ON qr.component = 'mod_quiz'
+                              AND qr.questionarea = 'slot' AND slot.id = qr.itemid
+                        LEFT JOIN {question_bank_entries} qbe ON qbe.id = qr.questionbankentryid
+                        LEFT JOIN (
+                              SELECT lv.questionbankentryid, MAX(lv.version) AS version
+                                FROM {quiz_slots} lslot
+                           LEFT JOIN {quiz_attempts} lquiza ON lquiza.quiz = lslot.quizid
+                                JOIN {question_references} lqr ON lqr.component = 'mod_quiz'
+                                 AND lqr.questionarea = 'slot' AND lqr.itemid = lslot.id
+                                JOIN {question_versions} lv ON lv.questionbankentryid = lqr.questionbankentryid
+                               WHERE lqr.version IS NULL
+                                 AND lv.status = '$readystatus'
+                            GROUP BY lv.questionbankentryid
+                        ) latestversions ON latestversions.questionbankentryid = qr.questionbankentryid
+                        LEFT JOIN {question_versions} qv ON qv.questionbankentryid = qbe.id
+                                                  -- Either specified version, or latest ready version.
+                                                  AND qv.version = COALESCE(qr.version, latestversions.version)
+                        LEFT JOIN {question_categories} qc ON qc.id = qbe.questioncategoryid
+                        LEFT JOIN {question} q ON q.id = qv.questionid
+                            WHERE q.id = :questionid
+                              AND quiza.preview = 0", array('questionid' => $qu->id));
                     if ($nbofquiz > 0) {
                         $text .= "<td align=\"center\">{$nbofquiz}</td>";
                         $text .= "<td align=\"center\">{$nbofattempts}";
