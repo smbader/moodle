@@ -305,7 +305,6 @@ class qtype_essay_format_editor_renderer extends qtype_essay_format_renderer_bas
         $responselabel = $this->displayoptions->add_question_identifier_to_label(get_string('answertext', 'qtype_essay'));
         $output = html_writer::tag('h4', $responselabel, ['id' => $labelbyid, 'class' => 'sr-only']);
         $output .= html_writer::tag('div', $this->prepare_response($name, $qa, $step, $context), [
-            'role' => 'textbox',
             'aria-readonly' => 'true',
             'aria-labelledby' => $labelbyid,
             'class' => $this->class_name() . ' qtype_essay_response readonly',
