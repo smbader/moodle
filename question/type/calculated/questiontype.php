@@ -1105,8 +1105,8 @@ class qtype_calculated extends question_type {
                 $correcttrue = new stdClass();
                 $correcttrue->correct = $formattedanswer->answer;
                 $correcttrue->true = '';
-                if ($formattedanswer->answer < $answer->min ||
-                        $formattedanswer->answer > $answer->max) {
+                if ($ans->answer < $answer->min ||
+                        $ans->answer > $answer->max) {
                     $comment->outsidelimit = true;
                     $comment->answers[$key] = $key;
                     $comment->stranswers[$key] .=
