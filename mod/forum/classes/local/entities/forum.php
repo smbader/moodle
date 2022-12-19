@@ -107,6 +107,8 @@ class forum {
     private $duedate;
     /** @var int $cutoffdate Timestamp after which forum posts will no longer be accepted */
     private $cutoffdate;
+    /** @var int $lockafternumberofreplies Number of replies after which discussions should be locked */
+    private $lockafternumberofreplies;
 
     /**
      * Constructor
@@ -144,6 +146,7 @@ class forum {
      * @param int $lockdiscussionafter Timestamp after which discussions should be locked
      * @param int $duedate Timestamp that represents the due date for forum posts
      * @param int $cutoffdate Timestamp after which forum posts will no longer be accepted
+     * @param int $lockafternumberofreplies Number of replies after which forum posts will no longer be accepted
      */
     public function __construct(
         context $context,
@@ -178,7 +181,8 @@ class forum {
         bool $displaywordcount,
         int $lockdiscussionafter,
         int $duedate,
-        int $cutoffdate
+        int $cutoffdate,
+        int $lockafternumberofreplies
     ) {
         $this->context = $context;
         $this->coursemodule = $coursemodule;
@@ -213,6 +217,7 @@ class forum {
         $this->lockdiscussionafter = $lockdiscussionafter;
         $this->duedate = $duedate;
         $this->cutoffdate = $cutoffdate;
+        $this->lockafternumberofreplies = $lockafternumberofreplies;
     }
 
     /**
@@ -667,6 +672,46 @@ class forum {
             return true;
         }
 
-        return $this->is_discussion_time_locked($discussion);
+        return $this->is_discussion_time_locked($discussion) || $this->is_discussion_reply_number_locked($discussion);
     }
+
+    /**
+     * Get the number of replies after which the discussion should be locked.
+     *
+     * @return int
+     */
+    public function get_lock_discussions_after_reply_number() : int {
+        return $this->lockafternumberofreplies;
+    }
+
+    /**
+     * Does the forum have a specified number of replies for discussion locking?
+     *
+     * @return bool
+     */
+    public function has_lock_discussions_after_reply_number() : bool {
+        return !empty($this->get_lock_discussions_after_reply_number());
+    }
+
+    /**
+     * Check whether the discussion is locked based on forum's number of replies based locking criteria
+     *
+     * @param discussion_entity $discussion
+     * @return bool
+     */
+    public function is_discussion_reply_number_locked(discussion_entity $discussion) : bool {
+        if (!$this->has_lock_discussions_after_reply_number()) {
+            return false;
+        }
+
+        // Use a function in lib.php to retrieve the number of replies to each discussion.
+        $countrepliesarray = forum_count_discussion_replies($this->get_id());
+        $numberofreplies = 0;
+        if (!empty($countrepliesarray[$discussion->get_id()])) {
+            $numberofreplies = intval($countrepliesarray[$discussion->get_id()]->replies);
+        }
+
+        return $numberofreplies >= $this->get_lock_discussions_after_reply_number();
+    }
+
 }

@@ -595,7 +595,7 @@ function forum_print_recent_activity($course, $viewfullnames, $timestart) {
                                               f.displaywordcount, f.lockdiscussionafter, f.grade_forum_notify,
                                               d.name AS discussionname, d.firstpost, d.userid AS discussionstarter,
                                               d.assessed AS discussionassessed, d.timemodified, d.usermodified, d.forum, d.groupid,
-                                              d.timestart, d.timeend, d.pinned, d.timelocked,
+                                              d.timestart, d.timeend, d.pinned, d.timelocked, f.lockafternumberofreplies,
                                               $allnamefields
                                          FROM {forum_posts} p
                                               JOIN {forum_discussions} d ON d.id = p.discussion
@@ -684,7 +684,8 @@ function forum_print_recent_activity($course, $viewfullnames, $timestart) {
                 'completionposts' => $post->completionposts,
                 'displaywordcount' => $post->displaywordcount,
                 'lockdiscussionafter' => $post->lockdiscussionafter,
-                'grade_forum_notify' => $post->grade_forum_notify
+                'grade_forum_notify' => $post->grade_forum_notify,
+                'lockafternumberofreplies' => $post->lockafternumberofreplies
             ];
             // Build the forum entity from the factory.
             $forumentity = $entityfactory->get_forum_from_stdclass($forumrecord, $context, $coursemodule, $course);

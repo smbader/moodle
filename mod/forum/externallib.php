@@ -165,6 +165,7 @@ class mod_forum_external extends external_api {
                     'istracked' => new external_value(PARAM_BOOL, 'If the user is tracking the forum', VALUE_OPTIONAL),
                     'unreadpostscount' => new external_value(PARAM_INT, 'The number of unread posts for tracked forums',
                         VALUE_OPTIONAL),
+                    'lockafternumberofreplies' => new external_value(PARAM_INT, 'The number of replies that after reaching it a discussion should be locked', VALUE_OPTIONAL),
                 ), 'forum'
             )
         );

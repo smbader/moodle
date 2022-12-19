@@ -145,6 +145,21 @@ function xmldb_forum_upgrade($oldversion) {
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 
+    if ($oldversion < 2022072200) {
+
+        $table = new xmldb_table('forum');
+
+        // Define field duedate to be added to forum.
+        $field = new xmldb_field('lockafternumberofreplies', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'lockdiscussionafter');
+
+        // Conditionally launch add field duedate.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2022072200, 'forum');
+    }
+
     if ($oldversion < 2022062700) {
         // Unset $CFG->forum_usecoursefullname.
         unset_config('forum_usecoursefullname');

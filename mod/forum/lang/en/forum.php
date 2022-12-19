@@ -387,6 +387,10 @@ $string['lockdiscussionafter'] = 'Lock discussions after period of inactivity';
 $string['lockdiscussionafter_help'] = 'Discussions may be automatically locked after a specified time has elapsed since the last reply.
 
 Users with the capability to reply to locked discussions can unlock a discussion by replying to it.';
+$string['lockafternumberofreplies'] = 'Lock discussions after number of replies';
+$string['lockafternumberofreplies_help'] = 'Discussions may be locked after a specified number of replies, in order to encourage students to reply to other discussions with fewer replies.
+
+To reset the field, simply remove any input and keep it blank.';
 $string['longpost'] = 'Long post';
 $string['locked'] = 'Locked';
 $string['lockdiscussion'] = 'Lock this discussion';

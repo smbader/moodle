@@ -177,6 +177,12 @@ class mod_forum_mod_form extends moodleform_mod {
         $mform->addHelpButton('lockdiscussionafter', 'lockdiscussionafter', 'forum');
         $mform->disabledIf('lockdiscussionafter', 'type', 'eq', 'single');
 
+        // lock discussion after certain number of replies
+        $mform->addElement('text', 'lockafternumberofreplies', get_string('lockafternumberofreplies', 'forum'), array('size'=>'11'));
+        $mform->setType('lockafternumberofreplies', PARAM_INT);
+        $mform->addRule('lockafternumberofreplies', null, 'numeric', null, 'client');
+        $mform->addHelpButton('lockafternumberofreplies', 'lockafternumberofreplies', 'forum');
+        
 //-------------------------------------------------------------------------------
         $mform->addElement('header', 'blockafterheader', get_string('blockafter', 'forum'));
         $options = array();
