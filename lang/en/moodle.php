@@ -915,6 +915,7 @@ $string['forcepasswordresetfailurenotice'] = 'Your current password no longer pa
 $string['forcepasswordresetnotice'] = 'Your current password no longer passes the set password policy, you must reset your password to login.
    {$a}';
 $string['forcetheme'] = 'Force theme';
+$string['forcetheme_help'] = 'This is a WolfWare course, therefore WolfWare will manage the theme.';
 $string['forgotaccount'] = 'Lost password?';
 $string['forgotten'] = 'Forgotten your username or password?';
 $string['forgottenduplicate'] = 'The email address is shared by several accounts, please enter username instead';

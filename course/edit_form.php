@@ -279,16 +279,17 @@ class course_edit_form extends moodleform {
 
                 $html_display = '
                     <div class="form-group row fitem">
-                        <div class="col-md-3">
-                            <span class="pull-xs-right text-nowrap">' .
-                                $OUTPUT->help_icon('forcetheme', 'moodle', '') . '
-                            </span>
-                            <label class="col-form-label d-inline " for="id_groupmode">' .
+                        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+                            <label class="d-inline word-break" for="id_forcetheme">' .
                                 get_string('forcetheme') . '
                             </label>
+                            <div class="form-label-addon d-flex align-items-center align-self-start">' .
+                                $OUTPUT->help_icon('forcetheme', 'moodle', '') . '
+                            </div>
                         </div>
                         <div class="col-md-9 form-inline felement" data-fieldtype="select">' .
-                            $ncsu_themes[$ncsu_theme_settings->theme]['label'] . '<br />
+                            // to avoid system errors when $ncsu_theme_settings is undefined
+                            (!empty($ncsu_theme_settings) ? $ncsu_themes[$ncsu_theme_settings->theme]['label'] : '') . '
                             To change this, go to the
                             <a target="_blank" href="https://wolfware.ncsu.edu/courses/manage/?manage_section_id='.$course->idnumber.'&tool=moodle">
                                 WolfWare Toolbox
@@ -298,6 +299,7 @@ class course_edit_form extends moodleform {
                 ';
 
                 $mform->addElement('html', $html_display);
+
             } else {
                 $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
             }
