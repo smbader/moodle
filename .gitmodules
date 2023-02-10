@@ -4,3 +4,6 @@
 [submodule "theme/ncsu"]
 	path = theme/ncsu
 	url = git@github.ncsu.edu:delta-appsdev/theme_ncsu.git
+[submodule "report/rolesmigration"]
+	path = report/rolesmigration
+	url = git@github.ncsu.edu:delta-appsdev/report_rolesmigration.git
