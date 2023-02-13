@@ -13,3 +13,6 @@
 [submodule "blocks/deltatestingsvcs"]
 	path = blocks/deltatestingsvcs
 	url = git@github.ncsu.edu:delta-appsdev/block_deltatestingsvcs.git
+[submodule "blocks/library_reserves"]
+	path = blocks/library_reserves
+	url = git@github.ncsu.edu:delta-appsdev/block_library_reserves.git
