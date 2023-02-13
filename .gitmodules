@@ -7,3 +7,6 @@
 [submodule "report/rolesmigration"]
 	path = report/rolesmigration
 	url = git@github.ncsu.edu:delta-appsdev/report_rolesmigration.git
+[submodule "blocks/studentsvcs"]
+	path = blocks/studentsvcs
+	url = git@github.ncsu.edu:delta-appsdev/block_studentsvcs.git
