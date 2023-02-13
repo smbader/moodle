@@ -10,3 +10,6 @@
 [submodule "blocks/studentsvcs"]
 	path = blocks/studentsvcs
 	url = git@github.ncsu.edu:delta-appsdev/block_studentsvcs.git
+[submodule "blocks/deltatestingsvcs"]
+	path = blocks/deltatestingsvcs
+	url = git@github.ncsu.edu:delta-appsdev/block_deltatestingsvcs.git
