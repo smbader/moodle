@@ -55,3 +55,6 @@
 [submodule "mod/zoom"]
 	path = mod/zoom
 	url = git@github.ncsu.edu:delta-appsdev/mod_zoom.git
+[submodule "question/type/regexp"]
+	path = question/type/regexp
+	url = git@github.ncsu.edu:delta-appsdev/qtype_regexp.git
