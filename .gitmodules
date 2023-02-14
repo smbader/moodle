@@ -43,3 +43,6 @@
 [submodule "mod/scheduler"]
 	path = mod/scheduler
 	url = git@github.ncsu.edu:delta-appsdev/mod_scheduler.git
+[submodule "mod/solo"]
+	path = mod/solo
+	url = git@github.ncsu.edu:delta-appsdev/mod_solo.git
