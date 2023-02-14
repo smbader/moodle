@@ -46,3 +46,6 @@
 [submodule "mod/solo"]
 	path = mod/solo
 	url = git@github.ncsu.edu:delta-appsdev/mod_solo.git
+[submodule "mod/turnitintooltwo"]
+	path = mod/turnitintooltwo
+	url = git@github.ncsu.edu:delta-appsdev/mod_turnitintooltwo.git
