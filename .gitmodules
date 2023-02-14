@@ -25,3 +25,6 @@
 [submodule "blocks/quickmail"]
 	path = blocks/quickmail
 	url = git@github.ncsu.edu:delta-appsdev/block_quickmail.git
+[submodule "mod/attendance"]
+	path = mod/attendance
+	url = git@github.ncsu.edu:delta-appsdev/mod_attendance.git
