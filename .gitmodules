@@ -31,3 +31,6 @@
 [submodule "mod/choicegroup"]
 	path = mod/choicegroup
 	url = git@github.ncsu.edu:delta-appsdev/mod_choicegroup.git
+[submodule "mod/hotquestion"]
+	path = mod/hotquestion
+	url = git@github.ncsu.edu:delta-appsdev/mod_hotquestion.git
