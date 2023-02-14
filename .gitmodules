@@ -52,3 +52,6 @@
 [submodule "mod/wordcards"]
 	path = mod/wordcards
 	url = git@github.ncsu.edu:delta-appsdev/mod_wordcards.git
+[submodule "mod/zoom"]
+	path = mod/zoom
+	url = git@github.ncsu.edu:delta-appsdev/mod_zoom.git
