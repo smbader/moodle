@@ -49,3 +49,6 @@
 [submodule "mod/turnitintooltwo"]
 	path = mod/turnitintooltwo
 	url = git@github.ncsu.edu:delta-appsdev/mod_turnitintooltwo.git
+[submodule "mod/wordcards"]
+	path = mod/wordcards
+	url = git@github.ncsu.edu:delta-appsdev/mod_wordcards.git
