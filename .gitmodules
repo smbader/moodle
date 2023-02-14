@@ -19,3 +19,6 @@
 [submodule "blocks/library_course_tools"]
 	path = blocks/library_course_tools
 	url = git@github.ncsu.edu:delta-appsdev/block_library_course_tools.git
+[submodule "blocks/massaction"]
+	path = blocks/massaction
+	url = git@github.ncsu.edu:delta-appsdev/block_massaction.git
