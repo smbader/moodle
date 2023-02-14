@@ -34,3 +34,6 @@
 [submodule "mod/hotquestion"]
 	path = mod/hotquestion
 	url = git@github.ncsu.edu:delta-appsdev/mod_hotquestion.git
+[submodule "mod/minilesson"]
+	path = mod/minilesson
+	url = git@github.ncsu.edu:delta-appsdev/mod_minilesson.git
