@@ -37,3 +37,6 @@
 [submodule "mod/minilesson"]
 	path = mod/minilesson
 	url = git@github.ncsu.edu:delta-appsdev/mod_minilesson.git
+[submodule "mod/readaloud"]
+	path = mod/readaloud
+	url = git@github.ncsu.edu:delta-appsdev/mod_readaloud.git
