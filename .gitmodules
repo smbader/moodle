@@ -28,3 +28,6 @@
 [submodule "mod/attendance"]
 	path = mod/attendance
 	url = git@github.ncsu.edu:delta-appsdev/mod_attendance.git
+[submodule "mod/choicegroup"]
+	path = mod/choicegroup
+	url = git@github.ncsu.edu:delta-appsdev/mod_choicegroup.git
