@@ -22,3 +22,6 @@
 [submodule "blocks/massaction"]
 	path = blocks/massaction
 	url = git@github.ncsu.edu:delta-appsdev/block_massaction.git
+[submodule "blocks/quickmail"]
+	path = blocks/quickmail
+	url = git@github.ncsu.edu:delta-appsdev/block_quickmail.git
