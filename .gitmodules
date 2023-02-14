@@ -64,3 +64,6 @@
 [submodule "question/behaviour/regexpadaptivewithhelpnopenalty"]
 	path = question/behaviour/regexpadaptivewithhelpnopenalty
 	url = git@github.ncsu.edu:delta-appsdev/qbehaviour_regexpadaptivewithhelpnopenalty.git
+[submodule "question/type/matrix"]
+	path = question/type/matrix
+	url = git@github.ncsu.edu:delta-appsdev/qtype_matrix.git
