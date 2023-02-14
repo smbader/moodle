@@ -67,3 +67,6 @@
 [submodule "question/type/matrix"]
 	path = question/type/matrix
 	url = git@github.ncsu.edu:delta-appsdev/qtype_matrix.git
+[submodule "filter/poodll"]
+	path = filter/poodll
+	url = git@github.ncsu.edu:delta-appsdev/filter_poodll.git
