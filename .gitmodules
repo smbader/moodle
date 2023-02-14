@@ -40,3 +40,6 @@
 [submodule "mod/readaloud"]
 	path = mod/readaloud
 	url = git@github.ncsu.edu:delta-appsdev/mod_readaloud.git
+[submodule "mod/scheduler"]
+	path = mod/scheduler
+	url = git@github.ncsu.edu:delta-appsdev/mod_scheduler.git
