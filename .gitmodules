@@ -58,3 +58,6 @@
 [submodule "question/type/regexp"]
 	path = question/type/regexp
 	url = git@github.ncsu.edu:delta-appsdev/qtype_regexp.git
+[submodule "question/behaviour/regexpadaptivewithhelp"]
+	path = question/behaviour/regexpadaptivewithhelp
+	url = git@github.ncsu.edu:delta-appsdev/qbehaviour_regexpadaptivewithhelp.git
