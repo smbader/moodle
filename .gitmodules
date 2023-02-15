@@ -73,3 +73,6 @@
 [submodule "mod/assign/submission/cloudpoodll"]
 	path = mod/assign/submission/cloudpoodll
 	url = git@github.ncsu.edu:delta-appsdev/assignsubmission_cloudpoodll.git
+[submodule "lib/editor/atto/plugins/cloudpoodll"]
+	path = lib/editor/atto/plugins/cloudpoodll
+	url = git@github.ncsu.edu:delta-appsdev/atto_cloudpoodll.git
