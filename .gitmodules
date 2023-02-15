@@ -91,3 +91,6 @@
 [submodule "plagiarism/turnitin"]
 	path = plagiarism/turnitin
 	url = git@github.ncsu.edu:delta-appsdev/plagiarism_turnitin.git
+[submodule "mod/quiz/report/downloadsubmissions"]
+	path = mod/quiz/report/downloadsubmissions
+	url = git@github.ncsu.edu:delta-appsdev/quiz_downloadsubmissions.git
