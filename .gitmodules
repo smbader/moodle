@@ -85,3 +85,6 @@
 [submodule "availability/condition/mobileapp"]
 	path = availability/condition/mobileapp
 	url = git@github.ncsu.edu:delta-appsdev/availability_mobileapp.git
+[submodule "local/instructor_files"]
+	path = local/instructor_files
+	url = git@github.ncsu.edu:delta-appsdev/local_instructor_files.git
