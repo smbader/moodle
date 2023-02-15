@@ -82,3 +82,6 @@
 [submodule "lib/editor/atto/plugins/subtitle"]
 	path = lib/editor/atto/plugins/subtitle
 	url = git@github.ncsu.edu:delta-appsdev/atto_subtitle.git
+[submodule "availability/condition/mobileapp"]
+	path = availability/condition/mobileapp
+	url = git@github.ncsu.edu:delta-appsdev/availability_mobileapp.git
