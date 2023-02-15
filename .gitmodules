@@ -88,3 +88,6 @@
 [submodule "local/instructor_files"]
 	path = local/instructor_files
 	url = git@github.ncsu.edu:delta-appsdev/local_instructor_files.git
+[submodule "plagiarism/turnitin"]
+	path = plagiarism/turnitin
+	url = git@github.ncsu.edu:delta-appsdev/plagiarism_turnitin.git
