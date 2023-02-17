@@ -97,3 +97,6 @@
 [submodule "report/componentgrades"]
 	path = report/componentgrades
 	url = git@github.ncsu.edu:delta-appsdev/report_componentgrades.git
+[submodule "report/editdates"]
+	path = report/editdates
+	url = git@github.ncsu.edu:delta-appsdev/report_editdates.git
