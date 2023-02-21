@@ -112,3 +112,6 @@
 [submodule "auth/shibbolethea"]
 	path = auth/shibbolethea
 	url = git@github.ncsu.edu:delta-appsdev/auth_shibbolethea.git
+[submodule "mod/forumng"]
+	path = mod/forumng
+	url = git@github.ncsu.edu:delta-appsdev/mod_forumng.git
