@@ -118,3 +118,6 @@
 [submodule "mod/mediasite"]
 	path = mod/mediasite
 	url = git@github.ncsu.edu:delta-appsdev/mod_mediasite.git
+[submodule "course/format/tiles"]
+	path = course/format/tiles
+	url = git@github.ncsu.edu:delta-appsdev/format_tiles.git
