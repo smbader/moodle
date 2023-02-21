@@ -115,3 +115,6 @@
 [submodule "mod/forumng"]
 	path = mod/forumng
 	url = git@github.ncsu.edu:delta-appsdev/mod_forumng.git
+[submodule "mod/mediasite"]
+	path = mod/mediasite
+	url = git@github.ncsu.edu:delta-appsdev/mod_mediasite.git
