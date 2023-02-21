@@ -103,3 +103,6 @@
 [submodule "mod/checklist"]
 	path = mod/checklist
 	url = git@github.ncsu.edu:delta-appsdev/mod_checklist.git
+[submodule "local/coursecopier"]
+	path = local/coursecopier
+	url = git@github.ncsu.edu:delta-appsdev/local_coursecopier.git
