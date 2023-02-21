@@ -109,3 +109,6 @@
 [submodule "local/gradesubmit"]
 	path = local/gradesubmit
 	url = git@github.ncsu.edu:delta-appsdev/local_gradesubmit.git
+[submodule "auth/shibbolethea"]
+	path = auth/shibbolethea
+	url = git@github.ncsu.edu:delta-appsdev/auth_shibbolethea.git
