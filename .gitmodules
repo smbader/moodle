@@ -106,3 +106,6 @@
 [submodule "local/coursecopier"]
 	path = local/coursecopier
 	url = git@github.ncsu.edu:delta-appsdev/local_coursecopier.git
+[submodule "local/gradesubmit"]
+	path = local/gradesubmit
+	url = git@github.ncsu.edu:delta-appsdev/local_gradesubmit.git
