@@ -121,3 +121,6 @@
 [submodule "course/format/tiles"]
 	path = course/format/tiles
 	url = git@github.ncsu.edu:delta-appsdev/format_tiles.git
+[submodule "question/type/poodllrecording"]
+	path = question/type/poodllrecording
+	url = git@github.ncsu.edu:delta-appsdev/qtype_poodllrecording.git
