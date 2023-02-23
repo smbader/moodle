@@ -136,3 +136,6 @@
 [submodule "lib/editor/atto/plugins/panoptobutton"]
 	path = lib/editor/atto/plugins/panoptobutton
 	url = git@github.ncsu.edu:delta-appsdev/atto_panoptobutton.git
+[submodule "blocks/panopto"]
+	path = blocks/panopto
+	url = git@github.ncsu.edu:delta-appsdev/block_panopto.git
