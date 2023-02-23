@@ -130,3 +130,6 @@
 [submodule "local/intelliboard"]
 	path = local/intelliboard
 	url = git@github.ncsu.edu:delta-appsdev/local_intelliboard.git
+[submodule "mod/panoptosubmission"]
+	path = mod/panoptosubmission
+	url = git@github.ncsu.edu:delta-appsdev/mod_panoptosubmission.git
