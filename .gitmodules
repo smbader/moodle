@@ -127,3 +127,6 @@
 [submodule "question/type/cloudpoodll"]
 	path = question/type/cloudpoodll
 	url = git@github.ncsu.edu:delta-appsdev/qtype_cloudpoodll.git
+[submodule "local/intelliboard"]
+	path = local/intelliboard
+	url = git@github.ncsu.edu:delta-appsdev/local_intelliboard.git
