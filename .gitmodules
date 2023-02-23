@@ -124,3 +124,6 @@
 [submodule "question/type/poodllrecording"]
 	path = question/type/poodllrecording
 	url = git@github.ncsu.edu:delta-appsdev/qtype_poodllrecording.git
+[submodule "question/type/cloudpoodll"]
+	path = question/type/cloudpoodll
+	url = git@github.ncsu.edu:delta-appsdev/qtype_cloudpoodll.git
