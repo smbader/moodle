@@ -142,3 +142,6 @@
 [submodule "local/reporter"]
 	path = local/reporter
 	url = git@github.ncsu.edu:delta-appsdev/local_reporter.git
+[submodule "local/moreaccessible"]
+	path = local/moreaccessible
+	url = git@github.ncsu.edu:delta-appsdev/local_moreaccessible.git
