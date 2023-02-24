@@ -139,3 +139,6 @@
 [submodule "blocks/panopto"]
 	path = blocks/panopto
 	url = git@github.ncsu.edu:delta-appsdev/block_panopto.git
+[submodule "local/reporter"]
+	path = local/reporter
+	url = git@github.ncsu.edu:delta-appsdev/local_reporter.git
