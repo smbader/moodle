@@ -148,3 +148,6 @@
 [submodule "mod/customcert"]
 	path = mod/customcert
 	url = git@github.ncsu.edu:delta-appsdev/mod_customcert.git
+[submodule "mod/ncsubook"]
+	path = mod/ncsubook
+	url = git@github.ncsu.edu:delta-appsdev/mod_ncsubook.git
