@@ -151,3 +151,6 @@
 [submodule "mod/ncsubook"]
 	path = mod/ncsubook
 	url = git@github.ncsu.edu:delta-appsdev/mod_ncsubook.git
+[submodule "mod/roadmap"]
+	path = mod/roadmap
+	url = git@github.ncsu.edu:delta-appsdev/mod_roadmap.git
