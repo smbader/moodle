@@ -145,3 +145,6 @@
 [submodule "local/moreaccessible"]
 	path = local/moreaccessible
 	url = git@github.ncsu.edu:delta-appsdev/local_moreaccessible.git
+[submodule "mod/customcert"]
+	path = mod/customcert
+	url = git@github.ncsu.edu:delta-appsdev/mod_customcert.git
