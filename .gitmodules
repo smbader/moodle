@@ -154,3 +154,6 @@
 [submodule "mod/roadmap"]
 	path = mod/roadmap
 	url = git@github.ncsu.edu:delta-appsdev/mod_roadmap.git
+[submodule "mod/hvp"]
+	path = mod/hvp
+	url = git@github.ncsu.edu:delta-appsdev/mod_hvp.git
