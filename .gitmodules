@@ -169,3 +169,6 @@
 [submodule "filter/gamification"]
 	path = filter/gamification
 	url = git@github.ncsu.edu:delta-appsdev/filter_gamification.git
+[submodule "availability/condition/gamification"]
+	path = availability/condition/gamification
+	url = git@github.ncsu.edu:delta-appsdev/availability_gamification.git
