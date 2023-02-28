@@ -163,3 +163,6 @@
 [submodule "local/gamification"]
 	path = local/gamification
 	url = git@github.ncsu.edu:delta-appsdev/local_gamification.git
+[submodule "blocks/gamification"]
+	path = blocks/gamification
+	url = git@github.ncsu.edu:delta-appsdev/block_gamification.git
