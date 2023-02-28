@@ -160,3 +160,6 @@
 [submodule "filter/h5p"]
 	path = filter/h5p
 	url = git@github.ncsu.edu:delta-appsdev/filter_h5p.git
+[submodule "local/gamification"]
+	path = local/gamification
+	url = git@github.ncsu.edu:delta-appsdev/local_gamification.git
