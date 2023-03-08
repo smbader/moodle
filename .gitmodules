@@ -178,3 +178,6 @@
 [submodule "blocks/bfmanager"]
 	path = blocks/bfmanager
 	url = git@github.ncsu.edu:delta-appsdev/block_bfmanager.git
+[submodule "filter/bfurltolink"]
+	path = filter/bfurltolink
+	url = git@github.ncsu.edu:delta-appsdev/filter_bfurltolink.git
