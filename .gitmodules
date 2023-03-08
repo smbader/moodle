@@ -175,3 +175,6 @@
 [submodule "admin/tool/bfplus"]
 	path = admin/tool/bfplus
 	url = git@github.ncsu.edu:delta-appsdev/tool_bfplus.git
+[submodule "blocks/bfmanager"]
+	path = blocks/bfmanager
+	url = git@github.ncsu.edu:delta-appsdev/block_bfmanager.git
