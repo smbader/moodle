@@ -187,3 +187,6 @@
 [submodule "lib/editor/atto/plugins/bflink"]
 	path = lib/editor/atto/plugins/bflink
 	url = git@github.ncsu.edu:delta-appsdev/atto_bflink.git
+[submodule "local/bfaltformat"]
+	path = local/bfaltformat
+	url = git@github.ncsu.edu:delta-appsdev/local_bfaltformat.git
