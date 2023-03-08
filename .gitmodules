@@ -190,3 +190,6 @@
 [submodule "local/bfaltformat"]
 	path = local/bfaltformat
 	url = git@github.ncsu.edu:delta-appsdev/local_bfaltformat.git
+[submodule "local/bfnewwindow"]
+	path = local/bfnewwindow
+	url = git@github.ncsu.edu:delta-appsdev/local_bfnewwindow.git
