@@ -193,3 +193,6 @@
 [submodule "local/bfnewwindow"]
 	path = local/bfnewwindow
 	url = git@github.ncsu.edu:delta-appsdev/local_bfnewwindow.git
+[submodule "report/editlicence"]
+	path = report/editlicence
+	url = git@github.ncsu.edu:delta-appsdev/report_editlicence.git
