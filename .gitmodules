@@ -172,3 +172,6 @@
 [submodule "availability/condition/gamification"]
 	path = availability/condition/gamification
 	url = git@github.ncsu.edu:delta-appsdev/availability_gamification.git
+[submodule "admin/tool/bfplus"]
+	path = admin/tool/bfplus
+	url = git@github.ncsu.edu:delta-appsdev/tool_bfplus.git
