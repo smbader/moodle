@@ -196,3 +196,6 @@
 [submodule "report/editlicence"]
 	path = report/editlicence
 	url = git@github.ncsu.edu:delta-appsdev/report_editlicence.git
+[submodule "mod/respondusws"]
+	path = mod/respondusws
+	url = git@github.ncsu.edu:delta-appsdev/mod_respondusws.git
