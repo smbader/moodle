@@ -340,8 +340,13 @@ if (!isset($frm) or !is_object($frm)) {
 }
 
 // ARMCCOY - 12-06-2017 - Use bypass URL parameter sent by REPORTER to redirect Shib users to Shib login (with course/view.php)
-$query_str = parse_url($SESSION->wantsurl, PHP_URL_QUERY);
-parse_str($query_str, $query_params);
+if ($SESSION->wantsurl) {
+    $query_str = parse_url($SESSION->wantsurl, PHP_URL_QUERY);
+    if ($query_str) {
+        parse_str($query_str, $query_params);
+    }
+}
+
 if (!empty($query_params['bp'])) {
     if ($query_params['bp'] === 's') {
         header("Location: $CFG->httpswwwroot/auth/shibboleth/index.php");
