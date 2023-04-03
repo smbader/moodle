@@ -1367,6 +1367,7 @@ $string['morehelp'] = 'More help';
 $string['morehelpaboutmodule'] = 'More help about the {$a} activity';
 $string['moreinfo'] = 'More info';
 $string['moreinformation'] = 'More information about this error';
+$string['moreoptions'] = 'More options';
 $string['moreprofileinfoneeded'] = 'Please tell us more about yourself';
 $string['morenavigationlinks'] = 'More...';
 $string['mostrecently'] = 'most recently';
