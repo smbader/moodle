@@ -105,7 +105,9 @@ class assignfeedback_file_zip_importer {
                 $info[4] = '';
             }
             // Take any remaining text in this part and put it back in the path parts array.
-            array_unshift($pathparts, $info[4]);
+            if(isset($info[4])) {
+                array_unshift($pathparts, $info[4]);
+            }
 
             // Combine the remaining parts and set it as the filename.
             // Note that filename is a 'by reference' variable, so we need to set it before returning.

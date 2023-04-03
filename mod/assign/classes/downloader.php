@@ -189,7 +189,9 @@ class downloader {
         if ($manager->is_blind_marking()) {
             $fullname = get_string('participant', 'mod_assign');
         } else {
-            $fullname = fullname($student, has_capability('moodle/site:viewfullnames', $manager->get_context()));
+	    if (has_capability('moodle/site:viewfullnames', $manager->get_context)) {
+                $fullname = $student->lastname . " " . $student->firstname;;
+	    }
         }
         $prefix = str_replace('_', ' ', $fullname);
         $prefix = clean_filename($prefix . '_' . $manager->get_uniqueid_for_user($student->id));
