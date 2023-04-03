@@ -16,7 +16,7 @@ if (\core\session\manager::is_loggedinas()) {
     require_logout();
 
     // We can not set wanted URL here because the session is closed.
-    redirect(new moodle_url($url, array('redirect'=>1)));
+    redirect(new moodle_url($url, array('redirect'=>1, 'loggedinas'=> 1)));
 }
 
 if ($redirect) {
@@ -26,7 +26,12 @@ if ($redirect) {
         $SESSION->wantsurl = "$CFG->wwwroot/";
     }
 
-    redirect(get_login_url());
+    // If user has loginas permission, redirect them to the admin login page instead of Shibboleth login
+    if (!empty($_GET['loggedinas'])) {
+        redirect($CFG->wwwroot . '/login/admin_login.php');
+    } else {
+        redirect(get_login_url());
+    }
 }
 
 // Try log in as this user.
