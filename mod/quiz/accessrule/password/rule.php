@@ -53,7 +53,7 @@ class quizaccess_password extends access_rule_base {
 
         // Don't use the 'proper' field name of 'password' since that get's
         // Firefox's password auto-complete over-excited.
-        $mform->addElement('passwordunmask', 'quizpassword',
+        $mform->addElement('password', 'quizpassword',
                 get_string('quizpassword', 'quizaccess_password'), ['autofocus' => 'true']);
     }
 
