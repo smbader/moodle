@@ -69,7 +69,7 @@ class renderer extends plugin_renderer_base {
         );
         $sorttable->set_label(get_string('activityorder', 'report_progress'));
         return \html_writer::div($this->output->render($sorttable),
-                'activity-order-selector include-activity-selector d-inline-block');
+                'activity-order-selector include-activity-selector d-inline-block mr-3');
     }
 
     /**
@@ -132,5 +132,29 @@ class renderer extends plugin_renderer_base {
         $downloadhtml .= html_writer::end_tag('ul');
 
         return $downloadhtml;
+    }
+
+    /**
+     * Render students per page single select box.
+     *
+     * @param \moodle_url $url The base url.
+     * @param int $studentsperpage The current selected option.
+     * @return string HTML
+     * @throws \coding_exception
+     */
+    public function render_students_per_page_select(\moodle_url $url, int $studentsperpage): string {
+        $studentsperpageurl = fullclone($url);
+        $studentsperpageurl->remove_params(['studentsperpage']);
+        // Should also reset the page parameter when switching to a different number of students per page.
+        $studentsperpageurl->remove_params(['page']);
+        // Other than the regular options, add the option of "All" with a big enough number (for most cases).
+        $options = [25 => '25', 50 => '50', 100 => '100', 9999 => "All"];
+        $sorttable = new single_select(
+            $studentsperpageurl, 'studentsperpage',
+            $options, $studentsperpage, null, 'student-per-page-select-report'
+        );
+        $sorttable->set_label(get_string('studentsperpage', 'report_progress'));
+        return \html_writer::div($this->output->render($sorttable),
+            'students-per-page-selector include-students-per-page-selector d-inline-block mr-3');
     }
 }

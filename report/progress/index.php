@@ -54,6 +54,7 @@ $groupid = optional_param('group', 0, PARAM_INT);
 $activityinclude = optional_param('activityinclude', 'all', PARAM_TEXT);
 $activityorder = optional_param('activityorder', 'orderincourse', PARAM_TEXT);
 $activitysection = optional_param('activitysection', -1, PARAM_INT);
+$studentsperpage = optional_param('studentsperpage', 25, PARAM_INT);  // Default number of students per page is 25
 
 // Whether to show extra user identity information
 $userfields = \core_user\fields::for_identity($context);
@@ -97,6 +98,9 @@ if ($activityorder !== '') {
 }
 if ($activitysection !== '') {
     $url->param('activitysection', $activitysection);
+}
+if ($studentsperpage !== '') {
+    $url->param('studentsperpage', $studentsperpage);
 }
 
 $PAGE->set_url($url);
@@ -167,8 +171,8 @@ if ($total) {
         $where_params,
         $group,
         $firstnamesort ? 'u.firstname ASC, u.lastname ASC' : 'u.lastname ASC, u.firstname ASC',
-        $csv ? 0 : helper::COMPLETION_REPORT_PAGE,
-        $csv ? 0 : $page * helper::COMPLETION_REPORT_PAGE,
+        $csv ? 0 : $studentsperpage,
+        $csv ? 0 : $page * $studentsperpage,
         $context
     );
 }
@@ -213,6 +217,7 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
     // Display activity order options.
     echo $output->render_activity_order_select($url, $activityorder);
 
+
     // Display section selector.
     $modinfo = get_fast_modinfo($course);
     $sections = [];
@@ -228,6 +233,9 @@ if ($csv && $grandtotal && count($activities)>0) { // Only show CSV if there are
         $sections[$sectionnum] = $sectionname;
     }
     echo $output->render_activity_section_select($url, $activitysection, $sections);
+
+    // Display student per page options.
+    echo $output->render_students_per_page_select($url, $studentsperpage);
 }
 
 if (count($activities)==0) {
@@ -262,7 +270,7 @@ $initialsbarurl->remove_params('page');
 
 $pagingbar .= $OUTPUT->initials_bar($sifirst, 'firstinitial mt-2', get_string('firstname'), $prefixfirst, $initialsbarurl);
 $pagingbar .= $OUTPUT->initials_bar($silast, 'lastinitial', get_string('lastname'), $prefixlast, $initialsbarurl);
-$pagingbar .= $OUTPUT->paging_bar($total, $page, helper::COMPLETION_REPORT_PAGE, $url);
+$pagingbar .= $OUTPUT->paging_bar($total, $page, $studentsperpage, $url);
 
 // Okay, let's draw the table of progress info,
 
