@@ -661,7 +661,7 @@ class grade_report_grader extends grade_report {
         $showuserimage = $this->get_pref('showuserimage');
         $viewfullnames = has_capability('moodle/site:viewfullnames', $this->context);
 
-        $extrafields = \core_user\fields::get_identity_fields($this->context);
+        $extrafields = [];
 
         $arrows = $this->get_sort_arrows($extrafields);
 
