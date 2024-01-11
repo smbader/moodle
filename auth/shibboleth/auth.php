@@ -80,6 +80,12 @@ class auth_plugin_shibboleth extends auth_plugin_base {
                 }
             }
 
+            // Check if username domain is valid for this auth type
+            $userdomain = explode('@', $username);
+            if ($userdomain[1] !== 'ncsu.edu') {
+                return false;
+            }
+            
             // Set shibboleth session ID for logout
             $SESSION->shibboleth_session_id  = $sessionkey;
 
