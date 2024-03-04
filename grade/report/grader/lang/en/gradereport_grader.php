@@ -48,6 +48,7 @@ $string['privacy:metadata:preference:grade_report_showuserimage'] = 'Whether to 
 $string['privacy:metadata:preference:grade_report_studentsperpage'] = 'The number of students displayed per page in the grader report';
 $string['privacy:request:preference:grade_report_grader_collapsed_categories'] = 'You have some gradebook categories collapsed in the "{$a->name}" course';
 $string['reopencolumn'] = 'Expand column {$a}';
+$string['savegradessuccess'] = 'Grades were successfully saved.';
 $string['summarygrader'] = 'A table with the names of students in the first column, with assessable activities grouped by course and category across the top.';
 $string['useractivitygrade'] = '{$a} grade';
 $string['overriddengrade'] = 'Overridden grade';

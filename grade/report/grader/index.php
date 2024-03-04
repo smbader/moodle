@@ -168,6 +168,13 @@ $isediting = has_capability('moodle/grade:edit', $context) && isset($USER->editi
 if ($isediting && ($data = data_submitted()) && confirm_sesskey()) {
     // Processing posted grades here.
     $warnings = $report->process_data($data);
+    if (empty($warnings)) {
+        // Notify the user of the success result if there is no warning
+        \core\notification::add(
+            get_string('savegradessuccess', 'gradereport_grader'),
+            \core\notification::SUCCESS
+        );
+    }
 }
 
 // Final grades MUST be loaded after the processing.
@@ -176,7 +183,7 @@ $report->load_final_grades();
 
 //show warnings if any
 foreach ($warnings as $warning) {
-    echo $OUTPUT->notification($warning);
+    \core\notification::add($warning);
 }
 
 $displayaverages = true;
