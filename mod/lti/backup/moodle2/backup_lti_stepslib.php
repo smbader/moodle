@@ -238,7 +238,7 @@ class backup_lti_activity_structure_step extends backup_activity_structure_step 
         if ($record && $record->course == SITEID) {
             // Site LTI types or registrations are not backed up except for their name (which is visible).
             // Predefined course types can be backed up.
-            $allowedkeys = ['id', 'course', 'name', 'toolproxyid'];
+            $allowedkeys = ['id', 'course', 'name', 'baseurl', 'toolproxyid'];
             foreach ($record as $key => $value) {
                 if (!in_array($key, $allowedkeys)) {
                     $record->$key = null;

@@ -194,11 +194,6 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
             }
         }
 
-        if ($data->course != $this->get_courseid()) {
-            // Site tools are not backed up and are not restored.
-            return null;
-        }
-
         // Now try to find the same type on the current site available in this course.
         // Compare only fields baseurl, course and name, if they are the same we assume it is the same tool.
         // LTI2 is not possible in the course so we add "lt.toolproxyid IS NULL" to the query.
