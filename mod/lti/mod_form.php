@@ -428,11 +428,22 @@ class mod_lti_mod_form extends moodleform_mod {
             $mform->setType('contentitem', PARAM_INT);
         }
 
-        // Included to support deep linking return, but hidden to avoid instructor modification.
-        $mform->addElement('hidden', 'toolurl', '', ['id' => 'id_toolurl']);
-        $mform->setType('toolurl', PARAM_URL);
-        $mform->addElement('hidden', 'securetoolurl', '', ['id' => 'id_securetoolurl']);
-        $mform->setType('securetoolurl', PARAM_URL);
+        if ($tooltype->name == 'WeBWorK') {
+            $mform->addElement('text', 'toolurl', get_string('launch_url', 'lti'), ['size' => '64']);
+            $mform->setType('toolurl', PARAM_URL);
+            $mform->addHelpButton('toolurl', 'launch_url', 'lti');
+
+            $mform->addElement('text', 'securetoolurl', get_string('secure_launch_url', 'lti'), ['size' => '64']);
+            $mform->setType('securetoolurl', PARAM_URL);
+            $mform->setAdvanced('securetoolurl');
+            $mform->addHelpButton('securetoolurl', 'secure_launch_url', 'lti');
+        } else {
+            // Included to support deep linking return, but hidden to avoid instructor modification.
+            $mform->addElement('hidden', 'toolurl', '', ['id' => 'id_toolurl']);
+            $mform->setType('toolurl', PARAM_URL);
+            $mform->addElement('hidden', 'securetoolurl', '', ['id' => 'id_securetoolurl']);
+            $mform->setType('securetoolurl', PARAM_URL);
+        }
 
         $mform->addElement('hidden', 'urlmatchedtypeid', '', ['id' => 'id_urlmatchedtypeid']);
         $mform->setType('urlmatchedtypeid', PARAM_INT);
