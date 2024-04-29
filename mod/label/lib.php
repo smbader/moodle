@@ -172,6 +172,12 @@ function label_get_coursemodule_info($coursemodule) {
         // no filtering hre because this info is cached and filtered later
         $info->content = format_module_intro('label', $label, $coursemodule->id, false);
         $info->name  = $label->name;
+        if ($label->visibleincourseindex == 1) {
+            $info->customdata['visibleincourseindex'] = true;
+        } else {
+            $info->customdata['visibleincourseindex'] = false;
+        }
+
         return $info;
     } else {
         return null;
@@ -411,4 +417,33 @@ function mod_label_core_calendar_provide_event_action(calendar_event $event,
         1,
         true
     );
+}
+
+/**
+ * Sets dynamic information about a course module.
+ * This function is called from cm_info when displaying the module.
+ *
+ * @param cm_info $cm
+ */
+function label_cm_info_dynamic(cm_info $cm) {
+    global $DB;
+
+    if (method_exists($cm, 'override_customdata')) {
+        $moduleinstance = $DB->get_record('label', array('id' => $cm->instance), '*', MUST_EXIST);
+        $cm->override_customdata('visibleincourseindex', label_get_visible_in_course_index($moduleinstance));
+    }
+}
+
+/**
+ * Get the status of whether the label is visible in course index.
+ *
+ * @param object $label
+ * @return bool
+ */
+function label_get_visible_in_course_index($label) {
+    if ($label->visibleincourseindex == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }

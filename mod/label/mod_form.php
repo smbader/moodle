@@ -54,6 +54,11 @@ class mod_label_mod_form extends moodleform_mod {
         $mform->addElement('hidden', 'showdescription', 1);
         $mform->setType('showdescription', PARAM_INT);
 
+        // Show options to display in the course index or not.
+        $mform->addElement('selectyesno', 'visibleincourseindex', get_string('visibleincourseindex', 'label'));
+        $mform->addHelpButton('visibleincourseindex', 'visibleincourseindex', 'label');
+        $mform->setDefault('visibleincourseindex', 1);
+
         $this->standard_coursemodule_elements();
 
 //-------------------------------------------------------------------------------

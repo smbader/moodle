@@ -60,3 +60,5 @@ $string['privacy:metadata'] = 'The Text and media area plugin does not store any
 $string['pluginadministration'] = 'Text and media area administration';
 $string['pluginname'] = 'Text and media area';
 $string['search:activity'] = 'Text and media area';
+$string['visibleincourseindex'] = 'Visible in course index';
+$string['visibleincourseindex_help'] = 'Determine if this text and media area is visible to students in the course index drawer on the left.';

@@ -85,6 +85,7 @@ class cm implements renderable {
             'groupmode' => $cm->groupmode,
             'module' => $cm->modname,
             'plugin' => 'mod_' . $cm->modname,
+            'invisibleincourseindex' => $this->get_invisible_in_course_index(),
             // Activities with delegate section has some restriction to prevent structure loops.
             'hasdelegatedsection' => !empty($delegatedsectioninfo),
         ];
@@ -148,5 +149,21 @@ class cm implements renderable {
         }
         // Regular users can only see restrictions if apply to them.
         return false;
+    }
+
+    /**
+     * Return if the activity is invisible in course index, this only applies to mod_label so far.
+     *
+     * @return bool True if the activity is invisible in course index, false if visible, null if not applicable.
+     */
+    protected function get_invisible_in_course_index() {
+        $cm = $this->cm;
+
+        if (is_array($cm->customdata) && isset($cm->customdata['visibleincourseindex'])) {
+            // Mark the invisible items to be true, so that it is easier to handle the display in mustache file.
+            return !$cm->customdata['visibleincourseindex'];
+        } else {
+            return null;
+        }
     }
 }

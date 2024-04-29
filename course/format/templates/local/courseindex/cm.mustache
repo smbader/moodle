@@ -29,20 +29,22 @@
         "uniqid": "0",
         "accessvisible": 1,
         "hascmrestrictions": 0,
-        "indent": 1
+        "indent": 1,
+        "visibleincourseindex": true
     }
 }}
 <li class="courseindex-item
         {{#isactive}}active{{/isactive}}
         {{#hascmrestrictions}}restrictions{{/hascmrestrictions}}
         {{^accessvisible}}dimmed{{/accessvisible}}
-        d-flex
-        {{#indent}} indented {{/indent}}
+        {{^invisibleincourseindex}}d-flex{{/invisibleincourseindex}}
+        {{#indent}} indented {{/indent}}"
         {{#hasdelegatedsection}}py-0{{/hasdelegatedsection}}"
     id="course-index-cm-{{id}}"
     data-for="cm"
     data-id="{{id}}"
     role="treeitem"
+    {{#invisibleincourseindex}}hidden{{/invisibleincourseindex}}
 >
     {{^hasdelegatedsection}}
         <span class="completioninfo" data-for="cm_completion" data-value="NaN"></span>
