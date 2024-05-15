@@ -32385,6 +32385,11 @@ body.path-question-type .fitem .col-form-label.sr-only:not(legend):not([for=id_c
   color: black;
 }
 
+.que .formulation.outlined {
+  background-color: unset;
+  border: 4px solid #b8dce2;
+}
+
 .que.multichoice .answer div.r0 .icon.fa-check,
 .que.multichoice .answer div.r1 .icon.fa-check,
 .que.multichoice .answer div.r0 .icon.fa-remove,

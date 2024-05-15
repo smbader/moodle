@@ -922,6 +922,18 @@ function quiz_get_user_image_options() {
 }
 
 /**
+ * Returns an array of styles for the quiz question container.
+ *
+ * @return array string => lang string the options for the styles for the quiz question container.
+ */
+function quiz_get_question_container_styles() {
+    return [
+        QUIZ_QUESTION_CONTAINER_DEFAULT => get_string('questioncontainerdefault', 'quiz'),
+        QUIZ_QUESTION_CONTAINER_OUTLINE => get_string('questioncontaineroutline', 'quiz'),
+    ];
+}
+
+/**
  * Return an user's timeclose for all quizzes in a course, hereby taking into account group and user overrides.
  *
  * @param int $courseid the course id.

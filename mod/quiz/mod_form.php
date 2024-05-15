@@ -236,6 +236,11 @@ class mod_quiz_mod_form extends moodleform_mod {
         // -------------------------------------------------------------------------------
         $mform->addElement('header', 'display', get_string('appearance'));
 
+        // Question container style.
+        $mform->addElement('select', 'questioncontainerstyle', get_string('questioncontainerstyle', 'quiz'),
+            quiz_get_question_container_styles());
+        $mform->addHelpButton('questioncontainerstyle', 'questioncontainerstyle', 'quiz');
+
         // Show user picture.
         $mform->addElement('select', 'showuserpicture', get_string('showuserpicture', 'quiz'),
                 quiz_get_user_image_options());

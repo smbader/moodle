@@ -91,6 +91,7 @@ class mod_quiz_generator extends testing_module_generator {
             'delay2'                 => 0,
             'showuserpicture'        => 0,
             'showblocks'             => 0,
+            'questioncontainerstyle' => 0,
             'navmethod'              => QUIZ_NAVMETHOD_FREE,
         ];
 

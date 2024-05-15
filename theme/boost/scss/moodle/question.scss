@@ -326,6 +326,11 @@ body.path-question-type {
     @include alert-variant(shift-color($info, $alert-bg-scale), shift-color($info, $alert-border-scale), shift-color($info, $alert-color-scale + 40%)); /* stylelint-disable-line max-line-length */
 }
 
+.que .formulation.outlined {
+    background-color: unset;
+    border: 4px solid theme-color-level('info', $alert-border-level);
+}
+
 .que.multichoice .answer div.r0 .icon.fa-check,
 .que.multichoice .answer div.r1 .icon.fa-check,
 .que.multichoice .answer div.r0 .icon.fa-remove,

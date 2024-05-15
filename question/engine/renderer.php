@@ -70,6 +70,13 @@ class core_question_renderer extends plugin_renderer_base {
             $options->questionidentifier = $this->question_number_text($number);
         }
 
+        // Set css class based on question container setting.
+        if ($options->questioncontainerstyle && $options->questioncontainerstyle === '1') {
+            $qcoutlined = ' outlined';
+        } else {
+            $qcoutlined = '';
+        }
+
         $output = '';
         $output .= html_writer::start_tag('div', array(
             'id' => $qa->get_outer_question_div_unique_id(),
@@ -90,18 +97,18 @@ class core_question_renderer extends plugin_renderer_base {
         $output .= html_writer::tag('div',
                 $this->add_part_heading($qtoutput->formulation_heading(),
                     $this->formulation($qa, $behaviouroutput, $qtoutput, $options)),
-                array('class' => 'formulation clearfix'));
+                array('class' => 'formulation' . $qcoutlined . ' clearfix'));
         $output .= html_writer::nonempty_tag('div',
                 $this->add_part_heading(get_string('feedback', 'question'),
                     $this->outcome($qa, $behaviouroutput, $qtoutput, $options)),
-                array('class' => 'outcome clearfix'));
+                array('class' => 'outcome' . $qcoutlined . ' clearfix'));
         $output .= html_writer::nonempty_tag('div',
                 $this->add_part_heading(get_string('comments', 'question'),
                     $this->manual_comment($qa, $behaviouroutput, $qtoutput, $options)),
-                array('class' => 'comment clearfix'));
+                array('class' => 'comment' . $qcoutlined . ' clearfix'));
         $output .= html_writer::nonempty_tag('div',
                 $this->response_history($qa, $behaviouroutput, $qtoutput, $options),
-                array('class' => 'history clearfix border p-2'));
+                array('class' => 'history' . $qcoutlined . ' clearfix border p-2'));
 
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div');

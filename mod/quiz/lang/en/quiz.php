@@ -762,6 +762,14 @@ $string['questionbank'] = 'from question bank';
 $string['questionbankmanagement'] = 'Question bank management';
 $string['questionbehaviour'] = 'Question behaviour';
 $string['questioncats'] = 'Question categories';
+$string['questioncontainerdefault'] = 'Filled background';
+$string['questioncontaineroutline'] = 'Outlined';
+$string['questioncontainerstyle'] = 'Question container style';
+$string['questioncontainerstyle_help'] = 'This setting specifies the appearance of the container surrounding each question:
+
+**Filled Background:** Each question container is filled with a solid background color. (This is the default setting)
+
+**Outlined:** Each question container is outlined with a solid colored border and no background color.';
 $string['questiondeleted'] = 'This question has been deleted. Please contact your teacher.';
 $string['questiondependencyadd'] = 'No restriction on when question {$a->thisq} can be attempted • Click to change';
 $string['questiondependencyfree'] = 'No restriction on this question';

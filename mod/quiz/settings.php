@@ -188,6 +188,16 @@ if ($ADMIN->fulltree) {
                 $name, '', $default, $forceduring));
     }
 
+    // Question container style.
+    $setting = new admin_setting_configselect('quiz/questioncontainerstyle',
+        get_string('questioncontainerstyle', 'quiz'), get_string('questioncontainerstyle', 'quiz'),
+        QUIZ_QUESTION_CONTAINER_DEFAULT,
+        [QUIZ_QUESTION_CONTAINER_DEFAULT => get_string('questioncontainerdefault', 'quiz'),
+        QUIZ_QUESTION_CONTAINER_OUTLINE => get_string('questioncontaineroutline', 'quiz')]);
+    $setting->set_advanced_flag_options(admin_setting_flag::ENABLED, false);
+    $setting->set_locked_flag_options(admin_setting_flag::ENABLED, false);
+    $quizsettings->add($setting);
+
     // Show the user's picture.
     $setting = new \mod_quiz\admin\user_image_setting('quiz/showuserpicture',
             get_string('showuserpicture', 'quiz'), get_string('configshowuserpicture', 'quiz'),

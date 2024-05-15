@@ -83,6 +83,12 @@ define('QUIZ_NAVMETHOD_SEQ',  'sequential');
 define('QUIZ_EVENT_TYPE_OPEN', 'open');
 define('QUIZ_EVENT_TYPE_CLOSE', 'close');
 
+/**
+ * Quiz question container styles.
+ */
+define('QUIZ_QUESTION_CONTAINER_DEFAULT', 0);
+define('QUIZ_QUESTION_CONTAINER_OUTLINE', 1);
+
 require_once(__DIR__ . '/deprecatedlib.php');
 
 /**

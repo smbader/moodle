@@ -78,6 +78,7 @@ class display_options extends \question_display_options {
         $options->generalfeedback = self::extract($quiz->reviewgeneralfeedback, $when);
         $options->rightanswer = self::extract($quiz->reviewrightanswer, $when);
         $options->overallfeedback = self::extract($quiz->reviewoverallfeedback, $when);
+        $options->questioncontainerstyle = $quiz->questioncontainerstyle;
 
         $options->numpartscorrect = $options->feedback;
         $options->manualcomment = $options->feedback;
