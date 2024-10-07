@@ -429,8 +429,15 @@ class add_item extends dynamic_form {
         // If unset, give the aggregation values a default based on parent aggregation method.
         $defaults = grade_category::get_default_aggregation_coefficient_values($parentcategory->aggregation);
         if (!isset($data->aggregationcoef) || $data->aggregationcoef == '') {
-            $data->aggregationcoef = $defaults['aggregationcoef'];
+            if ($data->aggregationcoef == null) {
+                // If null, then default to 0; null implies an unchecked checkbox
+                $data->aggregationcoef = 0;
+            } else {
+                // If not null, then we assume the checkbox submitted an invalid value
+                $data->aggregationcoef = $defaults['aggregationcoef'];
+            }
         }
+
         if (!isset($data->weightoverride)) {
             $data->weightoverride = $defaults['weightoverride'];
         }
