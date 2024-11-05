@@ -4,3 +4,6 @@
 [submodule "report/rolesmigration"]
 	path = report/rolesmigration
 	url = git@github.ncsu.edu:delta-appsdev/report_rolesmigration.git
+[submodule "mod/customcert"]
+	path = mod/customcert
+	url = git@github.ncsu.edu:delta-appsdev/mod_customcert.git
