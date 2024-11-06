@@ -16,3 +16,6 @@
 [submodule "mod/readaloud"]
 	path = mod/readaloud
 	url = git@github.ncsu.edu:delta-appsdev/mod_readaloud.git
+[submodule "mod/solo"]
+	path = mod/solo
+	url = git@github.ncsu.edu:delta-appsdev/mod_solo.git
