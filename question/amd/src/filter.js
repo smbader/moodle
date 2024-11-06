@@ -72,6 +72,7 @@ export const init = async(
         CATEGORY_VALIDATION_INPUT: 'div[data-filter-type="category"] div.form-autocomplete-input input',
         QUESTION_BANK_WINDOW: '.questionbankwindow',
         SHOW_ALL_LINK: '[data-filteraction="showall"]',
+        SUBCATEGORIES_INPUT: 'input[name=category-subcategories]',
     };
 
     const filterSet = document.querySelector(`#${filterRegionId}`);
@@ -219,8 +220,7 @@ export const init = async(
         }
     };
 
-    // Add listeners for the sorting, paging and clear actions.
-    document.querySelector(SELECTORS.QUESTION_BANK_WINDOW).addEventListener('click', e => {
+    const clickEvent = function(e) {
         const sortableLink = e.target.closest(SELECTORS.SORT_LINK);
         const paginationLink = e.target.closest(SELECTORS.PAGINATION_LINK);
         const clearLink = e.target.closest(Selectors.filterset.actions.resetFilters);
@@ -237,21 +237,18 @@ export const init = async(
             }
             viewData.qpage = 0;
             coreFilter.updateTableFromFilter();
-        }
-        if (paginationLink) {
+        } else if (paginationLink) {
             e.preventDefault();
+            e.stopPropagation();
             const paginationURL = new URL(paginationLink.getAttribute("href"));
             const qpage = paginationURL.searchParams.get('qpage');
             if (paginationURL.search !== null) {
                 viewData.qpage = qpage;
                 coreFilter.updateTableFromFilter();
             }
-        }
-        if (clearLink) {
+        } else if (clearLink) {
             cleanUrlParams();
-        }
-        if (showallLink) {
-
+        } else if (showallLink) {
             e.preventDefault();
 
             // Toggle between showing all and going back to the original qperpage.
@@ -267,7 +264,10 @@ export const init = async(
             viewData.qpage = 0;
             coreFilter.updateTableFromFilter();
         }
-    });
+    };
+
+    // Add listeners for the sorting, paging and clear actions.
+    document.querySelector(SELECTORS.QUESTION_BANK_WINDOW).addEventListener('click', clickEvent, false);
 
     // Run apply filter at page load.
     let initialFilters;
