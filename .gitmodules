@@ -19,3 +19,6 @@
 [submodule "mod/solo"]
 	path = mod/solo
 	url = git@github.ncsu.edu:delta-appsdev/mod_solo.git
+[submodule "question/type/regexp"]
+	path = question/type/regexp
+	url = git@github.ncsu.edu:delta-appsdev/qtype_regexp.git
