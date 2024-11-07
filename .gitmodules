@@ -28,3 +28,6 @@
 [submodule "question/behaviour/regexpadaptivewithhelpnopenalty"]
 	path = question/behaviour/regexpadaptivewithhelpnopenalty
 	url = git@github.ncsu.edu:delta-appsdev/qbehaviour_regexpadaptivewithhelpnopenalty.git
+[submodule "filter/poodll"]
+	path = filter/poodll
+	url = git@github.ncsu.edu:delta-appsdev/filter_poodll.git
