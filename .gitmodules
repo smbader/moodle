@@ -40,3 +40,6 @@
 [submodule "question/type/cloudpoodll"]
 	path = question/type/cloudpoodll
 	url = git@github.ncsu.edu:delta-appsdev/qtype_cloudpoodll.git
+[submodule "mod/checklist"]
+	path = mod/checklist
+	url = git@github.ncsu.edu:delta-appsdev/mod_checklist.git
