@@ -43,3 +43,6 @@
 [submodule "mod/checklist"]
 	path = mod/checklist
 	url = git@github.ncsu.edu:delta-appsdev/mod_checklist.git
+[submodule "course/format/tiles"]
+	path = course/format/tiles
+	url = git@github.ncsu.edu:delta-appsdev/format_tiles.git
