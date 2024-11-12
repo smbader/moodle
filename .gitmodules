@@ -46,3 +46,6 @@
 [submodule "course/format/tiles"]
 	path = course/format/tiles
 	url = git@github.ncsu.edu:delta-appsdev/format_tiles.git
+[submodule "local/instructor_files"]
+	path = local/instructor_files
+	url = git@github.ncsu.edu:delta-appsdev/local_instructor_files.git
