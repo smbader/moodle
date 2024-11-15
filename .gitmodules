@@ -58,3 +58,6 @@
 [submodule "lib/editor/atto/plugins/subtitle"]
 	path = lib/editor/atto/plugins/subtitle
 	url = git@github.ncsu.edu:delta-appsdev/atto_subtitle.git
+[submodule "mod/hotquestion"]
+	path = mod/hotquestion
+	url = git@github.ncsu.edu:delta-appsdev/mod_hotquestion.git
