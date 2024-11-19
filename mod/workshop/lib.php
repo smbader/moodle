@@ -1770,7 +1770,9 @@ function workshop_calendar_update(stdClass $workshop, $cmid) {
  */
 function mod_workshop_core_calendar_provide_event_action(calendar_event $event,
         \core_calendar\action_factory $factory, int $userid = 0) {
-    global $USER;
+    global $CFG, $DB, $USER;
+
+    require_once($CFG->dirroot . '/mod/workshop/locallib.php');
 
     if (!$userid) {
         $userid = $USER->id;
@@ -1780,6 +1782,22 @@ function mod_workshop_core_calendar_provide_event_action(calendar_event $event,
 
     if (!$cm->uservisible) {
         // The module is not visible to the user for any reason.
+        return null;
+    }
+
+    // Get the workshop object.
+    $course = $DB->get_record('course', array('id' => $event->courseid), '*', MUST_EXIST);
+    $workshoprecord = $DB->get_record('workshop', ['id' => intval($cm->instance)]);
+    $workshop = new workshop($workshoprecord, $cm, $course);
+
+    // If user has made a submission and the submission event has passed due date, remove it from dashboard timeline.
+    $usersubmission = $workshop->get_submission_by_author($userid);
+    if ($usersubmission && $event->eventtype == WORKSHOP_EVENT_TYPE_SUBMISSION_CLOSE) {
+        return null;
+    }
+    // If user has no pending assessment and the assessment event has passed the due date, remove it as well.
+    $userassessmenttodo = $workshop->get_pending_assessments_by_reviewer($userid);
+    if (!$userassessmenttodo && $event->eventtype == WORKSHOP_EVENT_TYPE_ASSESSMENT_CLOSE) {
         return null;
     }
 
