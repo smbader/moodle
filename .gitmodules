@@ -67,3 +67,6 @@
 [submodule "blocks/quickmail"]
 	path = blocks/quickmail
 	url = git@github.ncsu.edu:delta-appsdev/block_quickmail.git
+[submodule "lib/editor/atto/plugins/wordcount"]
+	path = lib/editor/atto/plugins/wordcount
+	url = git@github.ncsu.edu:delta-appsdev/atto_wordcount.git
