@@ -79,3 +79,6 @@
 [submodule "mod/scheduler"]
 	path = mod/scheduler
 	url = git@github.ncsu.edu:delta-appsdev/mod_scheduler.git
+[submodule "mod/zoom"]
+	path = mod/zoom
+	url = git@github.ncsu.edu:delta-appsdev/mod_zoom.git
