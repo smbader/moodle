@@ -73,3 +73,6 @@
 [submodule "theme/ncsu"]
 	path = theme/ncsu
 	url = git@github.ncsu.edu:delta-appsdev/theme_ncsu.git
+[submodule "mod/attendance"]
+	path = mod/attendance
+	url = git@github.ncsu.edu:delta-appsdev/mod_attendance.git
