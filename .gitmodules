@@ -91,3 +91,6 @@
 [submodule "report/advancedgrading"]
 	path = report/advancedgrading
 	url = git@github.ncsu.edu:delta-appsdev/report_advancedgrading.git
+[submodule "mod/panoptosubmission"]
+	path = mod/panoptosubmission
+	url = git@github.ncsu.edu:delta-appsdev/mod_panoptosubmission.git
