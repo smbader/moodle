@@ -85,3 +85,6 @@
 [submodule "question/type/matrix"]
 	path = question/type/matrix
 	url = git@github.ncsu.edu:delta-appsdev/qtype_matrix.git
+[submodule "plagiarism/turnitin"]
+	path = plagiarism/turnitin
+	url = git@github.ncsu.edu:delta-appsdev/plagiarism_turnitin.git
