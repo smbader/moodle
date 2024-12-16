@@ -70,3 +70,6 @@
 [submodule "lib/editor/atto/plugins/wordcount"]
 	path = lib/editor/atto/plugins/wordcount
 	url = git@github.ncsu.edu:delta-appsdev/atto_wordcount.git
+[submodule "theme/ncsu"]
+	path = theme/ncsu
+	url = git@github.ncsu.edu:delta-appsdev/theme_ncsu.git
