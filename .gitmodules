@@ -94,3 +94,6 @@
 [submodule "mod/panoptosubmission"]
 	path = mod/panoptosubmission
 	url = git@github.ncsu.edu:delta-appsdev/mod_panoptosubmission.git
+[submodule "blocks/panopto"]
+	path = blocks/panopto
+	url = git@github.ncsu.edu:delta-appsdev/block_panopto.git
