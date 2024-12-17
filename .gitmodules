@@ -106,3 +106,6 @@
 [submodule "mod/wooclap"]
 	path = mod/wooclap
 	url = git@github.ncsu.edu:delta-appsdev/mod_wooclap.git
+[submodule "mod/ncsubook"]
+	path = mod/ncsubook
+	url = git@github.ncsu.edu:delta-appsdev/mod_ncsubook.git
