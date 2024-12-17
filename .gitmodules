@@ -103,3 +103,6 @@
 [submodule "filter/h5p"]
 	path = filter/h5p
 	url = git@github.ncsu.edu:delta-appsdev/filter_h5p.git
+[submodule "mod/wooclap"]
+	path = mod/wooclap
+	url = git@github.ncsu.edu:delta-appsdev/mod_wooclap.git
