@@ -118,3 +118,6 @@
 [submodule "blocks/grade_me"]
 	path = blocks/grade_me
 	url = git@github.ncsu.edu:delta-appsdev/block_grade_me.git
+[submodule "blocks/massaction"]
+	path = blocks/massaction
+	url = git@github.ncsu.edu:delta-appsdev/block_massaction.git
