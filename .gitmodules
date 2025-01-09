@@ -124,3 +124,6 @@
 [submodule "report/editdates"]
 	path = report/editdates
 	url = git@github.ncsu.edu:delta-appsdev/report_editdates.git
+[submodule "local/moreaccessible"]
+	path = local/moreaccessible
+	url = git@github.ncsu.edu:delta-appsdev/local_moreaccessible.git
