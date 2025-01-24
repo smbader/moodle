@@ -151,3 +151,7 @@
 	path = lib/editor/atto/plugins/bflink
 	url = git@github.ncsu.edu:delta-appsdev/atto_bflink.git
 	branch = main45
+[submodule "lib/editor/atto/plugins/bfimage"]
+	path = lib/editor/atto/plugins/bfimage
+	url = git@github.ncsu.edu:delta-appsdev/atto_bfimage.git
+	branch = main45
