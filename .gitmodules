@@ -147,3 +147,7 @@
 	path = blocks/bfmanager
 	url = git@github.ncsu.edu:delta-appsdev/block_bfmanager.git
 	branch = main45
+[submodule "lib/editor/atto/plugins/bflink"]
+	path = lib/editor/atto/plugins/bflink
+	url = git@github.ncsu.edu:delta-appsdev/atto_bflink.git
+	branch = main45
