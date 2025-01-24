@@ -139,3 +139,7 @@
 	path = local/bfaltformat
 	url = git@github.ncsu.edu:delta-appsdev/local_bfaltformat.git
 	branch = main45
+[submodule "filter/bfurltolink"]
+	path = filter/bfurltolink
+	url = git@github.ncsu.edu:delta-appsdev/filter_bfurltolink.git
+	branch = main45
