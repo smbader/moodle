@@ -155,3 +155,7 @@
 	path = lib/editor/atto/plugins/bfimage
 	url = git@github.ncsu.edu:delta-appsdev/atto_bfimage.git
 	branch = main45
+[submodule "report/editlicence"]
+	path = report/editlicence
+	url = git@github.ncsu.edu:delta-appsdev/report_editlicence.git
+	branch = main45
