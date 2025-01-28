@@ -6470,9 +6470,22 @@ function mod_forum_core_calendar_provide_event_action(calendar_event $event,
         return null;
     }
 
+    // Search for forums the user has posted in (within the same course as this event).
+    $user = $DB->get_record("user", array("id" => $userid), '*', MUST_EXIST);
+    $forum = $DB->get_record('forum', array('id' => $cm->instance));
+    $userpostedforum = forum_get_forums_user_posted_in($user, [$event->courseid]);
+
+    // If user has posted in a forum, remove the event from dashboard timeline.
+    if (!empty($userpostedforum)) {
+        foreach ($userpostedforum as $item) {
+            if ($item->id == $forum->id) {
+                return null;
+            }
+        }
+    }
+
     // Get action itemcount.
     $itemcount = 0;
-    $forum = $DB->get_record('forum', array('id' => $cm->instance));
     $postcountsql = "
                 SELECT
                     COUNT(1)
