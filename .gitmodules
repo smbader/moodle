@@ -171,3 +171,6 @@
 [submodule "lib/editor/tiny/plugins/fontcolor"]
 	path = lib/editor/tiny/plugins/fontcolor
 	url = git@github.ncsu.edu:delta-appsdev/tiny_fontcolor.git
+[submodule "lib/editor/tiny/plugins/poodll"]
+	path = lib/editor/tiny/plugins/poodll
+	url = git@github.ncsu.edu:delta-appsdev/tiny_poodll.git
