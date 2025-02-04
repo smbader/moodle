@@ -165,3 +165,6 @@
 [submodule "auth/shibbolethea"]
 	path = auth/shibbolethea
 	url = git@github.ncsu.edu:delta-appsdev/auth_shibbolethea.git
+[submodule "local/integrations"]
+	path = local/integrations
+	url = git@github.ncsu.edu:delta-appsdev/local_integrations.git
