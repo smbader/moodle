@@ -162,3 +162,6 @@
 [submodule "local/coursecopier"]
 	path = local/coursecopier
 	url = git@github.ncsu.edu:delta-appsdev/local_coursecopier.git
+[submodule "auth/shibbolethea"]
+	path = auth/shibbolethea
+	url = git@github.ncsu.edu:delta-appsdev/auth_shibbolethea.git
