@@ -168,3 +168,6 @@
 [submodule "local/integrations"]
 	path = local/integrations
 	url = git@github.ncsu.edu:delta-appsdev/local_integrations.git
+[submodule "lib/editor/tiny/plugins/fontcolor"]
+	path = lib/editor/tiny/plugins/fontcolor
+	url = git@github.ncsu.edu:delta-appsdev/tiny_fontcolor.git
