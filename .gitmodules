@@ -174,3 +174,6 @@
 [submodule "lib/editor/tiny/plugins/poodll"]
 	path = lib/editor/tiny/plugins/poodll
 	url = git@github.ncsu.edu:delta-appsdev/tiny_poodll.git
+[submodule "lib/editor/tiny/plugins/panoptoltibutton"]
+	path = lib/editor/tiny/plugins/panoptoltibutton
+	url = git@github.ncsu.edu:delta-appsdev/tiny_panoptoltibutton.git
