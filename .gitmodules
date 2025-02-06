@@ -180,3 +180,6 @@
 [submodule "mod/quiz/report/answersheets"]
 	path = mod/quiz/report/answersheets
 	url = git@github.ncsu.edu:delta-appsdev/quiz_answersheets.git
+[submodule "mod/peerwork"]
+	path = mod/peerwork
+	url = git@github.ncsu.edu:delta-appsdev/mod_peerwork.git
