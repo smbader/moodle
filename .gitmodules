@@ -183,3 +183,6 @@
 [submodule "mod/peerwork"]
 	path = mod/peerwork
 	url = git@github.ncsu.edu:delta-appsdev/mod_peerwork.git
+[submodule "mod/quiz/report/downloadsubmissions"]
+	path = mod/quiz/report/downloadsubmissions
+	url = git@github.ncsu.edu:delta-appsdev/quiz_downloadsubmissions.git
