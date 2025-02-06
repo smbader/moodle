@@ -186,3 +186,6 @@
 [submodule "mod/quiz/report/downloadsubmissions"]
 	path = mod/quiz/report/downloadsubmissions
 	url = git@github.ncsu.edu:delta-appsdev/quiz_downloadsubmissions.git
+[submodule "report/edittextmedia"]
+	path = report/edittextmedia
+	url = git@github.ncsu.edu:delta-appsdev/report_edittextmedia.git
