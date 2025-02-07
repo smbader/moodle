@@ -189,3 +189,6 @@
 [submodule "report/edittextmedia"]
 	path = report/edittextmedia
 	url = git@github.ncsu.edu:delta-appsdev/report_edittextmedia.git
+[submodule "report/arenotification"]
+	path = report/arenotification
+	url = git@github.ncsu.edu:delta-appsdev/report_arenotification.git
