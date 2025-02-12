@@ -195,3 +195,6 @@
 [submodule "blocks/managedcontent"]
 	path = blocks/managedcontent
 	url = git@github.ncsu.edu:delta-appsdev/block_managedcontent.git
+[submodule "local/reporter"]
+	path = local/reporter
+	url = git@github.ncsu.edu:delta-appsdev/local_reporter.git
