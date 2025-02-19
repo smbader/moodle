@@ -132,6 +132,9 @@ class grade_export_xml extends grade_export {
                     fwrite($handle,  "\t\t<score>$gradestr</score>\n");
                 }
 
+                $recievedstr = $this->format_timemodified($grade);
+                fwrite($handle,  "\t\t<daterecieved>$recievedstr</daterecieved>\n");
+
                 if ($this->export_feedback) {
                     $feedbackstr = $this->format_feedback($userdata->feedbacks[$itemid], $grade);
                     fwrite($handle,  "\t\t<feedback>$feedbackstr</feedback>\n");

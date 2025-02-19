@@ -308,6 +308,20 @@ abstract class grade_export {
     }
 
     /**
+     * Returns formatted grade time modified
+     * @param object $grade instance of grade_grade class
+     * @param object $timemodified time modified 
+     * @return string
+     */
+    public function format_timemodified($grade, $timemodified = null) {
+        if (!empty($grade)) {
+            $timemodified = date("n/j/Y G:i", $grade->timemodified);
+        }
+
+        return $timemodified;
+    }
+
+    /**
      * Implemented by child class
      */
     abstract public function print_grades();

@@ -77,6 +77,10 @@ class grade_export_txt extends grade_export {
             foreach ($this->displaytype as $gradedisplayname => $gradedisplayconst) {
                 $exporttitle[] = $this->format_column_name($grade_item, false, $gradedisplayname);
             }
+
+            // Grade date recieved.
+            $exporttitle[] = get_string('gradedaterecieved', 'gradeexport_txt');
+            
             if ($this->export_feedback) {
                 $exporttitle[] = $this->format_column_name($grade_item, true);
             }
@@ -113,6 +117,9 @@ class grade_export_txt extends grade_export {
                 foreach ($this->displaytype as $gradedisplayconst) {
                     $exportdata[] = $this->format_grade($grade, $gradedisplayconst);
                 }
+
+                // Date grade recieved.
+                $exportdata[] = $this->format_timemodified($grade);                
 
                 if ($this->export_feedback) {
                     $exportdata[] = $this->format_feedback($userdata->feedbacks[$itemid], $grade);

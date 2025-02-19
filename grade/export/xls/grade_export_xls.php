@@ -76,11 +76,16 @@ class grade_export_xls extends grade_export {
             foreach ($this->displaytype as $gradedisplayname => $gradedisplayconst) {
                 $myxls->write_string(0, $pos++, $this->format_column_name($grade_item, false, $gradedisplayname));
             }
+
+            // Grade date recieved column header.
+            $myxls->write_string(0, $pos++, get_string('gradedaterecieved', 'gradeexport_xls'));              
+
             // Add a column_feedback column
             if ($this->export_feedback) {
                 $myxls->write_string(0, $pos++, $this->format_column_name($grade_item, true));
             }
         }
+
         // Last downloaded column header.
         $myxls->write_string(0, $pos++, get_string('timeexported', 'gradeexport_xls'));
 
@@ -116,6 +121,8 @@ class grade_export_xls extends grade_export {
                     } else {
                         $myxls->write_string($i, $j++, $gradestr);
                     }
+                    // Date grade recieved.
+                    $myxls->write_string($i, $j++, $this->format_timemodified($grade));
                 }
                 // writing feedback if requested
                 if ($this->export_feedback) {
