@@ -1466,6 +1466,16 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2024100701.02);
     }
 
+    // Add external function for grading template preview modal
+    if ($oldversion < 2024100701.07) {
+        $gradingexternalfunction = new stdClass();
+        $gradingexternalfunction->name = 'get_grading_template_preview';
+        $gradingexternalfunction->classname = 'core_grading_external';
+        $DB->insert_record('external_functions', $gradingexternalfunction);
+
+        upgrade_main_savepoint(true, 2024100701.07);
+    }
+
     if ($oldversion < 2024100702.03) {
         // Due to a code restriction on the upgrade, invoking any core functions is not permitted.
         // Thus, to acquire the list of provider plugins,

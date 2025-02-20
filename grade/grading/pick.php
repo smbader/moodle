@@ -62,6 +62,7 @@ $PAGE->set_url(new moodle_url('/grade/grading/pick.php', array('targetid' => $ta
 navigation_node::override_active_url($targetmanager->get_management_url());
 $PAGE->set_title(get_string('gradingmanagement', 'core_grading'));
 $PAGE->set_heading(get_string('gradingmanagement', 'core_grading'));
+$PAGE->requires->js_call_amd('core_grades/template_preview', 'init');
 $output = $PAGE->get_renderer('core_grading');
 
 // process picking a template
@@ -69,13 +70,7 @@ if ($pick) {
     $sourceid = $DB->get_field('grading_definitions', 'areaid', array('id' => $pick), MUST_EXIST);
     $sourcemanager = get_grading_manager($sourceid);
     $sourcecontroller = $sourcemanager->get_controller($method);
-    if (!$sourcecontroller->is_shared_template() and !$sourcecontroller->is_own_form()) {
-        // note that we don't actually check whether the user has still the capability
-        // moodle/grade:managegradingforms in the source area. so when users loose
-        // their teacher role in a course, they can't access the course but they can
-        // still copy the forms they have created there.
-        throw new moodle_exception('attempt_to_pick_others_form', 'core_grading');
-    }
+
     if (!$sourcecontroller->is_form_defined()) {
         throw new moodle_exception('form_definition_mismatch', 'core_grading');
     }
@@ -131,21 +126,70 @@ if ($remove) {
     }
 }
 
-$searchform = new grading_search_template_form($PAGE->url, null, 'GET', '', array('class' => 'templatesearchform'));
+$searchfilter = new grading_search_template_form($PAGE->url, null, 'GET', '', array('class' => 'templatesearchform'));
 
-if ($searchdata = $searchform->get_data()) {
+if ($searchdata = $searchfilter->get_data()) {
     $tokens = grading_manager::tokenize($searchdata->needle);
     $includeownforms = (!empty($searchdata->mode));
+    if (!empty($searchdata->course)) {
+        $searchincourse = $searchdata->course;
+    }
+    if (!empty($searchdata->activity_type)) {
+        $searchinactivitytype = $searchdata->activity_type;
+    }
+    if (!empty($searchdata->to_date)) {
+        $searchtodate = $searchdata->to_date;
+    }
+    if (!empty($searchdata->from_date)) {
+        $searchfromdate = $searchdata->from_date;
+    }
+    if (!empty($searchdata->enable_from_date)) {
+        $enablefromdate = true;
+    }
 } else {
     $tokens = array();
     $includeownforms = false;
+    $searchincourse = null;
+    $searchinactivitytype = null;
+    $searchtodate = null;
+    $searchfromdate = null;
+    $enablefromdate = false;
 }
 
+echo $output->header();
+$searchfilter->display();
+
+$found = 0;
+$user_courses = array();
+
+$users_courses = enrol_get_users_courses($USER->id, true, 'id');
+foreach ($users_courses as $user_course) {
+    if (has_capability('enrol/self:manage', context_course::instance($user_course->id))) {
+        $user_courses[] = $user_course->id;
+    }
+}
+
+$instructor_courses = implode(',', $user_courses);
+
+/** Begin $table */
+$table = new flexible_table('grading_templates');
+$table->define_baseurl($PAGE->url);
+$table->define_columns(array('name', 'activity', 'course', 'usercreated', 'timemodified',''));
+$table->define_headers(array('Title','Activity', 'Course','Created By','Date modified',''));
+$table->set_attribute('class', 'table');
+$table->set_attribute('id', 'templates');
+$table->sortable(true, 'title');
+$table->no_sorting('course');
+$table->no_sorting('activity');
+$table->setup();
+
 // construct the SQL to find all matching templates
-$sql = "SELECT DISTINCT gd.id, gd.areaid, gd.name, gd.usercreated
+$sql = "SELECT DISTINCT gd.id, gd.areaid, gd.name, gd.usercreated, gd.timemodified, cm.instance AS cminst, m.name AS mname
           FROM {grading_definitions} gd
           JOIN {grading_areas} ga ON (gd.areaid = ga.id)
-          JOIN {context} cx ON (ga.contextid = cx.id)";
+          JOIN {context} cx ON (ga.contextid = cx.id)
+          JOIN {course_modules} cm ON (cx.instanceid = cm.id)
+          JOIN mdl_modules m ON (m.id = cm.module)";
 // join method-specific tables from the plugin scope
 $sql .= $targetcontrollerclass::sql_search_from_tables('gd.id');
 
@@ -153,18 +197,27 @@ $sql .= " WHERE gd.method = ?";
 
 $params = array($method);
 
-if (!$includeownforms) {
-    // search for public templates only
-    $sql .= " AND ga.contextid = ? AND ga.component = 'core_grading'";
-    $params[] = context_system::instance()->id;
+$sql .= " AND gd.status = ?";
 
-} else {
-    // search both templates and own forms in other areas
-    $sql .= " AND ((ga.contextid = ? AND ga.component = 'core_grading')
-                   OR (gd.usercreated = ? AND gd.status = ?))";
-    $params = array_merge($params,  array(context_system::instance()->id, $USER->id,
-        gradingform_controller::DEFINITION_STATUS_READY));
+if (!empty($searchtodate)) {
+    $sql .= " AND gd.timemodified <= ". $searchtodate;
 }
+
+if (!empty($searchfromdate) && !empty($enablefromdate)) {
+    $sql .= " AND gd.timemodified >= ". $searchfromdate;
+}
+
+if (!empty($searchincourse)) {
+    $sql .= " AND cm.course = " . $searchincourse;
+} else {
+    $sql .= " AND cm.course IN (" . $instructor_courses . ")";
+}
+
+if (!empty($searchinactivitytype)) {
+    $sql .= " AND ga.areaname = '" . $searchinactivitytype . "'";
+}
+
+$params = array_merge($params, array(gradingform_controller::DEFINITION_STATUS_READY));
 
 if ($tokens) {
     $subsql = array();
@@ -191,14 +244,39 @@ if ($tokens) {
     $sql .= " AND ((" . join(")\n OR (", $subsql) . "))";
 }
 
-$sql .= " ORDER BY gd.name";
+if ($table->get_sql_sort()) {
+    $sql .= " ORDER BY " . $table->get_sql_sort();
+}
 
 $rs = $DB->get_recordset_sql($sql, $params);
 
-echo $output->header();
-$searchform->display();
+foreach ($rs as $template) {
+    $found++;
+    $manager = get_grading_manager($template->areaid);
+    $controller = $manager->get_controller($method);
+    $title = $template->name;
+    $activity_type = $manager->get_area_title();
+    $module_type = $template->mname;
+    $course = $manager->get_component_course_name();
+    $date = userdate($template->timemodified);
 
-$found = 0;
+    $use_template_btn = html_writer::link(new moodle_url($PAGE->url, array('pick' => $template->id)),
+        get_string('templatepick', 'core_grading'), array('class' => 'btn btn-primary'));
+
+    $mypreview = html_writer::link('', '', array('class' => 'fa fa-search template-preview', 'alt' => 'Preview',
+        'title' => 'Preview', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'data-action' => 'show-template',
+        'data-id' => $template->id, 'target-id' => $targetid, 'area-id' => $template->areaid, 'parent-url' => $PAGE->url));
+
+    $usercreated = core_user::get_fullname(core_user::get_user($template->usercreated));
+
+    $activity = $DB->get_record($template->mname, ['id' => $template->cminst]);
+
+    $table->add_data(array($mypreview . ' ' . $title, $activity->name, $course, $usercreated, $date, $use_template_btn));
+    $table->get_sql_sort(); // should be called before SQL and after table is set up
+}
+$table->finish_output();
+
+// Use the following as the template for the modal display of each result
 foreach ($rs as $template) {
     $found++;
     $out = '';
@@ -225,8 +303,6 @@ foreach ($rs as $template) {
         $actions[] = $output->pick_action_icon(new moodle_url($PAGE->url, array('pick' => $template->id)),
             get_string('templatepick', 'core_grading'), 'i/valid', 'pick template');
         if ($canmanage or ($canshare and ($template->usercreated == $USER->id))) {
-            //$actions[] = $output->pick_action_icon(new moodle_url($PAGE->url, array('edit' => $template->id)),
-            //    get_string('templateedit', 'core_grading'), 'i/edit', 'edit');
             $actions[] = $output->pick_action_icon(new moodle_url($PAGE->url, array('remove' => $template->id)),
                 get_string('templatedelete', 'core_grading'), 't/delete', 'remove');
         }
@@ -241,7 +317,7 @@ foreach ($rs as $template) {
     // in the preview that were actually searched. to make our life easier, we
     // simply highlight the tokens everywhere they appear, even if that exact
     // piece was not searched.
-    echo highlight(join(' ', $tokens), $out);
+    echo highlight(implode(' ', $tokens), $out);
 }
 $rs->close();
 

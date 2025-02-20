@@ -49,7 +49,7 @@ class core_grading_external extends external_api {
         return new external_function_parameters(
             array(
                 'cmids' => new external_multiple_structure(
-                        new external_value(PARAM_INT, 'course module id'), '1 or more course module ids'),
+                    new external_value(PARAM_INT, 'course module id'), '1 or more course module ids'),
                 'areaname' => new external_value(PARAM_AREA, 'area name'),
                 'activeonly' => new external_value(PARAM_BOOL, 'Only the active method', VALUE_DEFAULT, 0)
             )
@@ -475,7 +475,7 @@ class core_grading_external extends external_api {
      */
     public static function save_definitions($areas) {
         $params = self::validate_parameters(self::save_definitions_parameters(),
-                                            array('areas' => $areas));
+            array('areas' => $areas));
 
         foreach ($params['areas'] as $area) {
 
@@ -586,6 +586,80 @@ class core_grading_external extends external_api {
             $result['id'] = 'NEWID'.$number;
         }
         return $result;
+    }
+
+    /**
+     * Describes the parameters for get_grading_template_preview
+     *
+     * @return external_function_parameters
+     */
+    public static function get_grading_template_preview_parameters(): external_function_parameters {
+        return new external_function_parameters (
+            [
+                'targetid' => new external_value(PARAM_INT, 'Target ID', VALUE_REQUIRED),
+                'templateid' => new external_value(PARAM_INT, 'Template ID', VALUE_REQUIRED),
+                'areaid' => new external_value(PARAM_INT, 'Area ID', VALUE_REQUIRED),
+                'parenturl' => new external_value(PARAM_RAW, 'Parent URL', VALUE_REQUIRED),
+            ]
+        );
+    }
+
+    /**
+     * Get data to preview a grading template in a modal
+     *
+     * @param int $targetid
+     * @param int $templateid
+     * @param int $areaid
+     * @param string $parenturl
+     * @return string[]
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws moodle_exception
+     */
+    public static function get_grading_template_preview(int $targetid, int $templateid, int $areaid, string $parenturl) {
+        global $USER, $PAGE, $DB;
+        $template = self::validate_parameters(self::get_grading_template_preview_parameters(),
+            array('targetid' => $targetid,
+                'templateid' => $templateid,
+                'areaid' => $areaid,
+                'parenturl' => $parenturl));
+
+        $out = '';
+        $targetmanager = get_grading_manager($targetid);
+        $method = $targetmanager->get_active_method();
+        $manager = get_grading_manager($areaid);
+        $controller = $manager->get_controller($method);
+
+        if ($controller->is_shared_template()) {
+            $templatetag = html_writer::tag('span', get_string('templatetypeshared', 'core_grading'),
+                array('class' => 'type shared'));
+            $templatesrc  = '';
+        }
+
+        $template = $DB->get_record('grading_definitions', ['id' => $templateid]);
+        $usercreated = core_user::get_fullname(core_user::get_user($template->usercreated));
+        $PAGE->set_context(context_user::instance($USER->id));
+        $output = $PAGE->get_renderer('core_grading');
+        $out .= $output->heading(s($template->name), 2, 'template-name');
+        $out .= $output->container($templatesrc, 'template-source');
+        $out .= $output->container('Template ownership: ' . $usercreated . ' ' . $templatetag, 'template-owner');
+        $out .= $output->box($controller->render_preview($PAGE), 'template-preview');
+
+        $templatedata = $out;
+
+        return [ 'templatedata' => $templatedata ];
+    }
+
+    /**
+     * Describes the get_grading_template_preview return value
+     *
+     * @return external_single_structure
+     */
+    public static function get_grading_template_preview_returns(): external_single_structure {
+        return new external_single_structure([
+            'templatedata' => new external_value(PARAM_RAW, 'Template data'),
+        ]);
     }
 
 }

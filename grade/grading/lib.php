@@ -201,6 +201,34 @@ class grading_manager {
         return $title;
     }
 
+    public function get_component_course_name() {
+
+        $this->ensure_isset(array('context', 'component'));
+
+        if ($this->get_context()->contextlevel == CONTEXT_SYSTEM) {
+            if ($this->get_component() == 'core_grading') {
+                $coursename = ''; // we are in the bank UI
+            } else {
+                throw new coding_exception('Unsupported component at the system context');
+            }
+
+        } else if ($this->get_context()->contextlevel >= CONTEXT_COURSE) {
+            list($context, $course, $cm) = get_context_info_array($this->get_context()->id);
+
+            if ($course && strval($course->fullname) !== '') {
+                $coursename = format_string($course->fullname, true, array('context' => $context));
+            } else {
+                debugging('Gradable areas are currently supported at the course module level only', DEBUG_DEVELOPER);
+                $coursename = $this->get_component();
+            }
+
+        } else {
+            throw new coding_exception('Unsupported gradable area context level');
+        }
+
+        return $coursename;
+    }
+
     /**
      * Returns the localized title of the currently set area
      *

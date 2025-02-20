@@ -1102,6 +1102,14 @@ $functions = array(
         'description' => 'Get grading definitions',
         'type' => 'read',
     ),
+    'core_grading_get_grading_template_preview' => array(
+        'classname' => 'core_grading_external',
+        'methodname' => 'get_grading_template_preview',
+        'description' => 'Get grading template preview',
+        'type' => 'read',
+        'loginrequired' => true,
+        'ajax' => true,
+    ),
     'core_grading_get_gradingform_instances' => array(
         'classname' => 'core_grading_external',
         'methodname' => 'get_gradingform_instances',
