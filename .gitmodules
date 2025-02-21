@@ -201,3 +201,6 @@
 [submodule "local/intellidata"]
 	path = local/intellidata
 	url = git@github.ncsu.edu:delta-appsdev/local_intellidata.git
+[submodule "blocks/deltatestingsvcs"]
+	path = blocks/deltatestingsvcs
+	url = git@github.ncsu.edu:delta-appsdev/block_deltatestingsvcs.git
