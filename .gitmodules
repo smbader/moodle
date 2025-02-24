@@ -207,3 +207,6 @@
 [submodule "blocks/studentsvcs"]
 	path = blocks/studentsvcs
 	url = git@github.ncsu.edu:delta-appsdev/block_studentsvcs.git
+[submodule "mod/microlearning"]
+	path = mod/microlearning
+	url = git@github.ncsu.edu:delta-appsdev/mod_microlearning.git
