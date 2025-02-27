@@ -147,8 +147,30 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
             $this->set_mapping('ltitype', $oldid, $ltitypeid);
         }
 
-        // Add the typeid entry back to LTI module.
-        $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitypeid]);
+        // DELTA
+        // If an LTI 1.3 has moved in from a different server, prepend a description and display in course.
+        if (!$this->task->is_samesite()) {
+            $sql = 'SELECT id, intro FROM {lti} WHERE id = :id';
+            if ($lti = $DB->get_record_sql($sql, ['id' => $this->get_new_parentid('lti')], IGNORE_MULTIPLE)) {
+
+                // Prepend warning to LTI Description Field
+                $intro = '
+<div class="alert alert-danger alert-block">
+    <strong>ACTION NEEDED</strong>: This activity was configured on a previous instance of Moodle. 
+    Please check the content and configuration of this activity.
+</div>' . $lti->intro;
+
+                // Update the description field of the LTI table.
+                $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitypeid, 'intro' => $intro, 'introformat' => 1]);
+
+                // Update Course Module Record to show description field
+                $DB->update_record('course_modules', ['id' => $this->task->get_moduleid(), 'showdescription' => 1]);
+            }
+        } else {
+            // Add the typeid entry back to LTI module.
+            $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitypeid]);
+        }
+
     }
 
     /**
@@ -202,6 +224,13 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
            WHERE ' . $DB->sql_compare_text('baseurl', 255) . ' = ' . $DB->sql_compare_text(':baseurl', 255) . ' AND
                  course = :course AND name = :name AND toolproxyid IS NULL';
         if ($ltitype = $DB->get_record_sql($sql, $params, IGNORE_MULTIPLE)) {
+            $this->set_mapping('ltitype', $data->id, $ltitype->id);
+            return $ltitype->id;
+        }
+
+        // DELTA additional LTI matching
+        $sql = 'SELECT id FROM {lti_types} WHERE course = 1 AND toolproxyid IS NULL AND baseurl LIKE "%:tooldomain%"';
+        if ($ltitype = $DB->get_record_sql($sql, ['tooldomain' => $data->tooldomain], IGNORE_MULTIPLE)) {
             $this->set_mapping('ltitype', $data->id, $ltitype->id);
             return $ltitype->id;
         }
