@@ -222,3 +222,6 @@
 [submodule "filter/gamification"]
 	path = filter/gamification
 	url = git@github.ncsu.edu:delta-appsdev/filter_gamification.git
+[submodule "mod/roadmap"]
+	path = mod/roadmap
+	url = git@github.ncsu.edu:delta-appsdev/mod_roadmap.git
