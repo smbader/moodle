@@ -225,3 +225,6 @@
 [submodule "mod/roadmap"]
 	path = mod/roadmap
 	url = git@github.ncsu.edu:delta-appsdev/mod_roadmap.git
+[submodule "availability/condition/mobileapp"]
+	path = availability/condition/mobileapp
+	url = git@github.ncsu.edu:delta-appsdev/availability_mobileapp.git
