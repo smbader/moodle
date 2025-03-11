@@ -228,3 +228,6 @@
 [submodule "availability/condition/mobileapp"]
 	path = availability/condition/mobileapp
 	url = git@github.ncsu.edu:delta-appsdev/availability_mobileapp.git
+[submodule "mod/turnitintooltwo"]
+	path = mod/turnitintooltwo
+	url = git@github.ncsu.edu:delta-appsdev/mod_turnitintooltwo.git
