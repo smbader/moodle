@@ -81,6 +81,9 @@ class grade_export_form extends moodleform {
             $mform->setExpanded('options', false);
         }
 
+        $mform->addElement('advcheckbox', 'export_gradedate', get_string('exportgradedate', 'grades'));
+        $exportgradedate = isset($CFG->grade_export_exportgradedate) ? $CFG->grade_export_exportgradedate : 0;
+        $mform->setDefault('export_gradedate', $exportgradedate);
         $mform->addElement('advcheckbox', 'export_feedback', get_string('exportfeedback', 'grades'));
         $exportfeedback = isset($CFG->grade_export_exportfeedback) ? $CFG->grade_export_exportfeedback : 0;
         $mform->setDefault('export_feedback', $exportfeedback);

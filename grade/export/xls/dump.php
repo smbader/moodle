@@ -22,6 +22,7 @@ require_once($CFG->dirroot.'/grade/export/xls/grade_export_xls.php');
 $id                 = required_param('id', PARAM_INT);
 $groupid            = optional_param('groupid', 0, PARAM_INT);
 $itemids            = required_param('itemids', PARAM_RAW);
+$exportgradedate    = optional_param('export_gradedate', 0, PARAM_BOOL);
 $exportfeedback     = optional_param('export_feedback', 0, PARAM_BOOL);
 $displaytype        = optional_param('displaytype', $CFG->grade_export_displaytype, PARAM_RAW);
 $decimalpoints      = optional_param('decimalpoints', $CFG->grade_export_decimalpoints, PARAM_INT);
@@ -48,7 +49,7 @@ if (!groups_group_visible($groupid, $COURSE)) {
 }
 
 // Get all url parameters and create an object to simulate a form submission.
-$formdata = grade_export::export_bulk_export_data($id, $itemids, $exportfeedback, $onlyactive, $displaytype,
+$formdata = grade_export::export_bulk_export_data($id, $itemids, $exportgradedate, $exportfeedback, $onlyactive, $displaytype,
         $decimalpoints, null, null, $allusers);
 
 $export = new grade_export_xls($course, $groupid, $formdata);

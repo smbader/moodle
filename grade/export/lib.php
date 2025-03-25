@@ -35,6 +35,7 @@ abstract class grade_export {
     public $columns;     // array of grade_items selected for export
 
     public $export_letters;  // export letters
+    public $export_gradedate; // export grade date received
     public $export_feedback; // export feedback
     public $userkey;         // export using private user key
 
@@ -131,6 +132,7 @@ abstract class grade_export {
             }
         }
 
+        $this->export_gradedate = $export_gradedate;
         $this->export_feedback = $export_feedback;
         $this->userkey         = '';
         $this->previewrows     = false;
@@ -179,6 +181,10 @@ abstract class grade_export {
 
         if (isset($formdata->export_letters)) {
             $this->export_letters = $formdata->export_letters;
+        }
+
+        if (isset($formdata->export_gradedate)) {
+            $this->export_gradedate = $formdata->export_gradedate;
         }
 
         if (isset($formdata->export_feedback)) {
@@ -315,7 +321,11 @@ abstract class grade_export {
      */
     public function format_timemodified($grade, $timemodified = null) {
         if (!empty($grade)) {
-            $timemodified = date("n/j/Y G:i", $grade->timemodified);
+            if(is_numeric($grade->finalgrade)) {
+                $timemodified = date("n/j/Y G:i", $grade->timemodified);
+            }else{
+                $timemodified = "-";
+            }
         }
 
         return $timemodified;
@@ -450,6 +460,7 @@ abstract class grade_export {
                         'groupid'           => $this->groupid,
                         'itemids'           => $itemidsparam,
                         'export_letters'    => $this->export_letters,
+                        'export_gradedate'  => $this->export_gradedate,
                         'export_feedback'   => $this->export_feedback,
                         'updatedgradesonly' => $updatedgradesonly,
                         'decimalpoints'     => $this->decimalpoints,

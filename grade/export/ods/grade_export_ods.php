@@ -77,7 +77,9 @@ class grade_export_ods extends grade_export {
             }
 
             // Grade date recieved column header.
-            $myxls->write_string(0, $pos++, get_string('gradedaterecieved', 'gradeexport_ods'));              
+            if ($this->export_gradedate) {
+                $myxls->write_string(0, $pos++, get_string('gradedaterecieved', 'gradeexport_ods'));   
+            }           
 
             // Add a column_feedback column.
             if ($this->export_feedback) {
@@ -124,7 +126,9 @@ class grade_export_ods extends grade_export {
                 }
 
                 // Date grade recieved.
-                $myxls->write_string($i, $j++, $this->format_timemodified($grade));
+                if ($this->export_gradedate) {
+                    $myxls->write_string($i, $j++, $this->format_timemodified($grade));
+                }
 
                 // writing feedback if requested
                 if ($this->export_feedback) {
