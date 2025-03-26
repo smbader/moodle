@@ -183,7 +183,7 @@ if ($format->show_editor()) {
     $PAGE->set_heading($sectiontitle);
 }
 
-$PAGE->set_secondary_navigation(false);
+$PAGE->set_secondary_navigation(true);
 
 echo $OUTPUT->header();
 
