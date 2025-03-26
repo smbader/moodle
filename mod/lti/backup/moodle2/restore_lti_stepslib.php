@@ -156,8 +156,9 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
                 // Prepend warning to LTI Description Field
                 $intro = '
 <div class="alert alert-danger alert-block">
-    <strong>ACTION NEEDED</strong>: This activity was configured on a previous instance of Moodle. 
-    Please check the content and configuration of this activity.
+    <strong>Instructors</strong>: this tool link is not working because it was copied from a previous academic year.
+    Please re-link it using the steps in the following article:
+    <a href="https://ncsu.service-now.com/delta?id=kb_article_ml&sysparm_article=KB0023113" target="_blank">Re-linking Copied LTI Tools in Moodle</a>.
 </div>' . $lti->intro;
 
                 // Update the description field of the LTI table.
