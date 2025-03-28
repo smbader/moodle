@@ -1477,6 +1477,7 @@ function xmldb_main_upgrade($oldversion) {
     }
 
     if ($oldversion < 2024100702.03) {
+
         // Due to a code restriction on the upgrade, invoking any core functions is not permitted.
         // Thus, to acquire the list of provider plugins,
         // we should extract them from the `config_plugins` database table.
@@ -1494,6 +1495,13 @@ function xmldb_main_upgrade($oldversion) {
                 $DB->execute($sql, ['provider' => $provider, 'providername' => strtolower($providername)]);
             }
         }
+
+        // Changing type of field value on table user_preferences to text.
+        $table = new xmldb_table('user_preferences');
+        $field = new xmldb_field('value', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null, 'name');
+
+        // Launch change of type for field value.
+        $dbman->change_field_type($table, $field);
 
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2024100702.03);
