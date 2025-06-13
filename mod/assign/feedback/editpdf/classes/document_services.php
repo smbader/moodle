@@ -195,7 +195,7 @@ EOD;
                         // PDF File, no conversion required.
                         if ($mimetype === 'application/pdf') {
                             $files[$filename] = $file;
-                        } else if ($plugin->allow_image_conversion() && $mimetype === "image/jpeg") {
+                        } else if ($plugin->allow_image_conversion() && ($mimetype === "image/jpeg" || $mimetype === "image/png")) {
                             // Rotates image based on the EXIF value.
                             list ($rotateddata, $size) = $file->rotate_image();
                             if ($rotateddata) {
