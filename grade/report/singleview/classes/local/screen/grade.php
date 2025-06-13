@@ -398,11 +398,11 @@ class grade extends tablelike implements selectable_items, filterable_items {
 
                 $isscale = ($gradeitem->gradetype == GRADE_TYPE_SCALE);
 
-                $empties = (trim($value) === '' || ($isscale && $value == -1));
+                $empties = (trim((string) $value) === '' || ($isscale && $value == -1));
 
-                if ($filter == 'all' || $empties) {
-                    $data->$varname = ($isscale && empty($insertvalue)) ?
-                        -1 : $insertvalue;
+                if ($filter === 'all' || ($filter === 'blanks' && $empties) || ($filter === 'withgrade' && !$empties)) {
+                    // Update grades based on the filter condition.
+                    $data->$varname = ($isscale && empty($insertvalue)) ? -1 : $insertvalue;
                 }
             }
         }

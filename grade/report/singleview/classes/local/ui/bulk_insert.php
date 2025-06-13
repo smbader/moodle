@@ -104,6 +104,7 @@ class bulk_insert extends element {
             'menuoptions' => [
                 ['value' => 'all', 'name' => get_string('all_grades', 'gradereport_singleview')],
                 ['value' => 'blanks', 'name' => get_string('blanks', 'gradereport_singleview'), 'selected' => true],
+                ['value' => 'withgrade', 'name' => get_string('onlywithgrade', 'gradereport_singleview')],
             ],
             'valuename' => $this->insertname,
             'valuefield' => $text->html()

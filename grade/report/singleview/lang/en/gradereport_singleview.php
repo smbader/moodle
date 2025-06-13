@@ -54,6 +54,7 @@ $string['noscreens'] = 'Could not find a suitable single view screen.';
 $string['gradeitemcannotbeoverridden'] = 'This grade item cannot be overridden.';
 $string['itemsperpage'] = 'Items per page';
 $string['notvalid'] = 'Not a valid Single view screen: {$a}';
+$string['onlywithgrade'] = 'Only students with a grade';
 $string['override'] = 'Override';
 $string['overrideall'] = 'Override all grades';
 $string['overrideallgrades'] = 'Override all';
