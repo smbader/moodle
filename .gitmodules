@@ -237,3 +237,6 @@
 [submodule "lib/editor/tiny/plugins/cloze"]
 	path = lib/editor/tiny/plugins/cloze
 	url = git@github.ncsu.edu:delta-appsdev/tiny_cloze.git
+[submodule "admin/tool/heartbeat"]
+	path = admin/tool/heartbeat
+	url = git@github.ncsu.edu:delta-appsdev/tool_heartbeat.git
