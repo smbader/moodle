@@ -128,7 +128,11 @@ class cm implements named_templatable, renderable {
 
         // Add partial data segments.
         $haspartials = [];
-        $haspartials['cmname'] = $this->add_cm_name_data($data, $output);
+        // Text and media area (mod_label) doesn't need the title and link in course main page,
+        // removing cmname for mod_label will do the trick.
+        if ($mod->modname !== 'label') {
+            $haspartials['cmname'] = $this->add_cm_name_data($data, $output);
+        }
         $haspartials['availability'] = $this->add_availability_data($data, $output);
         $haspartials['alternative'] = $this->add_alternative_content_data($data, $output);
         $haspartials['completion'] = $this->add_completion_data($data, $output);

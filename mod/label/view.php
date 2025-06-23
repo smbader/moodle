@@ -24,6 +24,8 @@
  */
 
 require_once("../../config.php");
+require_once($CFG->dirroot.'/mod/label/lib.php');
+require_once($CFG->libdir.'/completionlib.php');
 
 $id = optional_param('id',0,PARAM_INT);    // Course Module ID, or
 $l = optional_param('l',0,PARAM_INT);     // Label ID
@@ -56,9 +58,24 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
+$context = context_module::instance($cm->id);
+require_capability('mod/label:view', $context);
 
-$url = course_get_url($course, $cm->sectionnum, []);
-$url->set_anchor('module-' . $id);
-redirect($url);
+// Completion and trigger events.
+label_view($label, $course, $cm, $context);
 
+// Set and print header.
+$activityheader = [];
+// Need to empty the description, otherwise the label content will be printed out twice.
+$activityheader['description'] = '';
+$PAGE->set_title($course->shortname.': '.$label->name);
+$PAGE->set_heading($course->fullname);
+$PAGE->activityheader->set_attrs($activityheader);
+echo $OUTPUT->header();
 
+// Set and print content.
+$content = file_rewrite_pluginfile_urls($label->intro, 'pluginfile.php', $context->id, 'mod_label', 'intro', null);
+$formatcontent = format_text($content, FORMAT_MOODLE, ['noclean' => true, 'overflowdiv' => true, 'context' => $context]);
+echo $OUTPUT->box($formatcontent, "generalbox label-content");
+
+echo $OUTPUT->footer();

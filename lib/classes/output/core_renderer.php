@@ -515,14 +515,32 @@ class core_renderer extends renderer_base {
             return '';
         }
 
+        // Get sections.
+        // Exclude all subsections first, will retrieve them later.
+        $sections = get_fast_modinfo($course->id)->get_listed_section_info_all();
+
         // Get a list of all the activities in the course.
-        $modules = get_fast_modinfo($course->id)->get_cms();
+        $modules = [];
+        foreach ($sections as $section) {
+            foreach ($section->get_sequence_cm_infos() as $cm) {
+                $modules[] = $cm;
+                // If there are subsections inside this section, fetch the activities in the subsections too.
+                // Subsections are delegated as course modules, but they don't have urls so won't show up in navigation.
+                if ($cm->modname === 'subsection') {
+                    $subsection = $cm->get_delegated_section_info();
+                    foreach ($subsection->get_sequence_cm_infos() as $cminsub) {
+                        $modules[] = $cminsub;
+                    }
+                }
+            }
+        }
 
         // Put the modules into an array in order by the position they are shown in the course.
         $mods = [];
         $activitylist = [];
         foreach ($modules as $module) {
-            // Only add activities the user can access, aren't in stealth mode and have a url (eg. mod_label does not).
+            // Only add activities the user can access, aren't in stealth mode and have a url
+            // (e.g.: mod_label does not, if the 'includeinnavigation' setting is set as 'no').
             if (!$module->uservisible || $module->is_stealth() || empty($module->url)) {
                 continue;
             }

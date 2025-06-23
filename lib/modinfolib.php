@@ -2459,6 +2459,14 @@ class cm_info implements IteratorAggregate {
         $this->url = $modviews[$this->modname]
                 ? new moodle_url('/mod/' . $this->modname . '/view.php', array('id'=>$this->id))
                 : null;
+
+        // For mod_label, a setting is added to determine if the module is included in activity navigation footer.
+        // A url of view.php is needed for the navigation.
+        if ($this->modname === 'label' && isset($this->customdata['includeinnavigation'])) {
+            if ($this->customdata['includeinnavigation'] === true) {
+                $this->url = new moodle_url('/mod/' . $this->modname . '/view.php', array('id'=>$this->id));
+            }
+        }
     }
 
     /**

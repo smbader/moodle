@@ -59,6 +59,11 @@ class mod_label_mod_form extends moodleform_mod {
         $mform->addHelpButton('visibleincourseindex', 'visibleincourseindex', 'label');
         $mform->setDefault('visibleincourseindex', 1);
 
+        // Show options to include module in red prev/next activity_navigation footer or not.
+        $mform->addElement('selectyesno', 'includeinnavigation', get_string('includeinnavigation', 'label'));
+        $mform->addHelpButton('includeinnavigation', 'includeinnavigation', 'label');
+        $mform->setDefault('includeinnavigation', 1);
+
         $this->standard_coursemodule_elements();
 
 //-------------------------------------------------------------------------------

@@ -117,5 +117,19 @@ function xmldb_label_upgrade($oldversion) {
     // Automatically generated Moodle v4.5.0 release upgrade line.
     // Put any upgrade step following this.
 
+    if ($oldversion < 2025050700) {
+        $dbman = $DB->get_manager();
+
+        $table = new xmldb_table('label');
+        $field = new xmldb_field('includeinnavigation', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0',
+            'introformat');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2025050700, 'label');
+    }
+
     return true;
 }

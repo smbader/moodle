@@ -41,6 +41,11 @@ $string['indicator:socialbreadth_help'] = 'This indicator is based on the social
 $string['indicator:socialbreadthdef'] = 'Text and media area social';
 $string['indicator:socialbreadthdef_help'] = 'The participant has reached this percentage of the social engagement offered by the Text and media area resources during this analysis interval (Levels = No participation, Participant alone)';
 $string['indicator:socialbreadthdef_link'] = 'Learning_analytics_indicators#Social_breadth';
+$string['includeinnavigation'] = 'Include in navigation';
+$string['includeinnavigation_help'] = 'Determine if this text and media area should be included in the course activity navigation (the red previous/next navigation at the bottom of an activity/resource view page). 
+This feature works only if the availability of this resource is set to "show on course page".
+
+Enabling this also means that this text and media area will display in a separate view.';
 $string['label:addinstance'] = 'Add a new Text and media area';
 $string['label:view'] = 'View Text and media area';
 $string['labelname'] = 'Title in course index';

@@ -177,6 +177,11 @@ function label_get_coursemodule_info($coursemodule) {
         } else {
             $info->customdata['visibleincourseindex'] = false;
         }
+        if ($label->includeinnavigation == 1) {
+            $info->customdata['includeinnavigation'] = true;
+        } else {
+            $info->customdata['includeinnavigation'] = false;
+        }
 
         return $info;
     } else {
@@ -431,6 +436,7 @@ function label_cm_info_dynamic(cm_info $cm) {
     if (method_exists($cm, 'override_customdata')) {
         $moduleinstance = $DB->get_record('label', array('id' => $cm->instance), '*', MUST_EXIST);
         $cm->override_customdata('visibleincourseindex', label_get_visible_in_course_index($moduleinstance));
+        $cm->override_customdata('includeinnavigation', label_include_in_navigation($moduleinstance));
     }
 }
 
@@ -446,4 +452,47 @@ function label_get_visible_in_course_index($label) {
     } else {
         return false;
     }
+}
+
+/**
+ * Get the status of whether the label (text and media area) module should be included in activity_navigation footer.
+ * If this is true, the module will also display as a separate view to allow the flow of navigation links.
+ *
+ * @param object $label
+ * @return bool
+ */
+function label_include_in_navigation($label) {
+    if ($label->includeinnavigation == 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Mark the activity completed (if required) and trigger the course_module_viewed event.
+ *
+ * @param  stdClass $label      label object
+ * @param  stdClass $course     course object
+ * @param  stdClass $cm         course module object
+ * @param  stdClass $context    context object
+ * @since Moodle 4.5
+ */
+function label_view($label, $course, $cm, $context) {
+
+    // Trigger course_module_viewed event.
+    $params = array(
+        'context' => $context,
+        'objectid' => $label->id
+    );
+
+    $event = \mod_label\event\course_module_viewed::create($params);
+    $event->add_record_snapshot('course_modules', $cm);
+    $event->add_record_snapshot('course', $course);
+    $event->add_record_snapshot('label', $label);
+    $event->trigger();
+
+    // Completion.
+    $completion = new completion_info($course);
+    $completion->set_module_viewed($cm);
 }
