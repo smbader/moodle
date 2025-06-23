@@ -106,23 +106,54 @@ class cmsummary implements named_templatable, renderable {
         $showcompletion = false;
         foreach ($cmids as $cmid) {
             $thismod = $modinfo->cms[$cmid];
-
-            if ($thismod->uservisible) {
-                if (isset($mods[$thismod->modname])) {
-                    $mods[$thismod->modname]['name'] = $thismod->modplural;
-                    $mods[$thismod->modname]['count']++;
-                } else {
-                    $mods[$thismod->modname]['name'] = $thismod->modfullname;
-                    $mods[$thismod->modname]['count'] = 1;
+            // Subsections are delegated as course modules. If there are subsections inside this section,
+            // fetch the activities in the subsections and add them to the total count too.
+            // Subsections themselves shouldn't be counted though, they are technically sections instead of activities.
+            if ($thismod->modname === 'subsection') {
+                $subsection = $thismod->get_delegated_section_info();
+                foreach ($subsection->get_sequence_cm_infos() as $cminsub) {
+                    list($mods, $complete, $total, $showcompletion) = $this->count_section_activities($mods, $complete,
+                        $total, $showcompletion, $cminsub, $cancomplete, $completioninfo);
                 }
-                if ($cancomplete && $completioninfo->is_enabled($thismod) != COMPLETION_TRACKING_NONE) {
-                    $showcompletion = true;
-                    $total++;
-                    $completiondata = $completioninfo->get_data($thismod, true);
-                    if ($completiondata->completionstate == COMPLETION_COMPLETE ||
-                            $completiondata->completionstate == COMPLETION_COMPLETE_PASS) {
-                        $complete++;
-                    }
+            } else {
+                list($mods, $complete, $total, $showcompletion) = $this->count_section_activities($mods, $complete,
+                    $total, $showcompletion, $thismod, $cancomplete, $completioninfo);
+            }
+        }
+
+        return [$mods, $complete, $total, $showcompletion];
+    }
+
+    /**
+     * Do the actual count for total and completed activities.
+     *
+     * @param array $mods Array of activities with count by activity type
+     * @param int $complete Number of completed activities
+     * @param int $total Total of completable activities (those with completion status)
+     * @param bool $showcompletion Whether show activity completion or not
+     * @param object $thismod Activity to be counted
+     * @param bool $cancomplete Whether the activity is completable (has completion status)
+     * @param object $completioninfo Completion info
+     *
+     * @return array [array of activities, number of completed activities, total of completable activities, show completion or not]
+     */
+    private function count_section_activities($mods, $complete, $total, $showcompletion, $thismod, $cancomplete,
+                                                    $completioninfo) {
+        if ($thismod->uservisible) {
+            if (isset($mods[$thismod->modname])) {
+                $mods[$thismod->modname]['name'] = $thismod->modplural;
+                $mods[$thismod->modname]['count']++;
+            } else {
+                $mods[$thismod->modname]['name'] = $thismod->modfullname;
+                $mods[$thismod->modname]['count'] = 1;
+            }
+            if ($cancomplete && $completioninfo->is_enabled($thismod) != COMPLETION_TRACKING_NONE) {
+                $showcompletion = true;
+                $total++;
+                $completiondata = $completioninfo->get_data($thismod, true);
+                if ($completiondata->completionstate == COMPLETION_COMPLETE ||
+                    $completiondata->completionstate == COMPLETION_COMPLETE_PASS) {
+                    $complete++;
                 }
             }
         }
