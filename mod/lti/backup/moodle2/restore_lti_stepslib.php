@@ -54,12 +54,10 @@ use mod_lti\local\ltiopenid\registration_helper;
  * Structure step to restore one lti activity
  */
 class restore_lti_activity_structure_step extends restore_activity_structure_step {
-
     /** @var bool */
     protected $newltitype = false;
 
     protected function define_structure() {
-
         $paths = array();
         // To know if we are including userinfo.
         $userinfo = $this->get_setting_value('userinfo');
@@ -148,30 +146,58 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
         }
 
         // DELTA
-        // If an LTI 1.3 has moved in from a different server, prepend a description and display in course.
+        // If an LTI has moved in from a different server, prepend a description and display in course.
         if (!$this->task->is_samesite()) {
-            $sql = 'SELECT id, intro FROM {lti} WHERE id = :id';
+            $sql = 'SELECT id, intro, toolurl, instructorcustomparameters FROM {lti} WHERE id = :id';
             if ($lti = $DB->get_record_sql($sql, ['id' => $this->get_new_parentid('lti')], IGNORE_MULTIPLE)) {
-
-                // Prepend warning to LTI Description Field
+                // Prepend warning to LTI Description Field.
                 $intro = '
 <div class="alert alert-danger alert-block">
     <strong>Instructors</strong>: this tool link is not working because it was copied from a previous academic year.
     Please re-link it using the steps in the following article:
-    <a href="https://ncsu.service-now.com/delta?id=kb_article_ml&sysparm_article=KB0023113" target="_blank">Re-linking Copied LTI Tools in Moodle</a>.
+    <a href="https://ncsu.service-now.com/delta?id=kb_article_ml&amp;sysparm_article=KB0023113" target="_blank">
+        Re-linking Copied LTI Tools in Moodle
+    </a>.
 </div>' . $lti->intro;
 
-                // Update the description field of the LTI table.
-                $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitypeid, 'intro' => $intro, 'introformat' => 1]);
+                try {
+                    // If this is a Panopto restore and we are able to get the session information, we'll create a different alert.
+                    if (
+                        (str_contains($lti->toolurl, 'ncsu.hosted.panopto.com') ||
+                        str_contains($lti->toolurl, 'ncsu-test.hosted.panopto.com')) &&
+                        str_starts_with($lti->instructorcustomparameters, 'context_delivery=')
+                    ) {
+                        // LTI is Panopto, alter the description.
+                        require_once(__DIR__ . '/restore_lti_panopto.php');
+                        $groupname = substr($lti->instructorcustomparameters, strlen('context_delivery=')) . '::Viewer';
+                        $sessioninfo = restore_lti_panopto::get_session_information($groupname);
 
-                // Update Course Module Record to show description field
+                        if ($sessioninfo) {
+                            $intro = restore_lti_panopto::get_notification_text($sessioninfo) . $lti->intro;
+                        }
+                    }
+                } catch (Exception $e) {
+                    // Something went wrong, fallback to the standard notification.
+                }
+
+                // Update the description field of the LTI table.
+                $DB->update_record(
+                    'lti',
+                    [
+                        'id' => $this->get_new_parentid('lti'),
+                        'typeid' => $ltitypeid,
+                        'intro' => $intro,
+                        'introformat' => FORMAT_HTML
+                    ]
+                );
+
+                // Update Course Module Record to show description field.
                 $DB->update_record('course_modules', ['id' => $this->task->get_moduleid(), 'showdescription' => 1]);
             }
         } else {
             // Add the typeid entry back to LTI module.
             $DB->update_record('lti', ['id' => $this->get_new_parentid('lti'), 'typeid' => $ltitypeid]);
         }
-
     }
 
     /**
@@ -283,7 +309,6 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
      * @param mixed $data The data from backup XML file
      */
     protected function process_ltitoolproxy($data) {
-
     }
 
     /**
