@@ -105,7 +105,7 @@ class restore_lti_panopto {
                 working. This can occur when Panopto links are copied from a previous academic year or from a Projects
                 or Outreach course.</p>
                 <p><strong>Action Required</strong>: Please re-link this video using these step-by-step instructions:
-                    <a href="https://ncsu.service-now.com/delta?id=kb_article_ml&amp;sysparm_article=KB0023113"
+                    <a href="https://ncsu.service-now.com/delta?id=kb_article_ml&amp;sysparm_article=KB0023192"
                        target="_blank" rel="noopener">Re-Linking Panopto Videos in a Copied Course</a>.
                 </p>
               <br>

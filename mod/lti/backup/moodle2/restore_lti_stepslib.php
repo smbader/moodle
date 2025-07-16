@@ -256,8 +256,8 @@ class restore_lti_activity_structure_step extends restore_activity_structure_ste
         }
 
         // DELTA additional LTI matching
-        $sql = 'SELECT id FROM {lti_types} WHERE course = 1 AND toolproxyid IS NULL AND baseurl LIKE "%:tooldomain%"';
-        if ($ltitype = $DB->get_record_sql($sql, ['tooldomain' => $data->tooldomain], IGNORE_MULTIPLE)) {
+        $sql = 'SELECT id FROM {lti_types} WHERE course = 1 AND toolproxyid IS NULL AND (baseurl = ":baseurl" OR baseurl LIKE "%:tooldomain%")';
+        if ($ltitype = $DB->get_record_sql($sql, ['baseurl' => $data->baseurl, 'tooldomain' => $data->tooldomain], IGNORE_MULTIPLE)) {
             $this->set_mapping('ltitype', $data->id, $ltitype->id);
             return $ltitype->id;
         }
