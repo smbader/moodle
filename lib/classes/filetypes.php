@@ -60,6 +60,7 @@ abstract class core_filetypes {
             'applescript' => array('type' => 'text/plain', 'icon' => 'text'),
             'asc' => array('type' => 'text/plain', 'icon' => 'sourcecode'),
             'asm' => array('type' => 'text/plain', 'icon' => 'sourcecode'),
+            'atbx' => array('type' => 'ArcGIS toolbox', 'icon' => 'archive'),
             'au' => array('type' => 'audio/au', 'icon' => 'audio', 'groups' => array('audio'), 'string' => 'audio'),
             'avi' => array('type' => 'video/x-ms-wm', 'icon' => 'video',
                     'groups' => array('video', 'web_video'), 'string' => 'video'),
