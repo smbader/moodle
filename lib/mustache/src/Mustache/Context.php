@@ -16,6 +16,7 @@ class Mustache_Context
 {
     private $stack      = array();
     private $blockStack = array();
+    private $cache = array();
 
     /**
      * Mustache rendering Context constructor.
@@ -36,7 +37,8 @@ class Mustache_Context
      */
     public function push($value)
     {
-        array_push($this->stack, $value);
+        $this->stack[] = $value;
+        $this->cache = array();
     }
 
     /**
@@ -46,7 +48,7 @@ class Mustache_Context
      */
     public function pushBlockContext($value)
     {
-        array_push($this->blockStack, $value);
+        $this->blockStack[] = $value;
     }
 
     /**
@@ -56,6 +58,7 @@ class Mustache_Context
      */
     public function pop()
     {
+        $this->cache = array();
         return array_pop($this->stack);
     }
 
@@ -96,7 +99,11 @@ class Mustache_Context
      */
     public function find($id)
     {
-        return $this->findVariableInStack($id, $this->stack);
+        if (!isset($this->cache[$id])) {
+            $this->cache[$id] = self::findVariableInStack($id, $this->stack);
+        }
+
+        return $this->cache[$id];
     }
 
     /**
@@ -126,19 +133,23 @@ class Mustache_Context
      */
     public function findDot($id)
     {
-        $chunks = explode('.', $id);
-        $first  = array_shift($chunks);
-        $value  = $this->findVariableInStack($first, $this->stack);
+        if (!isset($this->cache[$id])) {
+            $chunks = explode('.', $id);
+            $first  = array_shift($chunks);
+            $value  = self::findVariableInStack($first, $this->stack);
 
-        foreach ($chunks as $chunk) {
-            if ($value === '') {
-                return $value;
+            foreach ($chunks as $chunk) {
+                if ($value === '') {
+                    return $value;
+                }
+
+                $value = self::findVariableInStack($chunk, array($value));
             }
 
-            $value = $this->findVariableInStack($chunk, array($value));
+            $this->cache[$id] = $value;
         }
 
-        return $value;
+        return $this->cache[$id];
     }
 
     /**
@@ -171,7 +182,7 @@ class Mustache_Context
                 return $value;
             }
 
-            $value = $this->findVariableInStack($chunk, array($value));
+            $value = self::findVariableInStack($chunk, array($value));
         }
 
         return $value;
@@ -187,7 +198,7 @@ class Mustache_Context
     public function findInBlock($id)
     {
         foreach ($this->blockStack as $context) {
-            if (array_key_exists($id, $context)) {
+            if (isset($context[$id])) {
                 return $context[$id];
             }
         }
@@ -205,35 +216,29 @@ class Mustache_Context
      *
      * @return mixed Variable value, or '' if not found
      */
-    private function findVariableInStack($id, array $stack)
+    private static function findVariableInStack($id, array $stack)
     {
         for ($i = count($stack) - 1; $i >= 0; $i--) {
-            $frame = &$stack[$i];
+            $frame = $stack[$i];
 
-            switch (gettype($frame)) {
-                case 'object':
-                    if (!($frame instanceof Closure)) {
-                        // Note that is_callable() *will not work here*
-                        // See https://github.com/bobthecow/mustache.php/wiki/Magic-Methods
-                        if (method_exists($frame, $id)) {
-                            return $frame->$id();
-                        }
+            if ($frame instanceof Closure) {
+                continue;
+            }
 
-                        if (isset($frame->$id)) {
-                            return $frame->$id;
-                        }
+            if ($frame instanceof ArrayAccess || is_array($frame)) {
+                if (isset($frame[$id])) {
+                    return $frame[$id];
+                }
+            } else if (is_object($frame)) {
+                if (isset($frame->$id)) {
+                    return $frame->$id;
+                }
 
-                        if ($frame instanceof ArrayAccess && isset($frame[$id])) {
-                            return $frame[$id];
-                        }
-                    }
-                    break;
-
-                case 'array':
-                    if (array_key_exists($id, $frame)) {
-                        return $frame[$id];
-                    }
-                    break;
+                // Note that is_callable() *will not work here*
+                // See https://github.com/bobthecow/mustache.php/wiki/Magic-Methods
+                if (method_exists($frame, $id)) {
+                    return $frame->$id();
+                }
             }
         }
 
