@@ -281,9 +281,7 @@ class component {
     protected static function psr_classloader($class) {
         // Iterate through each PSR-4 namespace prefix.
         foreach (self::$psr4namespaces as $prefix => $paths) {
-            if (!is_array($paths)) {
-                $paths = [$paths];
-            }
+            $paths = (array) $paths;
             foreach ($paths as $path) {
                 $file = self::get_class_file($class, $prefix, $path, ['\\']);
                 if (!empty($file) && file_exists($file)) {
@@ -315,12 +313,16 @@ class component {
      * @return string|bool The full path to the file defining the class. Or false if it could not be resolved.
      */
     protected static function get_class_file($class, $prefix, $path, $separators) {
+static $results = [];
         global $CFG;
 
+$key = "$class~$prefix~$path~{$separators[0]}" . ($separators[1] ?? '');
+if (!isset(($results[$key]))) {
         // Does the class use the namespace prefix?
         $len = strlen($prefix);
         if (strncmp($prefix, $class, $len) !== 0) {
             // No, move to the next prefix.
+$results[$key] = false;
             return false;
         }
         $path = $CFG->dirroot . '/' . $path;
@@ -332,6 +334,9 @@ class component {
         // separators with directory separators in the relative class name, append
         // with .php.
         $file = $path . str_replace($separators, '/', $relativeclass) . '.php';
+$results[$key] = $file;
+}
+return $results[$key];
 
         return $file;
     }
