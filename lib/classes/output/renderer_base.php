@@ -57,7 +57,7 @@ class renderer_base {
     /**
      * @var \Mustache_Engine The mustache template compiler
      */
-    private $mustache;
+    private static $mustache;
 
     /**
      * @var array $templatecache The mustache template cache.
@@ -73,7 +73,7 @@ class renderer_base {
     protected function get_mustache() {
         global $CFG;
 
-        if ($this->mustache === null) {
+        if (self::$mustache === null) {
             require_once("{$CFG->libdir}/filelib.php");
 
             $themename = $this->page->theme->name;
@@ -115,7 +115,7 @@ class renderer_base {
                              'userdate' => [$userdatehelper, 'transform'],
                          ];
 
-            $this->mustache = new mustache_engine([
+            self::$mustache = new mustache_engine([
                 'cache' => $cachedir,
                 'escape' => 's',
                 'loader' => $loader,
@@ -130,7 +130,7 @@ class renderer_base {
             ]);
         }
 
-        return $this->mustache;
+        return self::$mustache;
     }
 
 
