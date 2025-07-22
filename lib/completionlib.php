@@ -1352,7 +1352,20 @@ class completion_info {
      * @return bool
      */
     public function is_tracked_user($userid) {
-        return is_enrolled(context_course::instance($this->course->id), $userid, 'moodle/course:isincompletionreports', true);
+        static $cache = [];
+
+        $courseid = $this->course->id;
+
+        if (!isset($cache[$courseid][$userid])) {
+            $cache[$courseid][$userid] = is_enrolled(
+                context_course::instance($courseid),
+                $userid,
+                'moodle/course:isincompletionreports',
+                true
+            );
+        }
+
+        return $cache[$courseid][$userid];
     }
 
     /**
