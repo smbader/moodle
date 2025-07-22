@@ -78,7 +78,7 @@ class theme_overridden_renderer_factory extends renderer_factory_base {
                     } else {
                         $newclassname = $prefix . '_' . $classnamedetails['classname'] . $suffix;
                     }
-                    if (class_exists($newclassname)) {
+                    if (\class_exists($newclassname, $classnamedetails['autoloaded'])) {
                         return new $newclassname($page, $target);
                     }
                 }
@@ -87,7 +87,7 @@ class theme_overridden_renderer_factory extends renderer_factory_base {
         foreach ($classnames as $classnamedetails) {
             if ($classnamedetails['validwithoutprefix']) {
                 $newclassname = $classnamedetails['classname'] . $suffix;
-                if (class_exists($newclassname)) {
+                if (\class_exists($newclassname, $classnamedetails['autoloaded'])) {
                     // Use the specialised renderer for given target, default renderer might also decide
                     // to implement support for more targets.
                     return new $newclassname($page, $target);
@@ -104,7 +104,7 @@ class theme_overridden_renderer_factory extends renderer_factory_base {
                     } else {
                         $newclassname = $prefix . '_' . $classnamedetails['classname'];
                     }
-                    if (class_exists($newclassname)) {
+                    if (\class_exists($newclassname, $classnamedetails['autoloaded'])) {
                         return new $newclassname($page, $target);
                     }
                 }
@@ -115,7 +115,7 @@ class theme_overridden_renderer_factory extends renderer_factory_base {
         foreach ($classnames as $classnamedetails) {
             if ($classnamedetails['validwithoutprefix']) {
                 $newclassname = $classnamedetails['classname'];
-                if (class_exists($newclassname)) {
+                if (\class_exists($newclassname, $classnamedetails['autoloaded'])) {
                     return new $newclassname($page, $target);
                 }
             }
