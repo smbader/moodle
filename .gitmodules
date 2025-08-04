@@ -243,3 +243,6 @@
 [submodule "local/bfguides"]
 	path = local/bfguides
 	url = git@github.ncsu.edu:delta-appsdev/local_bfguides.git
+[submodule "local/bfrescan"]
+	path = local/bfrescan
+	url = git@github.ncsu.edu:delta-appsdev/local_bfrescan.git
