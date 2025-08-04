@@ -240,3 +240,6 @@
 [submodule "admin/tool/heartbeat"]
 	path = admin/tool/heartbeat
 	url = git@github.ncsu.edu:delta-appsdev/tool_heartbeat.git
+[submodule "local/bfguides"]
+	path = local/bfguides
+	url = git@github.ncsu.edu:delta-appsdev/local_bfguides.git
