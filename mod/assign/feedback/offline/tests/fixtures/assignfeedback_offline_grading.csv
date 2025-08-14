@@ -1,0 +1,4 @@
+﻿Identifier,"Full name","Email address",Status,Grade,"Maximum grade","Grade can be changed","Last modified (submission)","Online text","Last modified (grade)","Feedback comments"
+"Participant 124001","Student 1",student1@example.com,"Draft (not submitted) -  - ",95.00,100.00,Yes,"Wednesday, 15 October 2025, 9:47 PM","I'm the student1 submission",-,"This is the first student feedback."
+"Participant 124000","Student 2",student2@example.com,"Draft (not submitted) -  - ",72.00,100.00,Yes,"Wednesday, 15 October 2025, 9:47 PM","I'm the student2 submission",-,"This is the second student feedback."
+

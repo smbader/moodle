@@ -4099,7 +4099,7 @@ class assign {
                                                                      '',
                                                                      $instance->attemptreopenmethod,
                                                                      $instance->maxattempts,
-                                                                     $this->get_grading_status($userid),
+                                                                     $this->get_grading_status($userid, $attemptnumber),
                                                                      $instance->preventsubmissionnotingroup,
                                                                      $usergroups,
                                                                      $instance->timelimit);
@@ -9332,7 +9332,7 @@ class assign {
      * @param int $userid the user id
      * @return string returns the grading status
      */
-    public function get_grading_status($userid) {
+    public function get_grading_status($userid, $attemptnumber = -1) {
         if ($this->get_instance()->markingworkflow) {
             $flags = $this->get_user_flags($userid, false);
             if (!empty($flags->workflowstate)) {
@@ -9340,7 +9340,6 @@ class assign {
             }
             return ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED;
         } else {
-            $attemptnumber = optional_param('attemptnumber', -1, PARAM_INT);
             $grade = $this->get_user_grade($userid, false, $attemptnumber);
 
             if (!empty($grade) && $grade->grade !== null && $grade->grade >= 0) {

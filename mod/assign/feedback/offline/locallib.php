@@ -175,23 +175,39 @@ class assign_feedback_offline extends assign_feedback_plugin {
                 $skip = true;
             }
 
+            // We haven't fetched or created the grade yet.  This will be an object when we do.
+            $grade = false;
+
             if (!$skip) {
+                // There was no reason to skip recording this grade, so we need to do so now.
+
+                // Get the current user grade for this submission, if it doesn't exist, create it.
                 $grade = $this->assignment->get_user_grade($record->user->id, true);
 
+                // Take this current submission, and apply the uploaded grade
                 $grade->grade = $record->grade;
+
+                // Tag the grader with the current session user id.
                 $grade->grader = $USER->id;
+
                 if ($this->assignment->update_grade($grade)) {
                     $this->assignment->notify_grade_modified($grade);
                     $updategradecount += 1;
                 }
+
             }
 
+            // Now we are going to process any feedback items.  This could mean that there was ONLY feedback applied to the update.
+            // So instead of checking $skip, we need to only check that this grade record is not stale.
             if ($ignoremodified || !$stalemodificationdate) {
+
                 foreach ($record->feedback as $feedback) {
+
                     $plugin = $feedback['plugin'];
                     $field = $feedback['field'];
                     $newvalue = $feedback['value'];
                     $description = $feedback['description'];
+
                     $oldvalue = '';
                     if ($usergrade) {
                         $oldvalue = $plugin->get_editor_text($field, $usergrade->id);
@@ -199,9 +215,17 @@ class assign_feedback_offline extends assign_feedback_plugin {
                             $oldvalue = '';
                         }
                     }
+
+                    // We only need to update if the feedback has changed.
                     if ($newvalue != $oldvalue) {
                         $updatefeedbackcount += 1;
-                        $grade = $this->assignment->get_user_grade($record->user->id, true);
+
+                        // If this is false, we haven't fetched or created the grade yet.  Do so now.
+                        // If it's already an object, then we have already fetched it when we processed grades.
+                        if (!$grade) {
+                          $grade = $this->assignment->get_user_grade($record->user->id, true);
+                        }
+
                         $this->assignment->notify_grade_modified($grade);
                         $plugin->set_editor_text($field, $newvalue, $grade->id);
 
