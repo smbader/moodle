@@ -67,17 +67,21 @@ class assignfeedback_file_zip_importer {
         while (!empty($pathparts)) {
             // Get the next path part and break it up by underscores.
             $pathpart = array_shift($pathparts);
-            $info = explode('_', $pathpart, 5);
+            $info = explode('_', $pathpart, 6);
 
             // Expected format for the directory names in $pathpart is fullname_userid_plugintype_pluginname (as created by zip
             // export in Moodle >= 4.1) resp. fullname_userid_plugintype_pluginname_ (as created by earlier versions). We ensure
             // compatibility with both ways here.
+
+            // Changed by delta to: fullname_username_userid_plugintype_pluginname_filename
+            // Example:
+            //      Bader Stephen_smbaderATncsu.edu_3_assignsubmission_file_DB_Ticket_435785482614
             if (count($info) < 4) {
                 continue;
             }
 
             // Check the participant id.
-            $participantid = $info[1];
+            $participantid = $info[2];
 
             if (!is_numeric($participantid)) {
                 continue;
@@ -94,18 +98,18 @@ class assignfeedback_file_zip_importer {
             $users = $participants[$participantid];
 
             // Set the plugin. This by reference, and is used by the calling script.
-            $plugin = $assignment->get_plugin_by_type($info[2], $info[3]);
+            $plugin = $assignment->get_plugin_by_type($info[3], $info[4]);
 
             if (!$plugin) {
                 continue;
             }
 
             // To get clean path names, we need to have at least an empty entry for $info[4].
-            if (count($info) == 4) {
-                $info[4] = '';
+            if (count($info) == 5) {
+                $info[5] = '';
             }
             // Take any remaining text in this part and put it back in the path parts array.
-            array_unshift($pathparts, $info[4]);
+            array_unshift($pathparts, $info[5]);
 
             // Combine the remaining parts and set it as the filename.
             // Note that filename is a 'by reference' variable, so we need to set it before returning.

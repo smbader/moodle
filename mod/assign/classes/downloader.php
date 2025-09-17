@@ -189,10 +189,16 @@ class downloader {
         if ($manager->is_blind_marking()) {
             $fullname = get_string('participant', 'mod_assign');
         } else {
-            $fullname = fullname($student, has_capability('moodle/site:viewfullnames', $manager->get_context()));
+            if (has_capability('moodle/site:viewfullnames', $manager->get_context())) {
+                $prefix = str_replace('_', ' ', $student->lastname . ' ' . $student->firstname);
+            } else {
+                $fullname = fullname($student, false);
+                $prefix = str_replace('_', ' ', $fullname);
+            }
         }
-        $prefix = str_replace('_', ' ', $fullname);
-        $prefix = clean_filename($prefix . '_' . $manager->get_uniqueid_for_user($student->id));
+        $username = str_replace('@', 'AT', $student->username);
+        $username = str_replace('_', ' ', $username);
+        $prefix = clean_filename($prefix . '_' . $username . '_' . $manager->get_uniqueid_for_user($student->id));
         return $prefix;
     }
 
