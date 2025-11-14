@@ -190,11 +190,7 @@ class assign_feedback_offline extends assign_feedback_plugin {
                 // Tag the grader with the current session user id.
                 $grade->grader = $USER->id;
 
-                if ($this->assignment->update_grade($grade)) {
-                    $this->assignment->notify_grade_modified($grade);
-                    $updategradecount += 1;
-                }
-
+                $updategradecount += 1;
             }
 
             // Now we are going to process any feedback items.  This could mean that there was ONLY feedback applied to the update.
@@ -223,7 +219,9 @@ class assign_feedback_offline extends assign_feedback_plugin {
                         // If this is false, we haven't fetched or created the grade yet.  Do so now.
                         // If it's already an object, then we have already fetched it when we processed grades.
                         if (!$grade) {
-                          $grade = $this->assignment->get_user_grade($record->user->id, true);
+                            $grade = $this->assignment->get_user_grade($record->user->id, true);
+                            //Assign the previous grade as the current grade since the grade has not been changed.
+                            $grade->grade = $usergrade->grade;
                         }
 
                         $this->assignment->notify_grade_modified($grade);
@@ -233,9 +231,14 @@ class assign_feedback_offline extends assign_feedback_plugin {
                         if (($plugin->get_subtype() . '_' . $plugin->get_type()) == $gradebookplugin) {
                             $grade->feedbacktext = $plugin->text_for_gradebook($grade);
                             $grade->feedbackformat = $plugin->format_for_gradebook($grade);
-                            $this->assignment->update_grade($grade);
                         }
                     }
+                }
+            }
+            
+            if(($updategradecount > 0) || ($updatefeedbackcount > 0)){
+                if ($this->assignment->update_grade($grade)) {
+                    $this->assignment->notify_grade_modified($grade);
                 }
             }
         }
