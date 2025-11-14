@@ -85,4 +85,33 @@ Feature: In an assignment, teachers can provide feedback using a spreadsheet dow
     Then I should see "Test assignment name" in the "user-grades" "table"
     And "Feedback provided" "icon" should exist in the "Student 1" "table_row"
     And "Feedback provided" "icon" should exist in the "Student 2" "table_row"
-    And I wait "200" seconds
+
+  @javascript @_file_upload
+  Scenario: Teachers should be able to only give feedback as the first step of grading using an offline worksheet.
+    Given the following "activities" exist:
+      | activity  | course  | name                  | assignsubmission_onlinetext_enabled  | assignfeedback_offline_enabled | assignfeedback_comments_enabled | attemptreopenmethod | maxattempts |
+      | assign    | C1      | Test assignment name  | 1                                    | 1                              | 1                               | automatic           | -1          |
+    And the following "mod_assign > submissions" exist:
+      | assign                | user      | onlinetext                  |
+      | Test assignment name  | student1  | I'm the student1 submission |
+      | Test assignment name  | student2  | I'm the student2 submission |
+    And I am on the "Test assignment name" Activity page logged in as teacher1
+    And I navigate to "Submissions" in current page administration
+    When I click on "Actions" "link"
+    And "Download grading worksheet" "link" should exist
+    And following "Download grading worksheet" should download a file that:
+      | Has mimetype  | text/csv                    |
+      | Contains text | I'm the student1 submission |
+      | Contains text | I'm the student2 submission |
+    And following "Download grading worksheet" create a feedback only csv
+    And I navigate to "Submissions" in current page administration
+    When I click on "Actions" "link"
+    And I click on "Upload grading worksheet" "link"
+    And I upload "/mod/assign/feedback/offline/tests/fixtures/assignfeedback_offline_grading.csv" file to "Upload a file" filemanager
+    And I press "id_submitbutton"
+    Then I should see "Confirm changes in grading worksheet"
+    And I should see "You did not try very hard."
+    And I should see "You put a lot of effort into this."
+    And I press "id_submitbutton"
+    Then I should see "Updated 0 grades and 2 feedback instances."
+    And I press "Continue"

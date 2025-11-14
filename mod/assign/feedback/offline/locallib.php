@@ -216,12 +216,11 @@ class assign_feedback_offline extends assign_feedback_plugin {
                     if ($newvalue != $oldvalue) {
                         $updatefeedbackcount += 1;
 
-                        // If this is false, we haven't fetched or created the grade yet.  Do so now.
-                        // If it's already an object, then we have already fetched it when we processed grades.
+                        // Ensure we have a grade object.
+                        // We may not have a previous grade object and only feedback may have been given.
+                        // Fetch existing grade object or create one.
                         if (!$grade) {
-                            $grade = $this->assignment->get_user_grade($record->user->id, true);
-                            //Assign the previous grade as the current grade since the grade has not been changed.
-                            $grade->grade = $usergrade->grade;
+                            $grade = $this->assignment->get_user_grade($record->user->id, !$usergrade);
                         }
 
                         $this->assignment->notify_grade_modified($grade);
@@ -235,8 +234,8 @@ class assign_feedback_offline extends assign_feedback_plugin {
                     }
                 }
             }
-            
-            if(($updategradecount > 0) || ($updatefeedbackcount > 0)){
+
+            if($grade && ($updategradecount > 0) || ($updatefeedbackcount > 0)){
                 if ($this->assignment->update_grade($grade)) {
                     $this->assignment->notify_grade_modified($grade);
                 }

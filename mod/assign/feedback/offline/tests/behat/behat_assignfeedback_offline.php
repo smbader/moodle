@@ -118,6 +118,46 @@ class behat_assignfeedback_offline extends behat_base {
             fputcsv($fp, $csvrow);
         }
         fclose($fp);
+    }
 
+
+    /**
+     * Exports submissions csv and reads content to create grade/feedback csv.
+     *
+     * @Then /^following "(?P<link_string>(?:[^"]|\\")*)" create a feedback only csv$/
+     * @param string $link
+     */
+    public function following_to_create_feedback_only_csv($link) {
+        global $CFG;
+        $exception = new ExpectationException('Error while downloading data from ' . $link, $this->getSession());
+
+        // It will stop spinning once file is downloaded or time out.
+        $behatgeneralcontext = behat_context_helper::get('behat_general');
+        $result = $this->spin(
+            function($context, $args) use ($behatgeneralcontext) {
+                $link = $args['link'];
+                return $behatgeneralcontext->download_file_from_link($link);
+            },
+            array('link' => $link),
+            behat_base::get_extended_timeout(),
+            $exception
+        );
+
+        // Now read the downloaded file and create a feedback only csv.
+        $csvrows = preg_split("/\r\n|\n|\r/", $result);
+        $csvresult = [];
+        foreach ($csvrows as $csvline) {
+            $csvresult[] = str_getcsv($csvline);
+        }
+        $csvresult[1][10] = 'You did not try very hard.';
+        $csvresult[2][10] = 'You put a lot of effort into this.';
+
+        $filename = $CFG->dirroot . '/mod/assign/feedback/offline/tests/fixtures/assignfeedback_offline_grading.csv';
+        $fp = fopen($filename,"w");
+
+        foreach ($csvresult as $csvrow) {
+            fputcsv($fp, $csvrow);
+        }
+        fclose($fp);
     }
 }
