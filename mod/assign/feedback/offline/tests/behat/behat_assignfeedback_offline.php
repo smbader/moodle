@@ -120,5 +120,4 @@ class behat_assignfeedback_offline extends behat_base {
         fclose($fp);
 
     }
-
 }
